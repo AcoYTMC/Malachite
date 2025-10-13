@@ -1,0 +1,20 @@
+{
+     "type": "minecraft:crafting_shaped",
+     "pattern": [
+          "SSS",
+          "SMS",
+          "SSS"
+     ],
+     "key": {
+          "S": {
+               "item": "minecraft:stone"
+          },
+          "M": {
+               "item": "malachite:malachite"
+          }
+     },
+     "result": {
+          "id": "malachite:seraphite",
+          "count": 8
+     }
+}

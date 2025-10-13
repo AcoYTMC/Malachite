@@ -1,0 +1,19 @@
+{
+     "variants": {
+          "charge=0": {
+               "model": "malachite:block/pylon/malachite_pylon_0"
+          },
+          "charge=1": {
+               "model": "malachite:block/pylon/malachite_pylon_1"
+          },
+          "charge=2": {
+               "model": "malachite:block/pylon/malachite_pylon_2"
+          },
+          "charge=3": {
+               "model": "malachite:block/pylon/malachite_pylon_3"
+          },
+          "charge=4": {
+               "model": "malachite:block/pylon/malachite_pylon_4"
+          }
+     }
+}

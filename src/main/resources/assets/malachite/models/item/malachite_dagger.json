@@ -1,0 +1,14 @@
+{
+     "parent": "item/handheld",
+     "textures": {
+          "layer0": "malachite:item/malachite_dagger"
+     },
+     "overrides": [
+          {
+               "predicate": {
+                    "malachite:charged": 1.0
+               },
+               "model": "malachite:item/malachite_dagger_charged"
+          }
+     ]
+}

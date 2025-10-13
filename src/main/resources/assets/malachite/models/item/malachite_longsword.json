@@ -1,0 +1,47 @@
+{
+     "parent": "item/generated",
+     "textures": {
+          "layer0": "malachite:item/malachite_longsword"
+     },
+     "overrides": [
+          {
+               "predicate": {
+                    "malachite:charged": 1.0,
+                    "is_held": 0.0
+               },
+               "model": "malachite:item/malachite_longsword_charged"
+          },
+          {
+               "predicate": {
+                    "malachite:charged": 0.0,
+                    "malachite:blocking": 0.0,
+                    "is_held": 1.0
+               },
+               "model": "malachite:item/malachite_longsword_in_hand"
+          },
+          {
+               "predicate": {
+                    "malachite:charged": 1.0,
+                    "malachite:blocking": 0.0,
+                    "is_held": 1.0
+               },
+               "model": "malachite:item/malachite_longsword_charged_in_hand"
+          },
+          {
+               "predicate": {
+                    "malachite:charged": 0.0,
+                    "malachite:blocking": 1.0,
+                    "is_held": 1.0
+               },
+               "model": "malachite:item/malachite_longsword_blocking"
+          },
+          {
+               "predicate": {
+                    "malachite:charged": 1.0,
+                    "malachite:blocking": 1.0,
+                    "is_held": 1.0
+               },
+               "model": "malachite:item/malachite_longsword_charged_blocking"
+          }
+     ]
+}

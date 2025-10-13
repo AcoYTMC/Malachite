@@ -1,0 +1,20 @@
+{
+     "block.malachite.chiseled_seraphite": "Chiseled Seraphite",
+     "block.malachite.polished_seraphite": "Polished Seraphite",
+     "block.malachite.seraphite": "Seraphite",
+     "block.malachite.seraphite_bricks": "Seraphite Bricks",
+     "block.malachite.tooltip.active": "Active",
+
+     "death.attack.dagger": "%1$s was pierced",
+     "death.attack.dagger.item": "%1$s was pierced by %2$s using %3$s",
+     "death.attack.dagger.player": "%1$s was pierced by %2$s",
+
+     "effect.malachite.overcharged": "Overcharged",
+
+     "item.malachite.malachite": "Malachite",
+     "item.malachite.malachite_dagger": "Malachite Dagger",
+     "item.malachite.malachite_longsword": "Malachite Longsword",
+     "item.malachite.tooltip.charged": "Charged",
+
+     "itemGroup.malachite": "Malachite"
+}
