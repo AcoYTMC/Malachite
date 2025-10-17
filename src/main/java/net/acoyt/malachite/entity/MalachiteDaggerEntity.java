@@ -30,6 +30,7 @@ import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
+@SuppressWarnings("unused")
 public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     public static final TrackedData<ItemStack> THROWN_ITEM = DataTracker.registerData(MalachiteDaggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     private boolean dealtDamage;
@@ -220,6 +221,8 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
             if (component.charge() == component.maxCharge()) {
                 target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+                stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
+                this.setItemStack(stack);
             }
         }
 

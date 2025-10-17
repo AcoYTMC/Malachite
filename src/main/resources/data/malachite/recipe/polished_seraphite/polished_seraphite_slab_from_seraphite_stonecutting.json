@@ -1,0 +1,10 @@
+{
+     "type": "minecraft:stonecutting",
+     "ingredient": {
+          "item": "malachite:seraphite"
+     },
+     "result": {
+          "id": "malachite:polished_seraphite_slab",
+          "count": 2
+     }
+}
