@@ -3,10 +3,12 @@ package net.acoyt.malachite.item;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.entity.MalachiteDaggerEntity;
 import net.acoyt.malachite.index.MalachiteDataComponents;
+import net.acoyt.malachite.index.MalachiteEffects;
 import net.acoyt.malachite.index.MalachiteSounds;
 import net.acoyt.malachite.index.MalachiteToolMaterials;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
@@ -33,9 +35,13 @@ public class MalachiteDaggerItem extends SwordItem {
             stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(component.charge() > component.maxCharge() ? -1 : 1));
         } else {
             float strength = (float)(0.25f * (1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)));
-            target.setVelocity(attacker.getPos().subtract(target.getPos()).multiply(strength * 5.0f).multiply(-1));
-            target.addVelocity(0, 0.6, 0);
-            target.velocityModified = true;
+
+            //target.setVelocity(attacker.getPos().subtract(target.getPos()).multiply(strength * 5.0f).multiply(-1));
+            //target.addVelocity(0, 0.6, 0);
+            //target.velocityModified = true;
+
+            target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+
             stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
         }
 

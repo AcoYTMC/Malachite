@@ -1,0 +1,16 @@
+{
+     "type": "minecraft:crafting_shaped",
+     "pattern": [
+          "SSS",
+          "SSS"
+     ],
+     "key": {
+          "S": {
+               "item": "malachite:seraphite"
+          }
+     },
+     "result": {
+          "id": "malachite:seraphite_wall",
+          "count": 6
+     }
+}

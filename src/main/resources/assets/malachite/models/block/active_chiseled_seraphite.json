@@ -1,6 +1,6 @@
 {
      "parent": "block/cube_all",
      "textures": {
-          "all": "malachite:block/seraphite_bricks"
+          "all": "malachite:block/active_chiseled_seraphite"
      }
 }

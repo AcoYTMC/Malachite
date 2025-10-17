@@ -1,0 +1,13 @@
+{
+  "variants": {
+    "type=bottom": {
+      "model": "malachite:block/polished_seraphite_slab"
+    },
+    "type=double": {
+      "model": "malachite:block/polished_seraphite"
+    },
+    "type=top": {
+      "model": "malachite:block/polished_seraphite_slab_top"
+    }
+  }
+}

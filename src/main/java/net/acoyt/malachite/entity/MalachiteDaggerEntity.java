@@ -1,10 +1,7 @@
 package net.acoyt.malachite.entity;
 
-import net.acoyt.malachite.Malachite;
-import net.acoyt.malachite.index.MalachiteDamageTypes;
-import net.acoyt.malachite.index.MalachiteEntities;
-import net.acoyt.malachite.index.MalachiteItems;
-import net.acoyt.malachite.index.MalachiteSounds;
+import net.acoyt.malachite.component.MalachiteComponent;
+import net.acoyt.malachite.index.*;
 import net.acoyt.malachite.util.NbtUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
@@ -17,6 +14,7 @@ import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
 import net.minecraft.entity.data.TrackedDataHandlerRegistry;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.player.PlayerInventory;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -211,6 +209,20 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     @Override
     public void onHit(LivingEntity target) {
         super.onHit(target);
+
+        ItemStack stack = this.getItem();
+        if (stack.contains(MalachiteDataComponents.MALACHITE)) {
+            MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+            if (component.charge() < component.maxCharge()) {
+                stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
+                this.setItemStack(stack);
+            }
+
+            if (component.charge() == component.maxCharge()) {
+                target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+            }
+        }
+
         //target.addStatusEffect(new StatusEffectInstance(GildedEffects.WATCHED, 240, 0));
     }
 

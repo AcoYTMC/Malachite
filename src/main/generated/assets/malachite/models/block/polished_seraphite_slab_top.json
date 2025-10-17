@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/slab_top",
+  "textures": {
+    "bottom": "malachite:block/polished_seraphite",
+    "side": "malachite:block/polished_seraphite",
+    "top": "malachite:block/polished_seraphite"
+  }
+}

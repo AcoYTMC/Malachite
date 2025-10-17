@@ -1,0 +1,15 @@
+{
+     "type": "minecraft:crafting_shaped",
+     "pattern": [
+          "SSS"
+     ],
+     "key": {
+          "S": {
+               "item": "malachite:polished_seraphite"
+          }
+     },
+     "result": {
+          "id": "malachite:polished_seraphite_slab",
+          "count": 6
+     }
+}

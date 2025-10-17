@@ -10,6 +10,7 @@ public class ChiseledSeraphiteBlock extends Block {
 
     public ChiseledSeraphiteBlock(Settings settings) {
         super(settings);
+        this.setDefaultState(this.getDefaultState().with(ACTIVE, false));
     }
 
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {

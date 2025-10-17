@@ -1,0 +1,8 @@
+{
+  "parent": "minecraft:block/inner_stairs",
+  "textures": {
+    "bottom": "malachite:block/seraphite",
+    "side": "malachite:block/seraphite",
+    "top": "malachite:block/seraphite"
+  }
+}
