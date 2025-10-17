@@ -1,6 +1,7 @@
 package net.acoyt.malachite.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import net.acoyt.malachite.cca.NearbyPylonComponent;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.entity.MalachiteDaggerEntity;
 import net.acoyt.malachite.index.MalachiteDataComponents;
@@ -14,6 +15,8 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.world.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
@@ -44,5 +47,25 @@ public abstract class LivingEntityMixin extends Entity {
         }
 
         return original;
+    }
+
+    @ModifyArgs(
+            method = "damage",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"
+            )
+    )
+    private void modifyDamageAmount(Args args) {
+        LivingEntity living = (LivingEntity)(Object)this;
+        NearbyPylonComponent component = NearbyPylonComponent.KEY.get(living);
+        if (component.isNearby()) {
+            float amount = args.get(1);
+            float prevAmount = amount;
+
+            amount = prevAmount * 0.75f;
+
+            args.set(1, amount);
+        }
     }
 }

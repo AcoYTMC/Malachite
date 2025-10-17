@@ -1,7 +1,7 @@
-package net.acoyt.mialib.cca;
+package net.acoyt.malachite.cca;
 
+import net.acoyt.malachite.Malachite;
 import net.acoyt.malachite.util.NbtUtils;
-import net.acoyt.mialib.Mialib;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.registry.RegistryWrapper;
@@ -11,7 +11,7 @@ import org.ladysnake.cca.api.v3.component.sync.AutoSyncedComponent;
 import org.ladysnake.cca.api.v3.component.tick.CommonTickingComponent;
 
 public class HoldingComponent implements AutoSyncedComponent, CommonTickingComponent {
-    public static final ComponentKey<HoldingComponent> KEY = ComponentRegistry.getOrCreate(Mialib.id("holding"), HoldingComponent.class);
+    public static final ComponentKey<HoldingComponent> KEY = ComponentRegistry.getOrCreate(Malachite.id("holding"), HoldingComponent.class);
     private final PlayerEntity player;
     private boolean attacking = false;
     private boolean using = false;

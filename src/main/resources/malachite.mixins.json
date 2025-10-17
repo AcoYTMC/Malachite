@@ -1,23 +1,25 @@
 {
-  "required": true,
-  "package": "net.acoyt.malachite.mixin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "ItemStackMixin",
-    "LivingEntityMixin",
-    "PlayerEntityMixin"
-  ],
-  "client": [
-    "client.BipedEntityModelMixin",
-    "client.ClientPlayerEntityMixin",
-    "client.HeldItemFeatureRendererMixin",
-    "client.HeldItemRendererMixin",
-    "client.PlayerEntityRendererMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  },
-  "overwrites": {
-    "requireAnnotations": true
-  }
+     "required": true,
+     "package": "net.acoyt.malachite.mixin",
+     "compatibilityLevel": "JAVA_21",
+     "mixins": [
+          "ItemStackMixin",
+          "LivingEntityMixin",
+          "PlayerEntityMixin",
+          "mialib.PlayerEntityMixin"
+     ],
+     "client": [
+          "client.BipedEntityModelMixin",
+          "client.ClientPlayerEntityMixin",
+          "client.HeldItemFeatureRendererMixin",
+          "client.HeldItemRendererMixin",
+          "client.PlayerEntityRendererMixin",
+          "mialib.MinecraftClientMixin"
+     ],
+     "injectors": {
+          "defaultRequire": 1
+     },
+     "overwrites": {
+          "requireAnnotations": true
+     }
 }

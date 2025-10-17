@@ -1,6 +1,8 @@
 package net.acoyt.malachite.index;
 
 import net.acoyt.malachite.Malachite;
+import net.acoyt.malachite.block.entity.PylonBlockEntity;
+import net.acoyt.malachite.block.entity.SeraphiteBlockEntity;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityType;
 import net.minecraft.registry.Registries;
@@ -12,6 +14,14 @@ import java.util.Map;
 
 public interface MalachiteBlockEntities {
     Map<BlockEntityType<?>, Identifier> BLOCK_ENTITIES = new LinkedHashMap<>();
+
+    BlockEntityType<PylonBlockEntity> PYLON = create("pylon", BlockEntityType.Builder
+            .create(PylonBlockEntity::new, MalachiteBlocks.MALACHITE_PYLON)
+            .build());
+
+    BlockEntityType<SeraphiteBlockEntity> SERAPHITE = create("seraphite", BlockEntityType.Builder
+            .create(SeraphiteBlockEntity::new, MalachiteBlocks.CHISELED_SERAPHITE)
+            .build());
 
     //BlockEntityType<TestBlockEntity> TEST = create("test", BlockEntityType.Builder
     //        .create(TestBlockEntity::new, MalachiteBlocks.TEST)

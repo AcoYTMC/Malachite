@@ -6,15 +6,14 @@
      "description": "",
      "authors": [
           "AcoYT - Dev",
-          "eyalego - Texture Artist"
+          "eyalego - Texture Artist & Ideas"
      ],
      "license": "ARR",
      "icon": "assets/malachite/icon.png",
      "environment": "*",
      "entrypoints": {
           "main": [
-               "net.acoyt.malachite.Malachite",
-               "net.acoyt.mialib.Mialib"
+               "net.acoyt.malachite.Malachite"
           ],
           "client": [
                "net.acoyt.malachite.MalachiteClient"
@@ -23,16 +22,14 @@
                "net.acoyt.malachite.MalachiteDatagen"
           ],
           "cardinal-components": [
-               "net.acoyt.malachite.cca.MalachiteComponents",
-               "net.acoyt.mialib.Mialib"
+               "net.acoyt.malachite.cca.MalachiteComponents"
           ],
           "modmenu": [
                "net.acoyt.malachite.compat.MalachiteModMenu"
           ]
      },
      "mixins": [
-          "malachite.mixins.json",
-          "mialib.mixins.json"
+          "malachite.mixins.json"
      ],
      "depends": {
           "fabricloader": ">=0.15.11",
@@ -43,10 +40,11 @@
      },
      "custom": {
           "cardinal-components": [
-               "mialib:holding"
+               "malachite:nearby_pylon",
+               "malachite:holding"
           ],
           "loom:injected_interfaces": {
-               "net/minecraft/class_1657": ["net/acoyt/mialib/util/interfaces/MPlayerEntity"]
+               "net/minecraft/class_1657": ["net/acoyt/malachite/util/interfaces/MPlayerEntity"]
           }
      }
 }

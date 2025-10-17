@@ -1,4 +1,4 @@
-package net.acoyt.mialib.networking;
+package net.acoyt.malachite.networking;
 
 import net.acoyt.mialib.Mialib;
 import net.acoyt.mialib.util.interfaces.MPlayerEntity;

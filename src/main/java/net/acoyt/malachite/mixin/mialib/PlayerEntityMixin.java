@@ -1,7 +1,7 @@
-package net.acoyt.mialib.mixin;
+package net.acoyt.malachite.mixin.mialib;
 
-import net.acoyt.mialib.cca.HoldingComponent;
-import net.acoyt.mialib.util.interfaces.MPlayerEntity;
+import net.acoyt.malachite.cca.HoldingComponent;
+import net.acoyt.malachite.util.interfaces.MPlayerEntity;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.player.PlayerEntity;
@@ -15,32 +15,32 @@ public abstract class PlayerEntityMixin extends Entity implements MPlayerEntity 
     }
 
     @Override
-    public boolean mialib$holdingAttack() {
+    public boolean malachite$holdingAttack() {
         return HoldingComponent.KEY.get(this).isAttacking();
     }
 
     @Override
-    public void mialib$setHoldingAttack(boolean attackHeld) {
+    public void malachite$setHoldingAttack(boolean attackHeld) {
         HoldingComponent.KEY.get(this).setAttacking(attackHeld);
     }
 
     @Override
-    public int mialib$getHoldingAttackTime() {
+    public int malachite$getHoldingAttackTime() {
         return HoldingComponent.KEY.get(this).getAttackTicks();
     }
 
     @Override
-    public boolean mialib$holdingUse() {
+    public boolean malachite$holdingUse() {
         return HoldingComponent.KEY.get(this).isUsing();
     }
 
     @Override
-    public void mialib$setHoldingUse(boolean useHeld) {
+    public void malachite$setHoldingUse(boolean useHeld) {
         HoldingComponent.KEY.get(this).setUsing(useHeld);
     }
 
     @Override
-    public int mialib$getHoldingUseTime() {
+    public int malachite$getHoldingUseTime() {
         return HoldingComponent.KEY.get(this).getUsageTicks();
     }
 }
