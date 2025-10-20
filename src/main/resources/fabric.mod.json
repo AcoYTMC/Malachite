@@ -9,7 +9,7 @@
           "eyalego - Texture Artist & Ideas"
      ],
      "license": "ARR",
-     "icon": "assets/malachite/icon.png",
+     "icon": "assets/malachite/icon3.png",
      "environment": "*",
      "entrypoints": {
           "main": [
@@ -28,6 +28,7 @@
                "net.acoyt.malachite.compat.MalachiteModMenu"
           ]
      },
+     "accessWidener": "malachite.accesswidener",
      "mixins": [
           "malachite.mixins.json"
      ],
@@ -40,11 +41,7 @@
      },
      "custom": {
           "cardinal-components": [
-               "malachite:nearby_pylon",
-               "malachite:holding"
-          ],
-          "loom:injected_interfaces": {
-               "net/minecraft/class_1657": ["net/acoyt/malachite/util/interfaces/MPlayerEntity"]
-          }
+               "malachite:nearby_pylon"
+          ]
      }
 }

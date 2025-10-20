@@ -4,22 +4,34 @@ import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import net.acoyt.malachite.cca.NearbyPylonComponent;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.entity.MalachiteDaggerEntity;
+import net.acoyt.malachite.index.MalachiteDamageTypes;
 import net.acoyt.malachite.index.MalachiteDataComponents;
+import net.acoyt.malachite.index.MalachiteEffects;
 import net.acoyt.malachite.index.MalachiteItems;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffect;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.item.ItemStack;
+import net.minecraft.registry.entry.RegistryEntry;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArgs;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 
 @Mixin(LivingEntity.class)
 public abstract class LivingEntityMixin extends Entity {
+    @Shadow protected abstract void applyDamage(DamageSource source, float amount);
+    @Shadow @Nullable public abstract StatusEffectInstance getStatusEffect(RegistryEntry<StatusEffect> effect);
+
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
     }
@@ -32,7 +44,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (stack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
             MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
             if (component.charge() >= component.maxCharge()) {
-                return f + 3f;
+                return f + 4.5f;
             }
         }
 
@@ -41,12 +53,30 @@ public abstract class LivingEntityMixin extends Entity {
             if (itemStack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
                 MalachiteComponent component = itemStack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
                 if (component.charge() >= component.maxCharge()) {
-                    return f + 3f;
+                    return f + 4.5f;
                 }
             }
         }
 
+        if (living.hasStatusEffect(MalachiteEffects.OVERCHARGED)) {
+            return original * 2;
+        }
+
         return original;
+    }
+
+    @Inject(
+            method = "damage",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;applyDamage(Lnet/minecraft/entity/damage/DamageSource;F)V"
+            )
+    )
+    private void malachite$moreDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
+        StatusEffectInstance instance = this.getStatusEffect(MalachiteEffects.OVERCHARGED);
+        if (instance != null) {
+            this.applyDamage(MalachiteDamageTypes.create(this.getWorld(), MalachiteDamageTypes.OVERCHARGED), instance.getAmplifier());
+        }
     }
 
     @ModifyArgs(
@@ -59,13 +89,13 @@ public abstract class LivingEntityMixin extends Entity {
     private void modifyDamageAmount(Args args) {
         LivingEntity living = (LivingEntity)(Object)this;
         NearbyPylonComponent component = NearbyPylonComponent.KEY.get(living);
+        float amount = args.get(1);
+        float prevAmount = amount;
+
         if (component.isNearby()) {
-            float amount = args.get(1);
-            float prevAmount = amount;
-
             amount = prevAmount * 0.75f;
-
-            args.set(1, amount);
         }
+
+        args.set(1, amount);
     }
 }

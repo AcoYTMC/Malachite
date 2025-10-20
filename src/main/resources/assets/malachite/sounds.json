@@ -1,1 +1,40 @@
-{}
+{
+     "entity.dagger.hit": {
+          "sounds": [
+               "malachite:entity/dagger_hit"
+          ],
+          "subtitle": "subtitles.malachite.entity.dagger.hit"
+     },
+     "entity.dagger.throw": {
+          "sounds": [
+               "malachite:entity/dagger_throw"
+          ],
+          "subtitle": "subtitles.malachite.entity.dagger.throw"
+     },
+
+     "item.longsword.block": {
+          "sounds": [
+               "malachite:item/longsword_block"
+          ],
+          "subtitle": "subtitles.malachite.item.longsword.block"
+     },
+
+     "entity.energy_beam.travel": {
+          "sounds": [
+               "malachite:entity/energy_beam_travel"
+          ]
+     },
+     "entity.energy_beam.shoot": {
+          "sounds": [
+               "malachite:entity/energy_beam_shoot"
+          ],
+          "subtitle": "subtitles.malachite.entity.energy_beam.shoot"
+     },
+
+     "block.budding_copper.create": {
+          "sounds": [
+               "malachite:block/budding_copper_create"
+          ],
+          "subtitle": "subtitles.malachite.block.budding_copper.create"
+     }
+}

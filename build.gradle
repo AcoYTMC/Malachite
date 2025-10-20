@@ -35,6 +35,12 @@ repositories {
         name "Ladysnake Releases"
         url "https://maven.ladysnake.org/releases"
     }
+
+    // WillBL Maven
+    maven {
+        name "willblRepositoryReleases"
+        url "https://maven.willbl.dev/releases"
+    }
 }
 
 loom {
@@ -68,6 +74,10 @@ dependencies {
     modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
     //modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-block:${project.cca_version}")
     //modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-world:${project.cca_version}")
+
+    // Libs
+    modImplementation include("xyz.amymialee:mialib:${project.mialib_version}-1.21")
+    modCompileOnly "maven.modrinth:iris:${project.iris_version}"
 }
 
 processResources {

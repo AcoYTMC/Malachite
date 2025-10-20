@@ -1,8 +1,8 @@
 package net.acoyt.malachite.entity;
 
+import net.acoyt.malachite.Malachite;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.index.*;
-import net.acoyt.malachite.util.NbtUtils;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -10,6 +10,7 @@ import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.data.TrackedData;
@@ -33,8 +34,8 @@ import org.jetbrains.annotations.Nullable;
 @SuppressWarnings("unused")
 public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     public static final TrackedData<ItemStack> THROWN_ITEM = DataTracker.registerData(MalachiteDaggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
-    private boolean dealtDamage;
-    private boolean charged;
+    private boolean dealtDamage = false;
+    private boolean charged = false;
     public int returnTimer;
     public int stackSlot = -1;
 
@@ -152,7 +153,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         this.setCritical(false);
     }
 
-    protected void onEntityHit(EntityHitResult entityHitResult) {
+    public void onEntityHit(EntityHitResult entityHitResult) {
         Entity entity = entityHitResult.getEntity();
         Entity owner = this.getOwner();
         World world = this.getWorld();
@@ -180,7 +181,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         }
 
         this.setVelocity(this.getVelocity().multiply(-0.01, -0.1, -0.01));
-        this.playSound(MalachiteSounds.DAGGER_HITS, 4.0F, 1.0F);
+        this.playSound(MalachiteSounds.DAGGER_HIT, 4.0F, 1.0F);
     }
 
     public boolean tryPickup(PlayerEntity player) {
@@ -221,6 +222,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
             if (component.charge() == component.maxCharge()) {
                 target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+                Malachite.spawnShockwave(target, 3.0f);
                 stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
                 this.setItemStack(stack);
             }
@@ -229,11 +231,19 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         //target.addStatusEffect(new StatusEffectInstance(GildedEffects.WATCHED, 240, 0));
     }
 
+    public void knockback(LivingEntity target, DamageSource source) {
+        double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
+        Vec3d vec3d = this.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
+        if (vec3d.lengthSquared() > 0.0) {
+            target.addVelocity(vec3d.x, 0.1, vec3d.z);
+        }
+    }
+
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        this.dealtDamage = NbtUtils.getOrDefault(nbt, "DealtDamage", false);
-        this.charged = NbtUtils.getOrDefault(nbt, "Charged", false);
-        this.stackSlot = NbtUtils.getOrDefault(nbt, "StackSlot", -1);
+        this.dealtDamage = nbt.getBoolean("DealtDamage");
+        this.charged = nbt.getBoolean("Charged");
+        this.stackSlot = nbt.getInt("StackSlot");
     }
 
     public void writeCustomDataToNbt(NbtCompound nbt) {

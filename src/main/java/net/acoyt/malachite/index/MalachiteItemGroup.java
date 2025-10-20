@@ -33,6 +33,8 @@ public interface MalachiteItemGroup {
         itemGroup.add(MALACHITE_DAGGER);
         itemGroup.add(MALACHITE_PYLON);
 
+        itemGroup.add(CHISELED_SERAPHITE);
+
         itemGroup.add(SERAPHITE);
         itemGroup.add(SERAPHITE_SLAB);
         itemGroup.add(SERAPHITE_STAIRS);
@@ -43,11 +45,16 @@ public interface MalachiteItemGroup {
         itemGroup.add(POLISHED_SERAPHITE_STAIRS);
         itemGroup.add(POLISHED_SERAPHITE_WALL);
 
-        itemGroup.add(CHISELED_SERAPHITE);
-
         itemGroup.add(SERAPHITE_BRICKS);
         itemGroup.add(SERAPHITE_BRICK_SLAB);
         itemGroup.add(SERAPHITE_BRICK_STAIRS);
         itemGroup.add(SERAPHITE_BRICK_WALL);
+
+        itemGroup.add(SMALL_MALACHITE_BUD);
+        itemGroup.add(MEDIUM_MALACHITE_BUD);
+        itemGroup.add(LARGE_MALACHITE_BUD);
+        itemGroup.add(MALACHITE_CLUSTER);
+
+        itemGroup.add(BUDDING_COPPER);
     }
 }

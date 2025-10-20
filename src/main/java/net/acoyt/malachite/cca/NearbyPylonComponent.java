@@ -1,7 +1,6 @@
 package net.acoyt.malachite.cca;
 
 import net.acoyt.malachite.Malachite;
-import net.acoyt.malachite.util.NbtUtils;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -66,7 +65,7 @@ public class NearbyPylonComponent implements AutoSyncedComponent, CommonTickingC
 
     @Override
     public void readFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup wrapperLookup) {
-        this.nearbyTicks = NbtUtils.getOrDefault(nbt, "nearbyTicks", 0);
-        this.nearby = NbtUtils.getOrDefault(nbt, "nearby", false);
+        this.nearbyTicks = nbt.getInt("nearbyTicks");
+        this.nearby = nbt.getBoolean("nearby");
     }
 }

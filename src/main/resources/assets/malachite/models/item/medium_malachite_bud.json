@@ -1,0 +1,6 @@
+{
+     "parent": "minecraft:item/generated",
+     "textures": {
+          "layer0": "malachite:block/medium_malachite_bud"
+     }
+}

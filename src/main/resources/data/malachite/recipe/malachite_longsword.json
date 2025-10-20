@@ -1,0 +1,25 @@
+{
+     "type": "minecraft:crafting_shaped",
+     "pattern": [
+          " MM",
+          "SPM",
+          "NS "
+     ],
+     "key": {
+          "P": {
+               "item": "malachite:malachite_pylon"
+          },
+          "S": {
+               "item": "malachite:seraphite"
+          },
+          "M": {
+               "item": "malachite:malachite"
+          },
+          "N": {
+               "item": "minecraft:netherite_sword"
+          }
+     },
+     "result": {
+          "id": "malachite:malachite_longsword"
+     }
+}

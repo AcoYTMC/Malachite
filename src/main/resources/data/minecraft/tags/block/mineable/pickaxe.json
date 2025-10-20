@@ -1,0 +1,12 @@
+{
+     "replace": false,
+     "values": [
+          "#malachite:seraphite",
+          "malachite:budding_copper",
+          "malachite:malachite_pylon",
+          "malachite:malachite_cluster",
+          "malachite:small_malachite_bud",
+          "malachite:medium_malachite_bud",
+          "malachite:large_malachite_bud"
+     ]
+}

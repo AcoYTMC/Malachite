@@ -2,8 +2,7 @@ package net.acoyt.malachite.mixin;
 
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.acoyt.malachite.index.MalachiteSounds;
-import net.acoyt.malachite.item.MalachiteLongswordItem;
+import net.acoyt.malachite.api.BlockingItem;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -36,12 +35,12 @@ public abstract class PlayerEntityMixin extends LivingEntity {
     private float swordBlock(PlayerEntity player, DamageSource source, float amount, @NotNull Operation<Float> original) {
         float base = original.call(player, source, amount);
         ItemStack stack = player.getMainHandStack();
-        if (!this.getWorld().isClient() && (!source.isIn(DamageTypeTags.BYPASSES_SHIELD) || source.isOf(DamageTypes.FALL)) && stack.getItem() instanceof MalachiteLongswordItem longswordItem && player.isUsingItem()) {
+        if (!this.getWorld().isClient() && (!source.isIn(DamageTypeTags.BYPASSES_SHIELD) || source.isOf(DamageTypes.FALL)) && stack.getItem() instanceof BlockingItem blockingItem && player.isUsingItem()) {
             Vec3d damagePos = source.getPosition();
             if (source.isOf(DamageTypes.FALL)) {
                 if (isLookingDown(player)) {
-                    this.getWorld().playSoundFromEntity(null, this, MalachiteSounds.LONGSWORD_BLOCKS, SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
-                    longswordItem.absorbDamage(player, source, stack, base / 2.0F);
+                    this.getWorld().playSoundFromEntity(null, this, blockingItem.blockSound(), SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
+                    blockingItem.absorbDamage(player, source, stack, base / 2.0F);
                     return base / 4.0F;
                 }
             } else if (damagePos != null) {
@@ -50,8 +49,8 @@ public abstract class PlayerEntityMixin extends LivingEntity {
                 Vec3d difference = damagePos.relativize(this.getEyePos()).normalize();
                 double angle = difference.dotProduct(rotVec);
                 if (!(angle < -1.0F) && angle < -0.35) {
-                    this.getWorld().playSoundFromEntity(null, this, MalachiteSounds.LONGSWORD_BLOCKS, SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
-                    longswordItem.absorbDamage(player, source, stack, base);
+                    this.getWorld().playSoundFromEntity(null, this, blockingItem.blockSound(), SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
+                    blockingItem.absorbDamage(player, source, stack, base);
                     return base / 2.0F;
                 }
             }

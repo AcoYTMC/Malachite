@@ -11,6 +11,7 @@ import org.jetbrains.annotations.Nullable;
 
 public interface MalachiteDamageTypes {
     RegistryKey<DamageType> DAGGER = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Malachite.id("dagger"));
+    RegistryKey<DamageType> OVERCHARGED = RegistryKey.of(RegistryKeys.DAMAGE_TYPE, Malachite.id("overcharged"));
 
     static DamageSource create(World world, RegistryKey<DamageType> key) {
         return new DamageSource(world.getRegistryManager().get(RegistryKeys.DAMAGE_TYPE).entryOf(key));

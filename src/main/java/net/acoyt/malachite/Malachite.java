@@ -1,17 +1,20 @@
 package net.acoyt.malachite;
 
 import com.mojang.logging.LogUtils;
-import eu.midnightdust.lib.config.MidnightConfig;
 import net.acoyt.acornlib.api.ALib;
 import net.acoyt.acornlib.api.ALibRegistries;
-import net.acoyt.malachite.compat.MalachiteConfig;
+import net.acoyt.malachite.client.particle.ShockwaveParticleEffect;
+import net.acoyt.malachite.event.MakeBuddingCopperEvent;
 import net.acoyt.malachite.index.*;
-import net.acoyt.malachite.networking.AttackingPayload;
-import net.acoyt.malachite.networking.UsingPayload;
+import net.acoyt.malachite.networking.client.PlayEnergyBeamTravelSoundPayload;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
-import net.fabricmc.fabric.api.networking.v1.ServerPlayNetworking;
+import net.minecraft.entity.LivingEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.World;
 import org.slf4j.Logger;
 
 public class Malachite implements ModInitializer {
@@ -21,25 +24,60 @@ public class Malachite implements ModInitializer {
 	public void onInitialize() {
         ALibRegistries.init(MOD_ID);
         ALib.registerModMenu(MOD_ID, 0xFF38624b);
-        MidnightConfig.init(MOD_ID, MalachiteConfig.class);
+        //MidnightConfig.init(MOD_ID, MalachiteConfig.class);
 
         MalachiteBlockEntities.init();
         MalachiteBlocks.init();
         MalachiteDataComponents.init();
         MalachiteEffects.init();
+        MalachiteEnchantments.init();
         MalachiteEntities.init();
         MalachiteItemGroup.init();
         MalachiteItems.init();
+        MalachiteParticles.init();
+        MalachitePotions.init();
         MalachiteSounds.init();
 
         // Networking
-        PayloadTypeRegistry.playC2S().register(AttackingPayload.ID, AttackingPayload.CODEC);
-        PayloadTypeRegistry.playC2S().register(UsingPayload.ID, UsingPayload.CODEC);
-        ServerPlayNetworking.registerGlobalReceiver(AttackingPayload.ID, new AttackingPayload.Receiver());
-        ServerPlayNetworking.registerGlobalReceiver(UsingPayload.ID, new UsingPayload.Receiver());
+        PayloadTypeRegistry.playS2C().register(PlayEnergyBeamTravelSoundPayload.ID, PlayEnergyBeamTravelSoundPayload.CODEC);
+
+        // Events
+        UseBlockCallback.EVENT.register(new MakeBuddingCopperEvent());
 	}
 
     public static Identifier id(String path) {
         return Identifier.of(MOD_ID, path);
+    }
+
+    public static void spawnShockwave(LivingEntity living, float size) {
+        spawnShockwave(living, 0x53efac, size);
+    }
+
+    public static void spawnShockwave(LivingEntity living, int color, float size) {
+        spawnShockwave(living, color, size, Vec3d.ZERO);
+    }
+
+    public static void spawnShockwave(LivingEntity living, int color, float size, Vec3d offset) {
+        spawnShockwave(living.getWorld(), living.getPos(), color, size, offset);
+    }
+
+    public static void spawnShockwave(World world, Vec3d pos, float size, Vec3d offset) {
+        spawnShockwave(world, pos, 0x53efac, size, offset);
+    }
+
+    public static void spawnShockwave(World world, Vec3d pos, int color, float size, Vec3d offset) {
+        if (world instanceof ServerWorld serverWorld) {
+            serverWorld.spawnParticles(
+                    new ShockwaveParticleEffect(color, size),
+                    pos.x + offset.x,
+                    pos.y + offset.y,
+                    pos.z + offset.z,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.1
+            );
+        }
     }
 }

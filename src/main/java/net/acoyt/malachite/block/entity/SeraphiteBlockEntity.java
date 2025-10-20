@@ -3,7 +3,7 @@ package net.acoyt.malachite.block.entity;
 import net.acoyt.malachite.block.ChiseledSeraphiteBlock;
 import net.acoyt.malachite.block.MalachitePylonBlock;
 import net.acoyt.malachite.index.MalachiteBlockEntities;
-import net.acoyt.malachite.util.NbtUtils;
+import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.nbt.NbtCompound;
@@ -24,22 +24,42 @@ public class SeraphiteBlockEntity extends BlockEntity {
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, @NotNull SeraphiteBlockEntity seraphite) {
-        for (int x = -5; x < 5; x++) {
-            for (int y = -5; y < 5; y++) {
-                for (int z = -5; z < 5; z++) {
-                    BlockState pylonState = world.getBlockState(new BlockPos(x, y, z));
-                    if (pylonState.contains(MalachitePylonBlock.CHARGE) && state.contains(ChiseledSeraphiteBlock.ACTIVE)) {
-                        int charge = pylonState.get(MalachitePylonBlock.CHARGE);
-                        boolean charged = state.get(ChiseledSeraphiteBlock.ACTIVE);
-                        if (charge == 4 && !charged) {
-                            world.setBlockState(pos, state.with(ChiseledSeraphiteBlock.ACTIVE, true));
-                        } else if (charged) {
-                            world.setBlockState(pos, state.with(ChiseledSeraphiteBlock.ACTIVE, false));
+        if (!seraphite.pylonNearby) {
+            for (int x = -5; x < 5; x++) {
+                for (int y = -5; y < 5; y++) {
+                    for (int z = -5; z < 5; z++) {
+                        BlockState pylonState = world.getBlockState(new BlockPos(x, y, z));
+                        if (pylonState.contains(MalachitePylonBlock.CHARGE) && state.contains(ChiseledSeraphiteBlock.ACTIVE)) {
+                            int charge = pylonState.get(MalachitePylonBlock.CHARGE);
+                            boolean charged = state.get(ChiseledSeraphiteBlock.ACTIVE);
+                            if (charge == 4 && !charged) {
+                                world.setBlockState(pos, state.with(ChiseledSeraphiteBlock.ACTIVE, true));
+                            } else if (charged) {
+                                world.setBlockState(pos, state.with(ChiseledSeraphiteBlock.ACTIVE, false));
+                            }
+
+                            seraphite.pylonNearby = true;
+                            world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+                            seraphite.markDirty();
                         }
                     }
                 }
             }
         }
+
+        //Box box = new Box(pos).expand(7); // 8 block radius
+        //BlockPos.stream(box).forEach(blockPos -> {
+        //    BlockState pylonState = world.getBlockState(blockPos);
+        //    if (pylonState.contains(MalachitePylonBlock.CHARGE) && state.contains(ChiseledSeraphiteBlock.ACTIVE)) {
+        //        int charge = pylonState.get(MalachitePylonBlock.CHARGE);
+        //        boolean charged = state.get(ChiseledSeraphiteBlock.ACTIVE);
+        //        if (charge == 4 && !charged) {
+        //            world.setBlockState(pos, state.with(ChiseledSeraphiteBlock.ACTIVE, true));
+        //        } else if (charged) {
+        //            world.setBlockState(pos, state.with(ChiseledSeraphiteBlock.ACTIVE, false));
+        //        }
+        //    }
+        //});
 
         //boolean charged = state.get(ChiseledSeraphiteBlock.ACTIVE);
         //if (!charged && seraphite.pylonNearby) {
@@ -58,7 +78,7 @@ public class SeraphiteBlockEntity extends BlockEntity {
     @Override
     protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
-        this.pylonNearby = NbtUtils.getOrDefault(nbt, "pylonNearby", false);
+        this.pylonNearby = nbt.getBoolean("pylonNearby");
     }
 
     @Override

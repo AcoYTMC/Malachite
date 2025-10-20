@@ -1,5 +1,6 @@
 package net.acoyt.malachite.index;
 
+import com.mojang.serialization.Codec;
 import net.acoyt.malachite.Malachite;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.minecraft.component.ComponentType;
@@ -10,6 +11,7 @@ import java.util.function.UnaryOperator;
 
 public interface MalachiteDataComponents {
     ComponentType<MalachiteComponent> MALACHITE = create("malachite", builder -> builder.codec(MalachiteComponent.CODEC));
+    ComponentType<Float> BEAM_DAMAGE = create("beam_damage", builder -> builder.codec(Codec.FLOAT));
     //ComponentType<List<StatusEffectInstance>> EFFECTS = create("effects", builder -> builder.codec(StatusEffectInstance.CODEC.listOf()));
 
     static <T> ComponentType<T> create(String name, UnaryOperator<ComponentType.Builder<T>> builderOperator) {

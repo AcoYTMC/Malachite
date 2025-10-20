@@ -8,6 +8,9 @@ import net.minecraft.registry.RegistryKeys;
 import net.minecraft.registry.tag.TagKey;
 
 public interface MalachiteTags {
+    TagKey<EntityType<?>> BEAM_HITTABLE = entityOf("beam_hittable");
+    TagKey<Block> SERAPHITE = blockOf("seraphite");
+
     private static TagKey<Block> blockOf(String id) {
         return TagKey.of(RegistryKeys.BLOCK, Malachite.id(id));
     }

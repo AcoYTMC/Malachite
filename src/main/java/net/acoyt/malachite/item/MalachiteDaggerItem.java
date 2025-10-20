@@ -1,21 +1,25 @@
 package net.acoyt.malachite.item;
 
+import net.acoyt.malachite.Malachite;
+import net.acoyt.malachite.block.MalachitePylonBlock;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.entity.MalachiteDaggerEntity;
 import net.acoyt.malachite.index.MalachiteDataComponents;
 import net.acoyt.malachite.index.MalachiteEffects;
 import net.acoyt.malachite.index.MalachiteSounds;
 import net.acoyt.malachite.index.MalachiteToolMaterials;
+import net.minecraft.block.BlockState;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.item.ItemUsageContext;
 import net.minecraft.item.SwordItem;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
+import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.TypedActionResult;
 import net.minecraft.world.World;
@@ -34,13 +38,9 @@ public class MalachiteDaggerItem extends SwordItem {
         if (!MalachiteComponent.fullyCharged(stack)) {
             stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(component.charge() > component.maxCharge() ? -1 : 1));
         } else {
-            float strength = (float)(0.25f * (1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE)));
-
-            //target.setVelocity(attacker.getPos().subtract(target.getPos()).multiply(strength * 5.0f).multiply(-1));
-            //target.addVelocity(0, 0.6, 0);
-            //target.velocityModified = true;
-
             target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+
+            Malachite.spawnShockwave(target, 3.0f);
 
             stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
         }
@@ -61,13 +61,27 @@ public class MalachiteDaggerItem extends SwordItem {
             }
 
             world.spawnEntity(daggerEntity);
-            world.playSoundFromEntity(null, daggerEntity, MalachiteSounds.DAGGER_THROWN, SoundCategory.PLAYERS, 1.0F, 1.0F);
+            world.playSoundFromEntity(null, daggerEntity, MalachiteSounds.DAGGER_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
             user.getItemCooldownManager().set(stack.getItem(), 5);
             return TypedActionResult.success(user.getStackInHand(hand));
         }
 
         return TypedActionResult.fail(user.getStackInHand(hand));
+    }
+
+    public ActionResult useOnBlock(ItemUsageContext context) {
+        BlockState state = context.getWorld().getBlockState(context.getBlockPos());
+        PlayerEntity user = context.getPlayer();
+        ItemStack stack = context.getStack();
+        if (user != null && stack != null) {
+            MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+            if (state.getBlock() instanceof MalachitePylonBlock && component.charge() < component.maxCharge()) {
+                return ActionResult.FAIL;
+            }
+        }
+
+        return super.useOnBlock(context);
     }
 
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {

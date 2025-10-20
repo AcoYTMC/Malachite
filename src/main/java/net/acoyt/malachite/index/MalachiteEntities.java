@@ -1,7 +1,9 @@
 package net.acoyt.malachite.index;
 
 import net.acoyt.malachite.Malachite;
+import net.acoyt.malachite.client.render.entity.EnergyBeamEntityRenderer;
 import net.acoyt.malachite.client.render.entity.MalachiteDaggerEntityRenderer;
+import net.acoyt.malachite.entity.EnergyBeamEntity;
 import net.acoyt.malachite.entity.MalachiteDaggerEntity;
 import net.fabricmc.fabric.api.client.rendering.v1.EntityRendererRegistry;
 import net.minecraft.entity.Entity;
@@ -19,6 +21,14 @@ public interface MalachiteEntities {
             ).dimensions(0.5f, 0.5f).maxTrackingRange(64).trackingTickInterval(20)
     );
 
+    EntityType<EnergyBeamEntity> ENERGY_BEAM = create(
+            "energy_beam",
+            EntityType.Builder.<EnergyBeamEntity>create(
+                    EnergyBeamEntity::new,
+                    SpawnGroup.MISC
+            ).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).maxTrackingRange(64)
+    );
+
     private static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder) {
         return Registry.register(Registries.ENTITY_TYPE, Malachite.id(name), builder.build());
     }
@@ -29,5 +39,6 @@ public interface MalachiteEntities {
 
     static void clientInit() {
         EntityRendererRegistry.register(MALACHITE_DAGGER, MalachiteDaggerEntityRenderer::new);
+        EntityRendererRegistry.register(ENERGY_BEAM, EnergyBeamEntityRenderer::new);
     }
 }

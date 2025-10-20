@@ -1,3 +1,19 @@
 accessWidener v1 named
 
 accessible field net/minecraft/entity/LivingEntity lastDamageTime J
+
+accessible class net/minecraft/enchantment/EnchantmentHelper$Consumer
+accessible class net/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer
+
+accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/item/ItemStack;Lnet/minecraft/enchantment/EnchantmentHelper$Consumer;)V
+accessible method net/minecraft/enchantment/EnchantmentHelper forEachEnchantment (Lnet/minecraft/entity/LivingEntity;Lnet/minecraft/enchantment/EnchantmentHelper$ContextAwareConsumer;)V
+accessible method net/minecraft/enchantment/Enchantment modifyValue (Lnet/minecraft/component/ComponentType;Lnet/minecraft/server/world/ServerWorld;ILnet/minecraft/item/ItemStack;Lorg/apache/commons/lang3/mutable/MutableFloat;)V
+
+accessible field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
+mutable field net/minecraft/enchantment/Enchantment effects Lnet/minecraft/component/ComponentMap;
+
+accessible field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
+mutable field net/minecraft/enchantment/effect/EnchantmentEffectEntry requirements Ljava/util/Optional;
+
+accessible field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;
+mutable field net/minecraft/enchantment/effect/TargetedEnchantmentEffect requirements Ljava/util/Optional;

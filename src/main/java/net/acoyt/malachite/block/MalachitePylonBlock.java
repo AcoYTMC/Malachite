@@ -2,20 +2,32 @@ package net.acoyt.malachite.block;
 
 import com.mojang.serialization.MapCodec;
 import net.acoyt.malachite.block.entity.PylonBlockEntity;
+import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.index.MalachiteBlockEntities;
+import net.acoyt.malachite.index.MalachiteDataComponents;
+import net.acoyt.malachite.index.MalachiteParticles;
 import net.minecraft.block.*;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.block.entity.BlockEntityTicker;
 import net.minecraft.block.entity.BlockEntityType;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.fluid.FluidState;
 import net.minecraft.fluid.Fluids;
 import net.minecraft.item.ItemPlacementContext;
+import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
+import net.minecraft.util.Hand;
+import net.minecraft.util.ItemActionResult;
+import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Direction;
+import net.minecraft.util.math.Vec3d;
+import net.minecraft.util.math.random.Random;
 import net.minecraft.util.shape.VoxelShape;
 import net.minecraft.world.BlockView;
 import net.minecraft.world.World;
@@ -36,6 +48,46 @@ public class MalachitePylonBlock extends BlockWithEntity implements Waterloggabl
 
     public MapCodec<? extends BlockWithEntity> getCodec() {
         return CODEC;
+    }
+
+    public ItemActionResult onUseWithItem(ItemStack itemStack, BlockState state, World world, BlockPos pos, PlayerEntity user, Hand hand, BlockHitResult hit) {
+        MalachiteComponent component = itemStack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+        if (itemStack.contains(MalachiteDataComponents.MALACHITE) && component.charge() < component.maxCharge() && state.contains(CHARGE) && state.get(CHARGE) == 4) {
+            itemStack.set(MalachiteDataComponents.MALACHITE, component.withCharge(component.maxCharge()));
+
+            world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0F, (float) (1.0F + user.getRandom().nextGaussian() / 10.0F));
+
+            if (!user.isCreative()) {
+                world.setBlockState(pos, state.with(CHARGE, 0));
+            }
+
+            return ItemActionResult.FAIL;
+        }
+
+        return ItemActionResult.SKIP_DEFAULT_BLOCK_INTERACTION;
+    }
+
+    public static boolean isPowered(World world, BlockPos pos) {
+        for (Direction direction : Direction.values()) {
+            if (world.isEmittingRedstonePower(pos.offset(direction), direction)) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    public void randomDisplayTick(BlockState state, World world, BlockPos blockPos, Random random) {
+        int charge = world.getBlockState(blockPos).contains(CHARGE) ? world.getBlockState(blockPos).get(CHARGE) : 2;
+        int i = charge == 4 ? 1 :
+                charge == 3 ? 2 :
+                charge == 2 ? 3 :
+                charge == 1 ? 4 : 5;
+
+        if (random.nextInt(i) != 0) return;
+
+        Vec3d pos = blockPos.toCenterPos();
+        world.addParticle(MalachiteParticles.SPARK, pos.x - 0.5 + random.nextDouble(), pos.y - 0.25 + random.nextDouble(), pos.z - 0.5 + random.nextDouble(), 0.0, 0.0, 0.0);
     }
 
     @Override

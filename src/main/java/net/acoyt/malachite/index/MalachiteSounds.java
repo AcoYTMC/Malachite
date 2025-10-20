@@ -11,10 +11,15 @@ import java.util.List;
 public interface MalachiteSounds {
     List<SoundEvent> SOUNDS = new LinkedList<>();
 
-    SoundEvent DAGGER_HITS = create("entity.dagger.hits");
-    SoundEvent DAGGER_THROWN = create("entity.dagger.thrown");
+    SoundEvent DAGGER_HIT = create("entity.dagger.hit");
+    SoundEvent DAGGER_THROW = create("entity.dagger.throw");
 
-    SoundEvent LONGSWORD_BLOCKS = create("item.longsword.blocks");
+    SoundEvent LONGSWORD_BLOCK = create("item.longsword.block");
+
+    SoundEvent ENERGY_BEAM_TRAVEL = create("entity.energy_beam.travel");
+    SoundEvent ENERGY_BEAM_SHOOT = create("entity.energy_beam.shoot");
+
+    SoundEvent BUDDING_COPPER_CREATE = create("block.budding_copper.create");
 
     private static SoundEvent create(String name) {
         SoundEvent soundEvent = SoundEvent.of(Malachite.id(name));

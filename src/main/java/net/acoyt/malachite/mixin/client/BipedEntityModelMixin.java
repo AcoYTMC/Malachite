@@ -16,19 +16,11 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(BipedEntityModel.class)
 public abstract class BipedEntityModelMixin<T extends LivingEntity> extends AnimalModel<T> {
-    @Shadow
-    @Final
-    public ModelPart body;
+    @Shadow @Final public ModelPart body;
+    @Shadow @Final public ModelPart head;
 
-    @Shadow
-    @Final
-    public ModelPart head;
-
-    @Shadow
-    protected abstract Arm getPreferredArm(T entity);
-
-    @Shadow
-    protected abstract ModelPart getArm(Arm arm);
+    @Shadow protected abstract Arm getPreferredArm(T entity);
+    @Shadow protected abstract ModelPart getArm(Arm arm);
 
     @Inject(
             method = {"animateArms"},

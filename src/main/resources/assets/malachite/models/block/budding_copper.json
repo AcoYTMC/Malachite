@@ -1,0 +1,10 @@
+{
+     "parent": "block/orientable_with_bottom",
+     "textures": {
+          "bottom": "block/oxidized_copper",
+          "front": "block/oxidized_copper",
+          "particle": "block/oxidized_copper",
+          "side": "block/oxidized_copper",
+          "top": "malachite:block/budding_copper"
+     }
+}
