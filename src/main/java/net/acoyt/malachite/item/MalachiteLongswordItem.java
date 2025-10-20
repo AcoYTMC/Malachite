@@ -5,10 +5,7 @@ import net.acoyt.malachite.api.BlockingItem;
 import net.acoyt.malachite.block.MalachitePylonBlock;
 import net.acoyt.malachite.component.MalachiteComponent;
 import net.acoyt.malachite.entity.EnergyBeamEntity;
-import net.acoyt.malachite.index.MalachiteDataComponents;
-import net.acoyt.malachite.index.MalachiteEnchantments;
-import net.acoyt.malachite.index.MalachiteParticles;
-import net.acoyt.malachite.index.MalachiteToolMaterials;
+import net.acoyt.malachite.index.*;
 import net.minecraft.block.BlockState;
 import net.minecraft.component.type.AttributeModifierSlot;
 import net.minecraft.component.type.AttributeModifiersComponent;
@@ -26,6 +23,7 @@ import net.minecraft.item.SwordItem;
 import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.text.Text;
 import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
@@ -90,6 +88,8 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem {
 
                     player.getItemCooldownManager().set(stack.getItem(), 10);
                 } else { // Beam Logic
+                    world.playSound(null, player.getPos().x, player.getPos().y, player.getPos().z, MalachiteSounds.ENERGY_BEAM_SHOOT, SoundCategory.PLAYERS, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10.0F));
+
                     float damage = stack.getOrDefault(MalachiteDataComponents.BEAM_DAMAGE, 5.0F);
                     EnergyBeamEntity energyBeam = new EnergyBeamEntity(world, player, stack);
                     energyBeam.setDamage(damage);

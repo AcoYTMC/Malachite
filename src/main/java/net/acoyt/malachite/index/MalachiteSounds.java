@@ -19,8 +19,6 @@ public interface MalachiteSounds {
     SoundEvent ENERGY_BEAM_TRAVEL = create("entity.energy_beam.travel");
     SoundEvent ENERGY_BEAM_SHOOT = create("entity.energy_beam.shoot");
 
-    SoundEvent BUDDING_COPPER_CREATE = create("block.budding_copper.create");
-
     private static SoundEvent create(String name) {
         SoundEvent soundEvent = SoundEvent.of(Malachite.id(name));
         SOUNDS.add(soundEvent);

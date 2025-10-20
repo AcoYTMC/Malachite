@@ -64,6 +64,9 @@ public class MalachiteLangGen extends FabricLanguageProvider {
         // Status Effects
         builder.add(OVERCHARGED.value(), "Overcharged");
 
+        // Potions
+        //builder.add();
+
         // Subtitles
         builder.add("subtitles.malachite.entity.dagger.hit", "Dagger Hits");
         builder.add("subtitles.malachite.entity.dagger.throw", "Dagger Throws");

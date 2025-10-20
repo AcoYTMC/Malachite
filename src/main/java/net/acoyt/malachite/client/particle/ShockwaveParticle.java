@@ -32,7 +32,7 @@ public class ShockwaveParticle extends AnimatedParticle {
         this.velocityY = 0.0F;
         this.velocityZ = 0.0F;
 
-        this.quaternion = new Quaternionf(0.0F, 90.0F, 90.0F, 1.0F);
+        this.quaternion = new Quaternionf(0.0F, particleEffect.yaw(), particleEffect.pitch(), 1.0F);
 
         this.setSpriteForAge(spriteProvider);
 

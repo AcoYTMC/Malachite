@@ -68,7 +68,7 @@ public class Malachite implements ModInitializer {
     public static void spawnShockwave(World world, Vec3d pos, int color, float size, Vec3d offset) {
         if (world instanceof ServerWorld serverWorld) {
             serverWorld.spawnParticles(
-                    new ShockwaveParticleEffect(color, size),
+                    new ShockwaveParticleEffect(color, size, 90.0f, 90.0f),
                     pos.x + offset.x,
                     pos.y + offset.y,
                     pos.z + offset.z,
