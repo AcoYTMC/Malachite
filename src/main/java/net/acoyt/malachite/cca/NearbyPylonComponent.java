@@ -26,7 +26,7 @@ public class NearbyPylonComponent implements AutoSyncedComponent, CommonTickingC
     }
 
     public void tick() {
-        if (this.nearby && this.living instanceof PlayerEntity player) player.sendMessage(Text.literal("You are near a Malachite Pylon!").withColor(0x38624b), true);
+        //if (this.nearby && this.living instanceof PlayerEntity player) player.sendMessage(Text.literal("You are near a Malachite Pylon!").withColor(0x38624b), true);
 
         if (this.nearbyTicks > 0) {
             this.nearbyTicks--;

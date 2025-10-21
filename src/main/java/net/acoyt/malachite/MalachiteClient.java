@@ -19,6 +19,7 @@ public class MalachiteClient implements ClientModInitializer {
         MalachiteBlocks.clientInit();
         MalachiteEntities.clientInit();
         MalachiteItems.clientInit();
+        MalachiteModelLayers.clientInit();
         MalachiteParticles.clientInit();
 
         // Networking

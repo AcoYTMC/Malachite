@@ -18,6 +18,7 @@ import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.predicate.entity.EntityPredicates;
 import net.minecraft.server.network.ServerPlayerEntity;
+import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.hit.HitResult;
@@ -33,10 +34,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 public class EnergyBeamEntity extends PersistentProjectileEntity {
-    public static final int distancePerTick = 6;
+    public static final int distancePerTick = 24;
 
     public static int getMaxTicks() {
-        return MathHelper.floor(512F / distancePerTick);
+        return MathHelper.floor(256F / distancePerTick);
     }
 
     public static final TrackedData<Float> DAMAGE = DataTracker.registerData(EnergyBeamEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -92,6 +93,7 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
                         damage = Math.min(50, damage);
                         entity.damage(MalachiteDamageTypes.create(getWorld(), MalachiteDamageTypes.OVERCHARGED, this, owner), (float) damage);
                         if (entity instanceof LivingEntity living) living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 20));
+                        if (entity.getWorld() instanceof ServerWorld serverWorld) serverWorld.spawnParticles(MalachiteParticles.SPARK, this.getPos().x, this.getPos().y, this.getPos().z, 6, 0.3, 0.3, 0.3, 0.1);
                         hitEntities.add(entity);
                         if (getOwner() instanceof ServerPlayerEntity player && entity instanceof LivingEntity living) {
                             Criteria.KILLED_BY_CROSSBOW.trigger(player, Set.of(living));

@@ -222,7 +222,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
             if (component.charge() == component.maxCharge()) {
                 target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
-                Malachite.spawnShockwave(target, 3.0f);
+                Malachite.spawnBlast(this, 0x53efac, 3.0f, Vec3d.ZERO);
                 stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
                 this.setItemStack(stack);
             }

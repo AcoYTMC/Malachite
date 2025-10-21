@@ -31,11 +31,11 @@ public class PylonBlockEntity extends BlockEntity {
         Box box = new Box(pos).expand(19); // 20 Block radius
 
         for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, LivingEntity::isAlive)) {
-            if (!MalachitePylonBlock.isPowered(world, pos)) {
-                NearbyPylonComponent component = NearbyPylonComponent.KEY.get(living);
-                if (!component.isNearby() && world.getBlockState(pos).get(MalachitePylonBlock.CHARGE) != 4)
-                    component.setNearby(true); // If the component is not marked as nearby, set it to nearby, that simple :P
+            NearbyPylonComponent component = NearbyPylonComponent.KEY.get(living);
+            if (!component.isNearby() && world.getBlockState(pos).get(MalachitePylonBlock.CHARGE) != 4)
+                component.setNearby(true); // If the component is not marked as nearby, set it to nearby, that simple :P
 
+            if (!MalachitePylonBlock.isPowered(world, pos)) {
                 if (pylon.fallback == 0 && world.getTime() - living.lastDamageTime == 1L) { // If was recently attacked, and fallback time is 0, update block state to increment charge :D
                     if (state.contains(MalachitePylonBlock.CHARGE)) {
                         int i = state.get(MalachitePylonBlock.CHARGE);
@@ -54,8 +54,10 @@ public class PylonBlockEntity extends BlockEntity {
                 Vec3d vec3d = pos.toCenterPos();
                 boolean bl = living.getPos().y < vec3d.y - 1; // if living is below the Pylon
 
-                living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
-                living.velocityModified = true;
+                if (!living.malachite$pylonImmune()) {
+                    living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
+                    living.velocityModified = true;
+                }
 
                 Malachite.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
             }

@@ -1,8 +1,10 @@
 package net.acoyt.malachite.index;
 
 import net.acoyt.malachite.Malachite;
+import net.acoyt.malachite.client.particle.BlastParticle;
 import net.acoyt.malachite.client.particle.ShockwaveParticle;
 import net.acoyt.malachite.client.particle.ShockwaveParticleEffect;
+import net.acoyt.malachite.client.particle.BlastParticleEffect;
 import net.fabricmc.fabric.api.client.particle.v1.ParticleFactoryRegistry;
 import net.fabricmc.fabric.api.particle.v1.FabricParticleTypes;
 import net.minecraft.client.particle.GlowParticle;
@@ -13,6 +15,7 @@ import net.minecraft.registry.Registry;
 
 public interface MalachiteParticles {
     ParticleType<ShockwaveParticleEffect> SHOCKWAVE = FabricParticleTypes.complex(true, ShockwaveParticleEffect.CODEC, ShockwaveParticleEffect.PACKET_CODEC);
+    ParticleType<BlastParticleEffect> BLAST = FabricParticleTypes.complex(true, BlastParticleEffect.CODEC, BlastParticleEffect.PACKET_CODEC);
     SimpleParticleType SPARK = FabricParticleTypes.simple(true);
 
     private static void create(String name, ParticleType<?> particle) {
@@ -21,11 +24,13 @@ public interface MalachiteParticles {
 
     static void init() {
         create("shockwave", SHOCKWAVE);
+        create("blast", BLAST);
         create("spark", SPARK);
     }
 
     static void clientInit() {
         ParticleFactoryRegistry.getInstance().register(SHOCKWAVE, ShockwaveParticle.Factory::new);
+        ParticleFactoryRegistry.getInstance().register(BLAST, BlastParticle.Factory::new);
         ParticleFactoryRegistry.getInstance().register(SPARK, GlowParticle.ElectricSparkFactory::new);
     }
 }

@@ -38,7 +38,7 @@ public abstract class LivingEntityMixin extends Entity {
 
     @ModifyReturnValue(method = "getKnockbackAgainst", at = @At(value = "RETURN", ordinal = 0))
     private float malachiteDagger(float original, Entity target, DamageSource source) {
-        LivingEntity living = (LivingEntity)(Object)this;
+        LivingEntity living = (LivingEntity)(Object)this; // Attacker/Player
         ItemStack stack = living.getMainHandStack();
         float f = (float)living.getAttributeValue(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
         if (stack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
@@ -58,8 +58,8 @@ public abstract class LivingEntityMixin extends Entity {
             }
         }
 
-        if (living.hasStatusEffect(MalachiteEffects.OVERCHARGED)) {
-            return original * 2;
+        if (target instanceof LivingEntity entity && entity.hasStatusEffect(MalachiteEffects.OVERCHARGED)) {
+            return original * 3;
         }
 
         return original;

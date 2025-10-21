@@ -16,12 +16,12 @@ import org.jetbrains.annotations.Nullable;
 import org.joml.Quaternionf;
 import org.joml.Vector3f;
 
-public class ShockwaveParticle extends AnimatedParticle {
+public class BlastParticle extends AnimatedParticle {
     private final Quaternionf quaternion;
     private final Vector3f color;
 
-    public ShockwaveParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, ShockwaveParticleEffect particleEffect) {
-        super(world, x, y, z, spriteProvider, 0.0f);
+    public BlastParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteProvider, BlastParticleEffect particleEffect) {
+        super(world, x, y, z, spriteProvider, 0.0F);
 
         this.gravityStrength = 0.0F;
 
@@ -32,7 +32,9 @@ public class ShockwaveParticle extends AnimatedParticle {
         this.velocityY = 0.0F;
         this.velocityZ = 0.0F;
 
-        this.quaternion = new Quaternionf(0.0F, 90.0F, 90.0F, 1.0F);
+        float rotation = particleEffect.rotation();
+
+        this.quaternion = new Quaternionf(rotation, 0.0F, rotation, 1.0F);
 
         this.setSpriteForAge(spriteProvider);
 
@@ -46,9 +48,9 @@ public class ShockwaveParticle extends AnimatedParticle {
         float y = (float) (MathHelper.lerp(ticks, this.prevPosY, this.y) - vec3.getY());
         float z = (float) (MathHelper.lerp(ticks, this.prevPosZ, this.z) - vec3.getZ());
 
-        Vector3f[] vector3fs = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, 1.0F, 0.0F), new Vector3f(1.0F, 1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F)};
+        Vector3f[] vector3fs = new Vector3f[]{new Vector3f(0.0F, -1.0F, -1.0F), new Vector3f(0.0F, -1.0F, 1.0F), new Vector3f(0.0F, 1.0F, 1.0F), new Vector3f(0.0F, 1.0F, -1.0F)};
         // Additional vertices for underside faces
-        Vector3f[] vector3fsBottom = new Vector3f[]{new Vector3f(-1.0F, -1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F), new Vector3f(1.0F, -1.0F, 0.0F), new Vector3f(-1.0F, -1.0F, 0.0F)};
+        Vector3f[] vector3fsBottom = new Vector3f[]{new Vector3f(0.0F, -1.0F, -1.0F), new Vector3f(0.0F, 1.0F, -1.0F), new Vector3f(0.0F, 1.0F, -1.0F), new Vector3f(0.0F, -1.0F, -1.0F)};
 
         float f4 = this.getSize(ticks);
 
@@ -90,7 +92,7 @@ public class ShockwaveParticle extends AnimatedParticle {
     }
 
     @Environment(EnvType.CLIENT)
-    public static class Factory implements ParticleFactory<ShockwaveParticleEffect> {
+    public static class Factory implements ParticleFactory<BlastParticleEffect> {
         private final SpriteProvider spriteProvider;
 
         public Factory(SpriteProvider spriteProvider) {
@@ -99,8 +101,8 @@ public class ShockwaveParticle extends AnimatedParticle {
 
         @Nullable
         @Override
-        public Particle createParticle(ShockwaveParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
-            return new ShockwaveParticle(world, x, y, z, this.spriteProvider, parameters);
+        public Particle createParticle(BlastParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
+            return new BlastParticle(world, x, y, z, this.spriteProvider, parameters);
         }
     }
 }

@@ -3,6 +3,7 @@ package net.acoyt.malachite;
 import com.mojang.logging.LogUtils;
 import net.acoyt.acornlib.api.ALib;
 import net.acoyt.acornlib.api.ALibRegistries;
+import net.acoyt.malachite.client.particle.BlastParticleEffect;
 import net.acoyt.malachite.client.particle.ShockwaveParticleEffect;
 import net.acoyt.malachite.event.MakeBuddingCopperEvent;
 import net.acoyt.malachite.index.*;
@@ -10,9 +11,11 @@ import net.acoyt.malachite.networking.client.PlayEnergyBeamTravelSoundPayload;
 import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.util.Identifier;
+import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.slf4j.Logger;
@@ -68,7 +71,32 @@ public class Malachite implements ModInitializer {
     public static void spawnShockwave(World world, Vec3d pos, int color, float size, Vec3d offset) {
         if (world instanceof ServerWorld serverWorld) {
             serverWorld.spawnParticles(
-                    new ShockwaveParticleEffect(color, size, 90.0f, 90.0f),
+                    new ShockwaveParticleEffect(color, size),
+                    pos.x + offset.x,
+                    pos.y + offset.y,
+                    pos.z + offset.z,
+                    0,
+                    0,
+                    0,
+                    0,
+                    0.1
+            );
+        }
+    }
+
+    public static void spawnBlast(Entity entity, int color, float size, Vec3d offset) {
+        float yaw = MathHelper.wrapDegrees(entity.getYaw());
+        float rotation;
+        if ((yaw < -45.0f && yaw > -135) || (yaw < 135 && yaw > 45)) {
+            rotation = 0.0f;
+        } else {
+            rotation = 90.0f;
+        }
+
+        Vec3d pos = entity.getPos();
+        if (entity.getWorld() instanceof ServerWorld serverWorld) {
+            serverWorld.spawnParticles(
+                    new BlastParticleEffect(color, size, rotation),
                     pos.x + offset.x,
                     pos.y + offset.y,
                     pos.z + offset.z,

@@ -40,9 +40,9 @@ public class MalachiteDaggerItem extends SwordItem {
         } else {
             target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
 
-            Malachite.spawnShockwave(target, 3.0f);
+            Malachite.spawnBlast(attacker, 0x53efac, 3.0f, attacker.getRotationVector().multiply(1.2, 0, 1.2).add(0, 1, 0));
 
-            stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
+            if (!attacker.isInCreativeMode()) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
         }
 
         return true;
