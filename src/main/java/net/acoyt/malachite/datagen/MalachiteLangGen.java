@@ -16,6 +16,10 @@ public class MalachiteLangGen extends FabricLanguageProvider {
     }
 
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder builder) {
+        // Advancements
+        builder.add("advancements.malachite.pylon.title", "Piezoelectricity");
+        builder.add("advancements.malachite.pylon.description", "Place a Malachite Pylon for the first time!");
+
         // Item Groups
         builder.add("itemGroup.malachite", "Malachite");
 

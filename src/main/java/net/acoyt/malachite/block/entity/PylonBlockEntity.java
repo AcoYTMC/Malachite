@@ -54,10 +54,8 @@ public class PylonBlockEntity extends BlockEntity {
                 Vec3d vec3d = pos.toCenterPos();
                 boolean bl = living.getPos().y < vec3d.y - 1; // if living is below the Pylon
 
-                if (!living.malachite$pylonImmune()) {
-                    living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
-                    living.velocityModified = true;
-                }
+                living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
+                living.velocityModified = true;
 
                 Malachite.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
             }

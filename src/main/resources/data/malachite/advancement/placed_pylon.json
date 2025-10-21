@@ -1,0 +1,30 @@
+{
+     "display": {
+          "icon": {
+               "id": "malachite:malachite_pylon"
+          },
+          "title": {
+               "translate": "advancements.malachite.pylon.title"
+          },
+          "description": {
+               "translate": "advancements.malachite.pylon.description"
+          }
+     },
+     "criteria": {
+          "placed_pylon": {
+               "trigger": "minecraft:placed_block",
+               "conditions": {
+                    "location": [
+                         {
+                              "condition": "minecraft:location_check",
+                              "predicate": {
+                                   "block": {
+                                        "blocks": "malachite:malachite_pylon"
+                                   }
+                              }
+                         }
+                    ]
+               }
+          }
+     }
+}
