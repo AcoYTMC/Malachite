@@ -232,10 +232,15 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     }
 
     public void knockback(LivingEntity target, DamageSource source) {
-        double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
-        Vec3d vec3d = this.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
-        if (vec3d.lengthSquared() > 0.0) {
-            target.addVelocity(vec3d.x, 0.1, vec3d.z);
+        MalachiteComponent component = this.getItem().getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+        if (component.charge() >= component.maxCharge()) {
+            double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
+            Vec3d vec3d = this.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
+            if (vec3d.lengthSquared() > 0.0) {
+                target.addVelocity(vec3d.x, 0.1, vec3d.z);
+            }
+        } else {
+            super.knockback(target, source);
         }
     }
 
