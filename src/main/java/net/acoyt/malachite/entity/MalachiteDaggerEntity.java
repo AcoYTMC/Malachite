@@ -36,6 +36,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     public static final TrackedData<ItemStack> THROWN_ITEM = DataTracker.registerData(MalachiteDaggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
     private boolean dealtDamage = false;
     private boolean charged = false;
+    private boolean creative = false;
     public int returnTimer;
     public int stackSlot = -1;
 
@@ -82,6 +83,14 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
     public void setCharged(boolean charged) {
         this.charged = charged;
+    }
+
+    public boolean isCreative() {
+        return this.creative;
+    }
+
+    public void setCreative(boolean creative) {
+        this.creative = creative;
     }
 
     @Override
@@ -158,7 +167,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         Entity owner = this.getOwner();
         World world = this.getWorld();
 
-        float f = 5.0F;
+        float f = 5.5F;
         DamageSource damageSource = MalachiteDamageTypes.create(world, MalachiteDamageTypes.DAGGER, this, owner == null ? this : owner);
         this.dealtDamage = true;
         if (world instanceof ServerWorld serverWorld) {
@@ -221,9 +230,9 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
             }
 
             if (component.charge() == component.maxCharge()) {
-                target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+                target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600));
                 Malachite.spawnBlast(this, 0x53efac, 3.0f, Vec3d.ZERO);
-                stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
+                if (!this.creative) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
                 this.setItemStack(stack);
             }
         }
@@ -248,6 +257,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         super.readCustomDataFromNbt(nbt);
         this.dealtDamage = nbt.getBoolean("DealtDamage");
         this.charged = nbt.getBoolean("Charged");
+        this.creative = nbt.getBoolean("Creative");
         this.stackSlot = nbt.getInt("StackSlot");
     }
 
@@ -255,6 +265,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         super.writeCustomDataToNbt(nbt);
         nbt.putBoolean("DealtDamage", this.dealtDamage);
         nbt.putBoolean("BreakBlocks", this.charged);
+        nbt.putBoolean("Creative", this.creative);
         nbt.putInt("StackSlot", this.stackSlot);
     }
 

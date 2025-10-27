@@ -1,4 +1,4 @@
-// 1.21.1	2025-10-21T06:49:36.192399	Malachite/Model Definitions
+// 1.21.1	2025-10-26T10:35:58.050079	Malachite/Model Definitions
 7a76f311401667d8e8128ab22be1fdef6c7b6b00 assets\malachite\models\block\seraphite_brick_stairs_inner.json
 fc570fffb8f68449877caacc058050be6234e142 assets\malachite\models\block\seraphite_wall_side_tall.json
 9d861f0893d1c467444ee05cea41a1de042b70a9 assets\malachite\models\block\small_malachite_bud.json
@@ -51,8 +51,8 @@ ec547c41317d70ce7e53077231a7919f5ee0b2ce assets\malachite\models\item\polished_s
 2d8f1385f65da5854c705e54a01172c11c9f48ad assets\malachite\models\block\seraphite_stairs_outer.json
 3ecd827aa2dc73f69358c592acce5ad716ac6993 assets\malachite\models\item\seraphite_slab.json
 173cd16fc042a047eb620cb90daa62d6a9efedcf assets\malachite\models\block\seraphite_slab_top.json
-a31050ed9e888ce80c3f0aa37c84a8b7d70d1858 assets\malachite\blockstates\small_malachite_bud.json
 7a2037536abfbe013429833af1e95eb801d20a7e assets\malachite\blockstates\seraphite_brick_wall.json
+a31050ed9e888ce80c3f0aa37c84a8b7d70d1858 assets\malachite\blockstates\small_malachite_bud.json
 9ec084a763b5862a8b8abfdb1bdd4f9054d8a9ab assets\malachite\models\item\seraphite_stairs.json
 a51ac6b47a47753b0488bef2f12aad208440146c assets\malachite\blockstates\medium_malachite_bud.json
 cbe7da9f0607317599ac0991d8bd652a9a2958d0 assets\malachite\models\block\seraphite_brick_wall_side_tall.json

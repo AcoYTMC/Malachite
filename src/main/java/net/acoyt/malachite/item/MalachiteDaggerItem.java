@@ -54,6 +54,7 @@ public class MalachiteDaggerItem extends SwordItem {
             MalachiteDaggerEntity daggerEntity = new MalachiteDaggerEntity(world, user, stack);
             daggerEntity.setCharged(MalachiteComponent.fullyCharged(stack));
             daggerEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2.5F * 0.5F, 1.0F);
+            daggerEntity.setCreative(user.isCreative());
             if (user.isCreative()) {
                 daggerEntity.pickupType = PersistentProjectileEntity.PickupPermission.CREATIVE_ONLY;
             } else {
@@ -63,7 +64,7 @@ public class MalachiteDaggerItem extends SwordItem {
             world.spawnEntity(daggerEntity);
             world.playSoundFromEntity(null, daggerEntity, MalachiteSounds.DAGGER_THROW, SoundCategory.PLAYERS, 1.0F, 1.0F);
 
-            user.getItemCooldownManager().set(stack.getItem(), 5);
+            user.getItemCooldownManager().set(stack.getItem(), 15);
             return TypedActionResult.success(user.getStackInHand(hand));
         }
 

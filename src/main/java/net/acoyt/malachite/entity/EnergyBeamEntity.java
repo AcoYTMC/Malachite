@@ -54,7 +54,7 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
     }
 
     public EnergyBeamEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
-        super(MalachiteEntities.ENERGY_BEAM, owner, world, ItemStack.EMPTY, shotFrom);
+        super(MalachiteEntities.ENERGY_BEAM, owner, world, MalachiteItems.MALACHITE.getDefaultStack(), shotFrom);
         setPosition(owner.getX(), owner.getEyeY() - 0.3, owner.getZ());
         this.ignoreCameraFrustum = true;
     }
@@ -86,13 +86,13 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
                 getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
                     if (!getWorld().isClient) {
                         double damage = getDamage();
-                        if (entity instanceof LivingEntity living) {
-                            damage *= living.getMaxHealth() / 20F;
-                        }
-                        damage *= getDamageMultiplier(distanceTraveled);
-                        damage = Math.min(50, damage);
+                        //if (entity instanceof LivingEntity living) {
+                        //    damage *= living.getMaxHealth() / 20F;
+                        //}
+                        //damage *= getDamageMultiplier(distanceTraveled);
+                        //damage = Math.min(50, damage);
                         entity.damage(MalachiteDamageTypes.create(getWorld(), MalachiteDamageTypes.OVERCHARGED, this, owner), (float) damage);
-                        if (entity instanceof LivingEntity living) living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 20));
+                        if (entity instanceof LivingEntity living) living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 120));
                         if (entity.getWorld() instanceof ServerWorld serverWorld) serverWorld.spawnParticles(MalachiteParticles.SPARK, this.getPos().x, this.getPos().y, this.getPos().z, 6, 0.3, 0.3, 0.3, 0.1);
                         hitEntities.add(entity);
                         if (getOwner() instanceof ServerPlayerEntity player && entity instanceof LivingEntity living) {

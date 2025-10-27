@@ -1,0 +1,19 @@
+{
+     "parent": "malachite:electroplating",
+     "display": {
+          "icon": {
+               "id": "malachite:malachite_pylon"
+          },
+          "title": {
+               "translate": "advancements.malachite.doping.title"
+          },
+          "description": {
+               "translate": "advancements.malachite.doping.description"
+          }
+     },
+     "criteria": {
+          "doping": {
+               "trigger": "malachite:doping"
+          }
+     }
+}

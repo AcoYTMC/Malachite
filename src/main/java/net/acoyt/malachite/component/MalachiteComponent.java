@@ -6,8 +6,8 @@ import net.acoyt.malachite.index.MalachiteDataComponents;
 import net.minecraft.item.ItemStack;
 
 public record MalachiteComponent(int charge, int maxCharge) {
-    public static final MalachiteComponent LONGSWORD = new MalachiteComponent(0, 6);
-    public static final MalachiteComponent DAGGER = new MalachiteComponent(0, 3);
+    public static final MalachiteComponent LONGSWORD = new MalachiteComponent(0, 4);
+    public static final MalachiteComponent DAGGER = new MalachiteComponent(0, 4);
 
     public static final Codec<MalachiteComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("charge", 0).forGetter(MalachiteComponent::charge),

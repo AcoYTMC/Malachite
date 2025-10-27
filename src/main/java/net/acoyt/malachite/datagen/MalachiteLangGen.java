@@ -17,8 +17,12 @@ public class MalachiteLangGen extends FabricLanguageProvider {
 
     public void generateTranslations(RegistryWrapper.WrapperLookup wrapperLookup, TranslationBuilder builder) {
         // Advancements
-        builder.add("advancements.malachite.pylon.title", "Piezoelectricity");
-        builder.add("advancements.malachite.pylon.description", "Place a Malachite Pylon for the first time!");
+        builder.add("advancements.malachite.doping.title", "Doping");
+        builder.add("advancements.malachite.doping.description", "Create Budding Copper with an Echo Shard, and Oxidized Copper!");
+        builder.add("advancements.malachite.electroplating.title", "Electroplating");
+        builder.add("advancements.malachite.electroplating.description", "Craft a Malachite Longsword. Enjoy!");
+        builder.add("advancements.malachite.piezoelectricity.title", "Piezoelectricity");
+        builder.add("advancements.malachite.piezoelectricity.description", "Place a Malachite Pylon for the first time!");
 
         // Item Groups
         builder.add("itemGroup.malachite", "Malachite");
@@ -69,12 +73,20 @@ public class MalachiteLangGen extends FabricLanguageProvider {
         builder.add(OVERCHARGED.value(), "Overcharged");
 
         // Potions
-        //builder.add();
+        builder.add("item.minecraft.tipped_arrow.effect.overcharged", "Arrow of Overcharged");
+        builder.add("item.minecraft.potion.effect.overcharged", "Potion of Overcharged");
+        builder.add("item.minecraft.splash_potion.effect.overcharged", "Splash Potion of Overcharged");
+        builder.add("item.minecraft.lingering_potion.effect.overcharged", "Lingering Potion of Overcharged");
 
         // Subtitles
         builder.add("subtitles.malachite.entity.dagger.hit", "Dagger Hits");
         builder.add("subtitles.malachite.entity.dagger.throw", "Dagger Throws");
         builder.add("subtitles.malachite.item.longsword.block", "Longsword Blocks");
         builder.add("subtitles.malachite.entity.energy_beam.shoot", "Energy Beam Shoots");
+
+        // Config
+        builder.add("malachite.midnightconfig.title", "Malachite");
+        builder.add("malachite.midnightconfig.billboardBlast", "Billboard Blast Particle");
+        builder.add("malachite.midnightconfig.billboardBlast.tooltip", "If the Blast particle should be a billboard particle, or an animated particle with rotation");
     }
 }

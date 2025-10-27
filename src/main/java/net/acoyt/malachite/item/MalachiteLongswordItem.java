@@ -16,6 +16,7 @@ import net.minecraft.entity.attribute.EntityAttributeModifier;
 import net.minecraft.entity.attribute.EntityAttributeModifier.Operation;
 import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.damage.DamageSource;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.ItemUsageContext;
@@ -76,11 +77,14 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem {
 
                 if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantments.SHOCKWAVE)) { // Shockwave Logic
                     Vec3d pos = player.getPos();
-                    Box box = new Box(pos.x - 1, pos.y - 1, pos.z - 1, pos.x + 1, pos.y + 1, pos.z + 1).expand(9);
+                    Box box = new Box(pos.x - 1, pos.y - 1, pos.z - 1, pos.x + 1, pos.y + 1, pos.z + 1).expand(7);
                     for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, living -> living.isAlive() && !living.isSpectator())) {
                         if (living.getUuid() != player.getUuid()) {
                             living.setVelocity(pos.subtract(living.getPos()).multiply(-getShockwaveStrength(stack), 0, -getShockwaveStrength(stack)).add(0, living.getPos().y < player.getPos().y - 1 ? -1.6 : 1.6, 0));
                             living.velocityModified = true;
+
+                            living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 3);
+                            living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, living.getRandom().nextBetween(10, 15) * 20));
                         }
                     }
 

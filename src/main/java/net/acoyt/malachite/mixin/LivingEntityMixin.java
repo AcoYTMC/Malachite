@@ -44,7 +44,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (stack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
             MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
             if (component.charge() >= component.maxCharge()) {
-                return f + 4.5f;
+                return f + 6.5f;
             }
         }
 
@@ -53,7 +53,7 @@ public abstract class LivingEntityMixin extends Entity {
             if (itemStack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
                 MalachiteComponent component = itemStack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
                 if (component.charge() >= component.maxCharge()) {
-                    return f + 4.5f;
+                    return f + 6.5f;
                 }
             }
         }

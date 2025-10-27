@@ -4,10 +4,13 @@ import net.acoyt.malachite.Malachite;
 import net.acoyt.malachite.block.MalachitePylonBlock;
 import net.acoyt.malachite.cca.NearbyPylonComponent;
 import net.acoyt.malachite.index.MalachiteBlockEntities;
+import net.acoyt.malachite.index.MalachiteDamageTypes;
+import net.acoyt.malachite.index.MalachiteEffects;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.network.listener.ClientPlayPacketListener;
 import net.minecraft.network.packet.Packet;
@@ -45,7 +48,7 @@ public class PylonBlockEntity extends BlockEntity {
                     }
 
                     pylon.fallback = 15;
-                    world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+                    //world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
                     pylon.markDirty();
                 }
             } else if (state.contains(MalachitePylonBlock.CHARGE) && state.get(MalachitePylonBlock.CHARGE) == 4) {
@@ -56,6 +59,9 @@ public class PylonBlockEntity extends BlockEntity {
 
                 living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
                 living.velocityModified = true;
+
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 3);
+                living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, living.getRandom().nextBetween(10, 15) * 20));
 
                 Malachite.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
             }

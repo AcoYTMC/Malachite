@@ -1,14 +1,18 @@
 package net.acoyt.malachite;
 
 import com.mojang.logging.LogUtils;
+import eu.midnightdust.lib.config.MidnightConfig;
 import net.acoyt.acornlib.api.ALib;
 import net.acoyt.acornlib.api.ALibRegistries;
 import net.acoyt.malachite.client.particle.BlastParticleEffect;
 import net.acoyt.malachite.client.particle.ShockwaveParticleEffect;
+import net.acoyt.malachite.compat.MalachiteConfig;
 import net.acoyt.malachite.event.MakeBuddingCopperEvent;
+import net.acoyt.malachite.event.UpdateSeraphiteEvent;
 import net.acoyt.malachite.index.*;
 import net.acoyt.malachite.networking.client.PlayEnergyBeamTravelSoundPayload;
 import net.fabricmc.api.ModInitializer;
+import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
 import net.minecraft.entity.Entity;
@@ -27,10 +31,11 @@ public class Malachite implements ModInitializer {
 	public void onInitialize() {
         ALibRegistries.init(MOD_ID);
         ALib.registerModMenu(MOD_ID, 0xFF38624b);
-        //MidnightConfig.init(MOD_ID, MalachiteConfig.class);
+        MidnightConfig.init(MOD_ID, MalachiteConfig.class);
 
         MalachiteBlockEntities.init();
         MalachiteBlocks.init();
+        MalachiteCriterions.init();
         MalachiteDataComponents.init();
         MalachiteEffects.init();
         MalachiteEnchantments.init();
@@ -46,6 +51,7 @@ public class Malachite implements ModInitializer {
 
         // Events
         UseBlockCallback.EVENT.register(new MakeBuddingCopperEvent());
+        PlayerBlockBreakEvents.AFTER.register(new UpdateSeraphiteEvent());
 	}
 
     public static Identifier id(String path) {

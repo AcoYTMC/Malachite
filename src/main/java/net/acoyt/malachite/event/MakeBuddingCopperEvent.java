@@ -1,6 +1,7 @@
 package net.acoyt.malachite.event;
 
 import net.acoyt.malachite.index.MalachiteBlocks;
+import net.acoyt.malachite.index.MalachiteCriterions;
 import net.acoyt.malachite.index.MalachiteParticles;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.minecraft.block.Blocks;
@@ -8,6 +9,7 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.item.Items;
 import net.minecraft.particle.ParticleTypes;
+import net.minecraft.server.network.ServerPlayerEntity;
 import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.ActionResult;
@@ -43,6 +45,8 @@ public class MakeBuddingCopperEvent implements UseBlockCallback {
             world.playSound(null, d, e, f, SoundEvents.BLOCK_CHORUS_FLOWER_GROW, SoundCategory.BLOCKS, 3.0F, (float) (1.0F + user.getRandom().nextGaussian() / 10.0F));
             world.playSound(null, d, e, f, SoundEvents.BLOCK_BASALT_BREAK, SoundCategory.BLOCKS, 0.45F, (float) (1.0F + user.getRandom().nextGaussian() / 10.0F));
             world.playSound(null, d, e, f, SoundEvents.ITEM_SHIELD_BREAK, SoundCategory.BLOCKS, 0.45F, (float) (1.0F + user.getRandom().nextGaussian() / 10.0F));
+
+            if (user instanceof ServerPlayerEntity serverPlayer) MalachiteCriterions.DOPING.trigger(serverPlayer);
         }
 
         return ActionResult.PASS;
