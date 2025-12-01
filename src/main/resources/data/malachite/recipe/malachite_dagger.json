@@ -1,10 +1,14 @@
 {
      "type": "minecraft:crafting_shaped",
      "pattern": [
-          "M",
-          "N"
+          "   M",
+          "SM ",
+          "NS "
      ],
      "key": {
+          "S": {
+               "item": "malachite:seraphite"
+          },
           "M": {
                "item": "malachite:malachite"
           },

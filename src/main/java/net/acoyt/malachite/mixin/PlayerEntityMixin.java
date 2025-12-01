@@ -40,7 +40,7 @@ public abstract class PlayerEntityMixin extends LivingEntity {
             if (source.isOf(DamageTypes.FALL)) {
                 if (isLookingDown(player)) {
                     this.getWorld().playSoundFromEntity(null, this, blockingItem.blockSound(), SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
-                    blockingItem.absorbDamage(player, source, stack, base / 2.0F);
+                    blockingItem.absorbDamage(player, source, stack, base / 3.0F);
                     return base / 4.0F;
                 }
             } else if (damagePos != null) {

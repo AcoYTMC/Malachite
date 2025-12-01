@@ -20,7 +20,7 @@ public interface MalachiteItems {
             .attributeModifiers(MalachiteLongswordItem.createAttributeModifiers(MalachiteToolMaterials.LONGSWORD, 4.0f, -2.8f, 0.5f)));
 
     Item MALACHITE_DAGGER = create("malachite_dagger", MalachiteDaggerItem::new, new Item.Settings()
-            .attributeModifiers(SwordItem.createAttributeModifiers(MalachiteToolMaterials.DAGGER, 1, -2.3f)));
+            .attributeModifiers(SwordItem.createAttributeModifiers(MalachiteToolMaterials.DAGGER, 2, -2.3f)));
 
     static Item create(String name, Function<Item.Settings, Item> factory, Item.Settings settings) {
         Item item = factory.apply(settings);

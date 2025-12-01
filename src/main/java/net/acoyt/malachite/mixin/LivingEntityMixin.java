@@ -75,7 +75,7 @@ public abstract class LivingEntityMixin extends Entity {
     private void malachite$moreDamage(DamageSource source, float amount, CallbackInfoReturnable<Boolean> cir) {
         StatusEffectInstance instance = this.getStatusEffect(MalachiteEffects.OVERCHARGED);
         if (instance != null) {
-            this.applyDamage(MalachiteDamageTypes.create(this.getWorld(), MalachiteDamageTypes.OVERCHARGED), instance.getAmplifier());
+            this.applyDamage(MalachiteDamageTypes.create(this.getWorld(), MalachiteDamageTypes.OVERCHARGED), 0.5f*instance.getAmplifier());
         }
     }
 
