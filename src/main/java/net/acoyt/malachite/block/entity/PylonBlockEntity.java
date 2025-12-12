@@ -18,6 +18,7 @@ import net.minecraft.network.packet.s2c.play.BlockEntityUpdateS2CPacket;
 import net.minecraft.registry.RegistryWrapper;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.util.math.Box;
+import net.minecraft.util.math.Direction;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.NotNull;
@@ -55,15 +56,29 @@ public class PylonBlockEntity extends BlockEntity {
                 world.setBlockState(pos, state.with(MalachitePylonBlock.CHARGE, 0));
 
                 Vec3d vec3d = pos.toCenterPos();
-                boolean bl = living.getPos().y < vec3d.y - 1; // if living is below the Pylon
 
-                living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
+                Direction direction = state.get(MalachitePylonBlock.FACING);
+                if (direction == Direction.UP || direction == Direction.DOWN) {
+                    boolean bl = living.getPos().y < vec3d.y - 1; // if living is below the Pylon
+                    living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
+
+                    Malachite.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
+                } else if (direction == Direction.EAST || direction == Direction.WEST) {
+                    boolean bl = living.getPos().x < vec3d.x + 1;
+                    living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, -3, 0).add(bl ? -1.6 : 1.6, 0, 0));
+
+                    Malachite.spawnBlast(world, 0.0F, 0x53efac, 8.0F, vec3d);
+                } else if (direction == Direction.NORTH || direction == Direction.SOUTH) {
+                    boolean bl = living.getPos().z < vec3d.z - 1;
+                    living.setVelocity(vec3d.subtract(living.getPos()).multiply(0, -3, -3).add(0, 0, bl ? -1.6 : 1.6));
+
+                    Malachite.spawnBlast(world, 90.0F, 0x53efac, 8.0F, vec3d);
+                }
+
                 living.velocityModified = true;
 
                 living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 3);
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, living.getRandom().nextBetween(10, 15) * 20));
-
-                Malachite.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
             }
         }
 

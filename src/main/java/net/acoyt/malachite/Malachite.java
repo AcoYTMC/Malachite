@@ -15,9 +15,13 @@ import net.fabricmc.api.ModInitializer;
 import net.fabricmc.fabric.api.event.player.PlayerBlockBreakEvents;
 import net.fabricmc.fabric.api.event.player.UseBlockCallback;
 import net.fabricmc.fabric.api.networking.v1.PayloadTypeRegistry;
+import net.fabricmc.fabric.api.resource.ResourceManagerHelper;
+import net.fabricmc.fabric.api.resource.ResourcePackActivationType;
+import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.text.Text;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
@@ -45,6 +49,11 @@ public class Malachite implements ModInitializer {
         MalachiteParticles.init();
         MalachitePotions.init();
         MalachiteSounds.init();
+
+        // Resource Packs
+        FabricLoader.getInstance().getModContainer(MOD_ID).ifPresent(container -> {
+            ResourceManagerHelper.registerBuiltinResourcePack(id("old_seraphite"), container, Text.literal("Old Seraphite"), ResourcePackActivationType.NORMAL);
+        });
 
         // Networking
         PayloadTypeRegistry.playS2C().register(PlayEnergyBeamTravelSoundPayload.ID, PlayEnergyBeamTravelSoundPayload.CODEC);
@@ -90,13 +99,26 @@ public class Malachite implements ModInitializer {
         }
     }
 
+    public static void spawnBlast(World world, float yaw, int color, float size, Vec3d pos) {
+        if (world instanceof ServerWorld serverWorld) {
+            serverWorld.spawnParticles(
+                    new BlastParticleEffect(color, size, yaw),
+                    pos.x,
+                    pos.y,
+                    pos.z,
+                    0, 0, 0 ,0,
+                    0.1
+            );
+        }
+    }
+
     public static void spawnBlast(Entity entity, int color, float size, Vec3d offset) {
         float yaw = MathHelper.wrapDegrees(entity.getYaw());
         float rotation;
-        if ((yaw < -45.0f && yaw > -135) || (yaw < 135 && yaw > 45)) {
-            rotation = 0.0f;
+        if ((yaw < -45.0F && yaw > -135.0F) || (yaw < 135.0F && yaw > 45.0F)) {
+            rotation = 0.0F;
         } else {
-            rotation = 90.0f;
+            rotation = 90.0F;
         }
 
         Vec3d pos = entity.getPos();

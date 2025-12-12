@@ -48,5 +48,6 @@
   "subtitles.malachite.entity.dagger.hit": "Dagger Hits",
   "subtitles.malachite.entity.dagger.throw": "Dagger Throws",
   "subtitles.malachite.entity.energy_beam.shoot": "Energy Beam Shoots",
-  "subtitles.malachite.item.longsword.block": "Longsword Blocks"
+  "subtitles.malachite.item.longsword.block": "Longsword Blocks",
+  "trim_material.malachite.malachite": "Malachite Material"
 }

@@ -19,6 +19,7 @@ import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.state.StateManager;
 import net.minecraft.state.property.BooleanProperty;
+import net.minecraft.state.property.EnumProperty;
 import net.minecraft.state.property.IntProperty;
 import net.minecraft.state.property.Properties;
 import net.minecraft.util.Hand;
@@ -38,8 +39,11 @@ import org.jetbrains.annotations.Nullable;
 public class MalachitePylonBlock extends BlockWithEntity implements Waterloggable {
     public static final MapCodec<MalachitePylonBlock> CODEC = createCodec(MalachitePylonBlock::new);
     public static final BooleanProperty WATERLOGGED = Properties.WATERLOGGED;
+    public static final EnumProperty<Direction> FACING = Properties.FACING;
     public static final IntProperty CHARGE = IntProperty.of("charge", 0, 4);
-    private static final VoxelShape SHAPE = createCuboidShape(3.5F, 0.0F, 3.5F, 12.5F, 16.0F, 12.5F);
+    private static final VoxelShape xAxisShape = createCuboidShape(0.0F, 3.5F, 3.5F, 16.0F, 12.5F, 12.5F);
+    private static final VoxelShape yAxisShape = createCuboidShape(3.5F, 0.0F, 3.5F, 12.5F, 16.0F, 12.5F);
+    private static final VoxelShape zAxisShape = createCuboidShape(3.5F, 3.5F, 0.0F, 12.5F, 12.5F, 16.0F);
 
     public MalachitePylonBlock(Settings settings) {
         super(settings);
@@ -108,16 +112,21 @@ public class MalachitePylonBlock extends BlockWithEntity implements Waterloggabl
     }
 
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
-        return SHAPE;
+        return switch (state.get(FACING)) {
+            case NORTH, SOUTH -> zAxisShape;
+            case EAST, WEST -> xAxisShape;
+            case DOWN, UP -> yAxisShape;
+            case null -> yAxisShape;
+        };
     }
 
     public BlockState getPlacementState(@NotNull ItemPlacementContext ctx) {
         FluidState fluidState = ctx.getWorld().getFluidState(ctx.getBlockPos());
-        return this.getDefaultState().with(WATERLOGGED, fluidState.isOf(Fluids.WATER));
+        return this.getDefaultState().with(WATERLOGGED, fluidState.isOf(Fluids.WATER)).with(FACING, ctx.getSide());
     }
 
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
-        builder.add(WATERLOGGED, CHARGE);
+        builder.add(WATERLOGGED, FACING, CHARGE);
     }
 
     public FluidState getFluidState(BlockState state) {

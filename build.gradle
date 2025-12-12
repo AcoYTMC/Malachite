@@ -49,6 +49,7 @@ loom {
 
 fabricApi {
     configureDataGeneration {
+        modId = "malachite"
         client = true
     }
 }
