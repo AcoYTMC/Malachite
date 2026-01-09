@@ -72,6 +72,9 @@ public class MalachiteLangGen extends FabricLanguageProvider {
         // Status Effects
         builder.add(OVERCHARGED.value(), "Overcharged");
 
+        // Trim Materials
+        builder.add("trim_material.malachite.malachite", "Malachite Material");
+
         // Potions
         builder.add("item.minecraft.tipped_arrow.effect.overcharged", "Arrow of Overcharged");
         builder.add("item.minecraft.potion.effect.overcharged", "Potion of Overcharged");

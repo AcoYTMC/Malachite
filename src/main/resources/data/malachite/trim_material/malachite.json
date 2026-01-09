@@ -1,0 +1,9 @@
+{
+     "asset_name": "malachite",
+     "description": {
+          "translate": "trim_material.malachite.malachite",
+          "color": "#38624b"
+     },
+     "ingredient": "malachite:malachite",
+     "item_model_index": 1
+}
