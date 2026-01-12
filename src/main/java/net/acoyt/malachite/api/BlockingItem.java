@@ -1,6 +1,6 @@
 package net.acoyt.malachite.api;
 
-import net.acoyt.malachite.index.MalachiteSounds;
+import net.acoyt.malachite.impl.index.MalachiteSounds;
 import net.minecraft.entity.damage.DamageSource;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.item.ItemStack;

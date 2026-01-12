@@ -13,16 +13,16 @@
      "environment": "*",
      "entrypoints": {
           "main": [
-               "net.acoyt.malachite.Malachite"
+            "net.acoyt.malachite.impl.Malachite"
           ],
           "client": [
-               "net.acoyt.malachite.MalachiteClient"
+            "net.acoyt.malachite.impl.MalachiteClient"
           ],
           "fabric-datagen": [
-               "net.acoyt.malachite.MalachiteDatagen"
+               "net.acoyt.malachite.data.MalachiteDatagen"
           ],
           "cardinal-components": [
-               "net.acoyt.malachite.cca.MalachiteComponents"
+               "net.acoyt.malachite.impl.cca.MalachiteComponents"
           ],
           "modmenu": [
                "net.acoyt.malachite.compat.MalachiteModMenu"

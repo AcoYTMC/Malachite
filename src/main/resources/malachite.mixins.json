@@ -1,6 +1,6 @@
 {
      "required": true,
-     "package": "net.acoyt.malachite.mixin",
+     "package": "net.acoyt.malachite.impl.mixin",
      "compatibilityLevel": "JAVA_21",
      "mixins": [
           "ItemStackMixin",
