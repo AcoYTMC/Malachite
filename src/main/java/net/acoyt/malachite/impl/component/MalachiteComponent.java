@@ -14,7 +14,7 @@ public record MalachiteComponent(int charge, int maxCharge) {
 
     public static final Codec<MalachiteComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("charge", 0).forGetter(MalachiteComponent::charge),
-            Codec.INT.optionalFieldOf("maxCharge", 6).forGetter(MalachiteComponent::maxCharge)
+            Codec.INT.optionalFieldOf("maxCharge", 4).forGetter(MalachiteComponent::maxCharge)
     ).apply(instance, MalachiteComponent::new));
 
     public static final PacketCodec<RegistryByteBuf, MalachiteComponent> PACKET_CODEC = PacketCodec.tuple(

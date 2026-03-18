@@ -32,6 +32,11 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
         this.animationState.start(0);
     }
 
+    @Override
+    public boolean canHit() {
+        return false;
+    }
+
     public EnergyOrbEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
         super(MalachiteEntities.ENERGY_ORB, owner, world, MalachiteItems.MALACHITE.getDefaultStack(), shotFrom);
         setPosition(owner.getX(), owner.getEyeY() - 0.6, owner.getZ());
@@ -57,13 +62,13 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
                 );
             }
 
-            Box box = this.getBoundingBox().expand(10); // 10 Block radius
+            Box box = this.getBoundingBox().expand(4); // 10 Block radius
 
             for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, LivingEntity::isAlive)) {
                 living.setVelocity(pos.subtract(living.getPos()).multiply(-0.8));
                 living.velocityModified = true;
 
-                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 6);
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 8);
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600));
             }
 
@@ -96,14 +101,14 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
                 );
             }
 
-            Box box = this.getBoundingBox().expand(10); // 10 Block radius
+            Box box = this.getBoundingBox().expand(4); // 10 Block radius
 
             for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, LivingEntity::isAlive)) {
                 living.setVelocity(pos.subtract(living.getPos()).multiply(-1.2));
                 living.velocityModified = true;
                 living.fallDistance = 0.0f;
 
-                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 10);
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (float) (20 / (living.squaredDistanceTo(box.getCenter()) /3)));
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
             }
 

@@ -49,6 +49,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     public MalachiteDaggerEntity(World world, LivingEntity owner, ItemStack stack) {
         super(MalachiteEntities.MALACHITE_DAGGER, owner, world, stack, null);
         this.dataTracker.set(THROWN_ITEM, stack);
+        this.dataTracker.set(THROWN_ITEM, stack);
 
         if (owner instanceof PlayerEntity playerEntity) {
             int slot = playerEntity.getInventory().getSlotWithStack(stack); // prioritizes main hand
@@ -191,14 +192,17 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         this.setCritical(false);
 
         if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
-            living.teleportTo(new TeleportTarget(
-                    serverWorld,
-                    this.getPos(),
-                    Vec3d.ZERO,
-                    living.getYaw(),
-                    living.getPitch(),
-                    TeleportTarget.NO_OP
-            ));
+            if (this.isCharged()) {
+                living.teleportTo(new TeleportTarget(
+
+                        serverWorld,
+                        this.getPos(),
+                        Vec3d.ZERO,
+                        living.getYaw(),
+                        living.getPitch(),
+                        TeleportTarget.NO_OP
+                ));
+            }
 
             ItemStack stack = this.getItem();
             stack.set(MalachiteDataComponents.MALACHITE, MalachiteComponent.getOrDefault(stack).withCharge(0));
@@ -283,14 +287,16 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
             }
 
             if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
-                living.teleportTo(new TeleportTarget(
-                        serverWorld,
-                        this.getPos(),
-                        Vec3d.ZERO,
-                        living.getYaw(),
-                        living.getPitch(),
-                        TeleportTarget.NO_OP
-                ));
+                if (this.isCharged()) {
+                    living.teleportTo(new TeleportTarget(
+                            serverWorld,
+                            this.getPos(),
+                            Vec3d.ZERO,
+                            living.getYaw(),
+                            living.getPitch(),
+                            TeleportTarget.NO_OP
+                    ));
+                }
             }
         }
     }
