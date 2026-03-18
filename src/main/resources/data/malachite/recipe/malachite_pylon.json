@@ -1,16 +1,16 @@
 {
-     "type": "minecraft:crafting_shaped",
-     "pattern": [
-          "MM",
-          "MM",
-          "MM"
-     ],
-     "key": {
-          "M": {
-               "item": "malachite:malachite"
-          }
-     },
-     "result": {
-          "id": "malachite:malachite_pylon"
-     }
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "MM",
+        "MM",
+        "MM"
+    ],
+    "key": {
+        "M": {
+            "item": "malachite:malachite"
+        }
+    },
+    "result": {
+        "id": "malachite:malachite_pylon"
+    }
 }

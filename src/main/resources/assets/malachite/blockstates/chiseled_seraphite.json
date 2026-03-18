@@ -1,10 +1,10 @@
 {
-     "variants": {
-          "active=true": {
-               "model": "malachite:block/active_chiseled_seraphite"
-          },
-          "active=false": {
-               "model": "malachite:block/chiseled_seraphite"
-          }
-     }
+    "variants": {
+        "active=true": {
+            "model": "malachite:block/active_chiseled_seraphite"
+        },
+        "active=false": {
+            "model": "malachite:block/chiseled_seraphite"
+        }
+    }
 }

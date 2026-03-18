@@ -1,0 +1,6 @@
+// 1.21.1	2026-03-16T22:02:01.0192542	Malachite/Tags for minecraft:item
+d8f0ea507f7841e37472154a70ca13a3a0d6f8fa data\minecraft\tags\item\enchantable\sword.json
+bf622caff8f2c56fa3343484f61fbcd717018e52 data\minecraft\tags\item\trim_materials.json
+7d85a1bb986cae2747cd72cc0080cf3637b769ac data\malachite\tags\item\longswords.json
+2f39f3824b4122ea2238a078e4a2460a17543f24 data\malachite\tags\item\daggers.json
+d8f0ea507f7841e37472154a70ca13a3a0d6f8fa data\malachite\tags\item\malachite_weaponry.json

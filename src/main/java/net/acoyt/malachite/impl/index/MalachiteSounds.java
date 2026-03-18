@@ -4,13 +4,9 @@ import net.acoyt.malachite.impl.Malachite;
 import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
-
-import java.util.LinkedList;
-import java.util.List;
+import net.minecraft.util.Identifier;
 
 public interface MalachiteSounds {
-    List<SoundEvent> SOUNDS = new LinkedList<>();
-
     SoundEvent DAGGER_HIT = create("entity.dagger.hit");
     SoundEvent DAGGER_THROW = create("entity.dagger.throw");
 
@@ -20,12 +16,9 @@ public interface MalachiteSounds {
     SoundEvent ENERGY_BEAM_SHOOT = create("entity.energy_beam.shoot");
 
     private static SoundEvent create(String name) {
-        SoundEvent soundEvent = SoundEvent.of(Malachite.id(name));
-        SOUNDS.add(soundEvent);
-        return soundEvent;
+        Identifier id = Malachite.id(name);
+        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
     }
 
-    static void init() {
-        SOUNDS.forEach(soundEvent -> Registry.register(Registries.SOUND_EVENT, soundEvent.getId(), soundEvent));
-    }
+    static void init() {}
 }

@@ -1,0 +1,7 @@
+{
+    "parent": "malachite:block/seraphite_lantern",
+    "textures": {
+        "0": "malachite:block/seraphite_lantern_hanging",
+        "particle": "malachite:block/seraphite"
+    }
+}

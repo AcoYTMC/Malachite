@@ -1,13 +1,17 @@
 package net.acoyt.malachite.impl.item;
 
+import net.acoyt.acornlib.api.item.AdvancedBlockingItem;
 import net.acoyt.acornlib.api.item.ModelVaryingItem;
+import net.acoyt.acornlib.api.item.SprintUsableItem;
 import net.acoyt.acornlib.api.util.MiscUtils;
-import net.acoyt.malachite.api.BlockingItem;
 import net.acoyt.malachite.impl.Malachite;
 import net.acoyt.malachite.impl.block.MalachitePylonBlock;
 import net.acoyt.malachite.impl.component.MalachiteComponent;
 import net.acoyt.malachite.impl.entity.EnergyBeamEntity;
+import net.acoyt.malachite.impl.entity.EnergyOrbEntity;
 import net.acoyt.malachite.impl.index.*;
+import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
+import net.acoyt.malachite.impl.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.component.type.AttributeModifierSlot;
@@ -28,6 +32,7 @@ import net.minecraft.item.ToolMaterial;
 import net.minecraft.item.tooltip.TooltipType;
 import net.minecraft.server.world.ServerWorld;
 import net.minecraft.sound.SoundCategory;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.Text;
 import net.minecraft.util.*;
 import net.minecraft.util.math.Box;
@@ -40,7 +45,7 @@ import xyz.amymialee.mialib.cca.HoldingComponent;
 import java.util.Arrays;
 import java.util.List;
 
-public class MalachiteLongswordItem extends SwordItem implements BlockingItem, ModelVaryingItem {
+public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockingItem, SprintUsableItem, ModelVaryingItem {
     public MalachiteLongswordItem(Settings settings) {
         super(MalachiteToolMaterials.LONGSWORD, settings
                 .component(MalachiteDataComponents.MALACHITE, MalachiteComponent.LONGSWORD)
@@ -77,7 +82,7 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
                     player.getItemCooldownManager().set(stack.getItem(), 5);
                 }
 
-                if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantments.SHOCKWAVE)) { // Shockwave Logic
+                if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.SHOCKWAVE)) { // Shockwave Logic
                     Vec3d pos = player.getPos();
                     Box box = new Box(pos.x - 1, pos.y - 1, pos.z - 1, pos.x + 1, pos.y + 1, pos.z + 1).expand(7);
                     for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, living -> living.isAlive() && !living.isSpectator())) {
@@ -90,14 +95,25 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
                         }
                     }
 
-                    Malachite.spawnShockwave(world, pos, 5.0f, new Vec3d(0, 0.5, 0));
+                    Util.spawnShockwave(world, pos, 5.0f, new Vec3d(0, 0.5, 0));
 
                     player.getItemCooldownManager().set(stack.getItem(), 10);
+                } else if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.DISRUPT)) {
+                    EnergyOrbEntity energyOrb = new EnergyOrbEntity(world, player, stack);
+                    energyOrb.setYaw(player.getYaw());
+                    energyOrb.setPitch(player.getPitch());
+                    world.spawnEntity(energyOrb);
+
+                    energyOrb.setVelocity(player.getRotationVector().multiply(0.15));
+                    energyOrb.velocityModified = true;
+
+                    player.getItemCooldownManager().set(stack.getItem(), 30);
                 } else { // Beam Logic
                     world.playSound(null, player.getPos().x, player.getPos().y, player.getPos().z, MalachiteSounds.ENERGY_BEAM_SHOOT, SoundCategory.PLAYERS, 1.0F, (float) (1.0F + player.getRandom().nextGaussian() / 10.0F));
 
                     float damage = stack.getOrDefault(MalachiteDataComponents.BEAM_DAMAGE, 5.0F);
                     EnergyBeamEntity energyBeam = new EnergyBeamEntity(world, player, stack);
+                    energyBeam.setVoltage(EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.VOLTAGE));
                     energyBeam.setDamage(damage);
                     energyBeam.getDataTracker().set(EnergyBeamEntity.FORCED_PITCH, player.getPitch());
                     energyBeam.getDataTracker().set(EnergyBeamEntity.FORCED_YAW, player.getYaw());
@@ -111,10 +127,10 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
 
     public float getShockwaveStrength(ItemStack stack) {
         MutableFloat mutableFloat = new MutableFloat(1.3F);
-        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantments.SHOCKWAVE)) {
+        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.SHOCKWAVE)) {
             EnchantmentHelper.forEachEnchantment(stack, (enchantment, level) -> {
-                if (enchantment.value().effects().contains(MalachiteEnchantments.SHOCKWAVE)) {
-                    mutableFloat.setValue(enchantment.value().effects().get(MalachiteEnchantments.SHOCKWAVE));
+                if (enchantment.value().effects().contains(MalachiteEnchantmentEffects.SHOCKWAVE)) {
+                    mutableFloat.setValue(enchantment.value().effects().get(MalachiteEnchantmentEffects.SHOCKWAVE));
                 }
             });
         }
@@ -123,7 +139,7 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
     }
 
     public int getMaxUseTime(ItemStack stack, LivingEntity user) {
-        return Integer.MAX_VALUE;
+        return 72000;
     }
 
     public UseAction getUseAction(ItemStack stack) {
@@ -152,7 +168,7 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
 
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (MalachiteComponent.fullyCharged(stack)) {
-            tooltip.add(Text.translatable("item.malachite.tooltip.charged").withColor(0x53efac));
+            tooltip.add(Text.translatable("item.malachite.tooltip.charged").withColor(0xFF53efac));
         }
     }
 
@@ -180,12 +196,16 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
         }
     }
 
+    public SoundEvent blockSound() {
+        return MalachiteSounds.LONGSWORD_BLOCK;
+    }
+
     public boolean isItemBarVisible(ItemStack stack) {
         return MalachiteComponent.getOrDefault(stack).charge() > 0;
     }
 
     public int getItemBarColor(ItemStack stack) {
-        return 0x43bd86;
+        return 0xFF43bd86;
     }
 
     public int getItemBarStep(ItemStack stack) {
@@ -202,7 +222,7 @@ public class MalachiteLongswordItem extends SwordItem implements BlockingItem, M
     public Identifier getModel(ModelTransformationMode renderMode, ItemStack stack, @Nullable LivingEntity entity) {
         boolean gui = MiscUtils.isGui(renderMode);
         boolean charged = MalachiteComponent.fullyCharged(stack);
-        boolean blocking = entity != null && entity.getActiveItem() != null && entity.getActiveItem().getItem() instanceof BlockingItem;
+        boolean blocking = entity != null && entity.getActiveItem() != null && entity.getActiveItem().getItem() instanceof AdvancedBlockingItem;
 
         if (gui) {
             if (charged) {

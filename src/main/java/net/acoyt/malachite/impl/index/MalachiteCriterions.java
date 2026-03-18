@@ -13,7 +13,5 @@ public interface MalachiteCriterions {
         return Registry.register(Registries.CRITERION, Malachite.id(name), criterion);
     }
 
-    static void init() {
-        //
-    }
+    static void init() {}
 }

@@ -18,7 +18,7 @@ public interface MalachiteItemGroup {
     RegistryKey<ItemGroup> GROUP_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, Malachite.id(Malachite.MOD_ID));
     ItemGroup ITEM_GROUP = FabricItemGroup.builder()
             .icon(MALACHITE::getDefaultStack)
-            .displayName(Text.translatable("itemGroup.malachite").withColor(0x38624b))
+            .displayName(Text.translatable("itemGroup.malachite").withColor(0xFF38624b))
             .build();
 
     static void init() {
@@ -49,6 +49,9 @@ public interface MalachiteItemGroup {
         itemGroup.add(SERAPHITE_BRICK_SLAB);
         itemGroup.add(SERAPHITE_BRICK_STAIRS);
         itemGroup.add(SERAPHITE_BRICK_WALL);
+
+        itemGroup.add(SERAPHITE_CHAIN);
+        itemGroup.add(SERAPHITE_LANTERN);
 
         itemGroup.add(SMALL_MALACHITE_BUD);
         itemGroup.add(MEDIUM_MALACHITE_BUD);

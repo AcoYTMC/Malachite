@@ -1,28 +1,28 @@
 {
-	"parent": "item/handheld",
-	"textures": {
-		"layer0": "malachite:item/malachite_longsword_in_hand"
-	},
-	"display": {
-		"thirdperson_righthand": {
-               "rotation": [0, -5, 135],
-               "translation": [-8.5, -2, -1],
-			"scale": [1.65, 1.65, 1.65]
-		},
-		"thirdperson_lefthand": {
-               "rotation": [0, -5, 45],
-               "translation": [-8.5, -2, -1],
-			"scale": [1.65, 1.65, 1.65]
-		},
-		"firstperson_righthand": {
-               "rotation": [0, 0, 110],
-               "translation": [-8.75, 5, 0.25],
-			"scale": [1.25, 1.25, 1.25]
-		},
-		"firstperson_lefthand": {
-               "rotation": [0, 0, 20],
-               "translation": [-8.75, 5, 0.25],
-			"scale": [1.25, 1.25, 1.25]
-		}
-	}
+    "parent": "item/handheld",
+    "textures": {
+        "layer0": "malachite:item/malachite_longsword_in_hand"
+    },
+    "display": {
+        "thirdperson_righthand": {
+            "rotation": [0, -5, 135],
+            "translation": [-8.5, -2, -1],
+            "scale": [1.65, 1.65, 1.65]
+        },
+        "thirdperson_lefthand": {
+            "rotation": [0, -5, 45],
+            "translation": [-8.5, -2, -1],
+            "scale": [1.65, 1.65, 1.65]
+        },
+        "firstperson_righthand": {
+            "rotation": [0, 0, 110],
+            "translation": [-8.75, 5, 0.25],
+            "scale": [1.25, 1.25, 1.25]
+        },
+        "firstperson_lefthand": {
+            "rotation": [0, 0, 20],
+            "translation": [-8.75, 5, 0.25],
+            "scale": [1.25, 1.25, 1.25]
+        }
+    }
 }

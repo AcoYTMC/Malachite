@@ -1,8 +1,13 @@
 package net.acoyt.malachite.impl.entity;
 
-import net.acoyt.malachite.impl.index.*;
-import net.acoyt.malachite.impl.networking.client.PlayEnergyBeamTravelSoundPayload;
-import net.fabricmc.fabric.api.networking.v1.PlayerLookup;
+import net.acoyt.acornlib.api.util.NetworkingUtils;
+import net.acoyt.malachite.impl.index.MalachiteEffects;
+import net.acoyt.malachite.impl.index.MalachiteEntities;
+import net.acoyt.malachite.impl.index.MalachiteItems;
+import net.acoyt.malachite.impl.index.MalachiteParticles;
+import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
+import net.acoyt.malachite.impl.index.tag.MalachiteEntityTypeTags;
+import net.acoyt.malachite.impl.networking.s2c.PlayEnergyBeamTravelSoundPayload;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -26,6 +31,7 @@ import net.minecraft.util.math.Box;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.RaycastContext;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import net.minecraft.world.event.GameEvent;
 import org.jetbrains.annotations.Nullable;
@@ -40,6 +46,7 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
         return MathHelper.floor(256F / distancePerTick);
     }
 
+    public static final TrackedData<Boolean> VOLTAGE = DataTracker.registerData(EnergyBeamEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
     public static final TrackedData<Float> DAMAGE = DataTracker.registerData(EnergyBeamEntity.class, TrackedDataHandlerRegistry.FLOAT);
     public static final TrackedData<Float> FORCED_PITCH = DataTracker.registerData(EnergyBeamEntity.class, TrackedDataHandlerRegistry.FLOAT);
     public static final TrackedData<Float> FORCED_YAW = DataTracker.registerData(EnergyBeamEntity.class, TrackedDataHandlerRegistry.FLOAT);
@@ -64,50 +71,88 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
     }
 
     public void tick() {
-        if (!getWorld().isClient && ticksExisted == 0 && getWorld().getServer() != null) PlayerLookup.all(getWorld().getServer()).forEach(foundPlayer -> PlayEnergyBeamTravelSoundPayload.send(foundPlayer, this));
-        if (isCritical()) setCritical(false);
-        
-        setVelocity(Vec3d.ZERO);
-        for (int i = 0; i < distancePerTick; i++) {
-            float min = Math.min(distanceTraveled, ticksExisted);
-            if (min > 0 && min == distanceTraveled) {
-                discard();
+        World world = this.getWorld();
+        Entity owner = this.getOwner();
+        Vec3d pos = this.getPos();
+
+        if (this.isCritical()) setCritical(false);
+
+        if (!world.isClient && this.ticksExisted == 0 && world.getServer() != null) {
+            NetworkingUtils.sendForAllPlayers(world.getServer(), new PlayEnergyBeamTravelSoundPayload(this.getId()));
+        }
+
+        if (this.isVoltage()) {
+            if (owner instanceof LivingEntity living) {
+                Vec3d guh = living.getPos().subtract(this.getPos());
+                double length = guh.length();
+
+                if (length > 10) {
+                    if (world instanceof ServerWorld serverWorld) {
+                        living.teleportTo(new TeleportTarget(
+                                serverWorld,
+                                pos,
+                                Vec3d.ZERO,
+                                this.getYaw(),
+                                this.getPitch(),
+                                TeleportTarget.NO_OP
+                        ));
+                    }
+
+                    this.discard();
+                }
+            } else {
+                this.discard();
             }
-            Vec3d start = getPos().add(getRotationVector().multiply(distanceTraveled + (ticksExisted > 0 ? -1 : 0))), end = start.add(getRotationVector());
-            BlockHitResult hitResult = getWorld().raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
+        }
+
+        this.setVelocity(Vec3d.ZERO);
+        for (int i = 0; i < distancePerTick; i++) {
+            float min = Math.min(this.distanceTraveled, this.ticksExisted);
+            if (min > 0 && min == this.distanceTraveled) {
+                this.discard();
+            }
+
+            Vec3d start = pos.add(getRotationVector().multiply(this.distanceTraveled + (this.ticksExisted > 0 ? -1 : 0))), end = start.add(getRotationVector());
+            BlockHitResult hitResult = world.raycast(new RaycastContext(start, end, RaycastContext.ShapeType.COLLIDER, RaycastContext.FluidHandling.NONE, this));
             if (hitResult.getType() == HitResult.Type.BLOCK) {
-                if (!getWorld().isClient) {
-                    getWorld().emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this));
+                if (!world.isClient) {
+                    world.emitGameEvent(GameEvent.PROJECTILE_LAND, hitResult.getPos(), GameEvent.Emitter.of(this));
                 }
 
                 break;
             } else {
-                Entity owner = getOwner();
-                getWorld().getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> canEntityBeHit(owner, entity))).forEach(entity -> {
-                    if (!getWorld().isClient) {
-                        double damage = getDamage();
-                        //if (entity instanceof LivingEntity living) {
-                        //    damage *= living.getMaxHealth() / 20F;
-                        //}
-                        //damage *= getDamageMultiplier(distanceTraveled);
-                        //damage = Math.min(50, damage);
-                        entity.damage(MalachiteDamageTypes.create(getWorld(), MalachiteDamageTypes.OVERCHARGED, this, owner), (float) damage);
+                world.getOtherEntities(owner, Box.from(hitResult.getPos()).expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> this.canEntityBeHit(owner, entity))).forEach(entity -> {
+                    if (!world.isClient) {
+                        double damage = this.getDamage();
+                        entity.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED, this, owner), (float) damage);
+
                         if (entity instanceof LivingEntity living) living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 120));
-                        if (entity.getWorld() instanceof ServerWorld serverWorld) serverWorld.spawnParticles(MalachiteParticles.SPARK, this.getPos().x, this.getPos().y, this.getPos().z, 6, 0.3, 0.3, 0.3, 0.1);
-                        hitEntities.add(entity);
+                        if (entity.getWorld() instanceof ServerWorld serverWorld) {
+                            serverWorld.spawnParticles(
+                                    MalachiteParticles.SPARK,
+                                    pos.x,
+                                    pos.y,
+                                    pos.z,
+                                    6,
+                                    0.3, 0.3, 0.3,
+                                    0.1
+                            );
+                        }
+
+                        this.hitEntities.add(entity);
                         if (getOwner() instanceof ServerPlayerEntity player && entity instanceof LivingEntity living) {
                             Criteria.KILLED_BY_CROSSBOW.trigger(player, Set.of(living));
                         }
                     }
                 });
             }
-            
-            distanceTraveled++;
+
+            this.distanceTraveled++;
         }
-        
-        if (ticksExisted > getMaxTicks()) discard();
-        
-        ticksExisted++;
+
+        if (this.ticksExisted > getMaxTicks()) discard();
+
+        this.ticksExisted++;
     }
 
     public void onEntityHit(EntityHitResult entityHitResult) {
@@ -115,61 +160,83 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
     }
 
     public void onBlockHit(BlockHitResult blockHitResult) {
-        //
+        if (this.isVoltage() && !this.getWorld().getBlockState(blockHitResult.getBlockPos()).isSolidBlock(this.getWorld(), blockHitResult.getBlockPos())) {
+            if (this.getOwner() instanceof LivingEntity living && this.getPos().distanceTo(living.getPos()) > 128.0) {
+                if (this.getWorld() instanceof ServerWorld serverWorld) {
+                    living.teleportTo(new TeleportTarget(
+                            serverWorld,
+                            this.getPos(),
+                            Vec3d.ZERO,
+                            this.getYaw(),
+                            this.getPitch(),
+                            TeleportTarget.NO_OP
+                    ));
+                }
+
+                this.discard();
+            } else {
+                this.discard();
+            }
+        }
     }
 
     public void readCustomDataFromNbt(NbtCompound nbt) {
         super.readCustomDataFromNbt(nbt);
-        setDamage(nbt.getFloat("Damage"));
-        dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch"));
-        dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw"));
-        distanceTraveled = nbt.getInt("DistanceTraveled");
-        ticksExisted = nbt.getInt("TicksExisted");
+        this.setVoltage(nbt.getBoolean("Voltage"));
+        this.setDamage(nbt.getFloat("Damage"));
+        this.dataTracker.set(FORCED_PITCH, nbt.getFloat("ForcedPitch"));
+        this.dataTracker.set(FORCED_YAW, nbt.getFloat("ForcedYaw"));
+        this.distanceTraveled = nbt.getInt("DistanceTraveled");
+        this.ticksExisted = nbt.getInt("TicksExisted");
     }
 
     public void writeCustomDataToNbt(NbtCompound nbt) {
         super.writeCustomDataToNbt(nbt);
-        nbt.putFloat("Damage", (float) getDamage());
-        nbt.putFloat("ForcedPitch", getPitch());
-        nbt.putFloat("ForcedYaw", getYaw());
-        nbt.putInt("DistanceTraveled", distanceTraveled);
-        nbt.putInt("TicksExisted", ticksExisted);
+        nbt.putBoolean("Voltage", this.isVoltage());
+        nbt.putFloat("Damage", (float) this.getDamage());
+        nbt.putFloat("ForcedPitch", this.getPitch());
+        nbt.putFloat("ForcedYaw", this.getYaw());
+        nbt.putInt("DistanceTraveled", this.distanceTraveled);
+        nbt.putInt("TicksExisted", this.ticksExisted);
     }
 
     public void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
+        builder.add(VOLTAGE, false);
         builder.add(DAMAGE, 0F);
         builder.add(FORCED_PITCH, 0F);
         builder.add(FORCED_YAW, 0F);
     }
 
     public float getPitch() {
-        return dataTracker.get(FORCED_PITCH);
+        return this.dataTracker.get(FORCED_PITCH);
     }
 
     public float getYaw() {
-        return dataTracker.get(FORCED_YAW);
+        return this.dataTracker.get(FORCED_YAW);
+    }
+
+    public void setVoltage(boolean voltage) {
+        this.dataTracker.set(VOLTAGE, voltage);
+    }
+
+    public boolean isVoltage() {
+        return this.dataTracker.get(VOLTAGE);
     }
 
     public void setDamage(double damage) {
-        dataTracker.set(DAMAGE, (float) damage);
+        this.dataTracker.set(DAMAGE, (float) damage);
     }
 
     public double getDamage() {
-        return dataTracker.get(DAMAGE);
-    }
-
-    public float getDamageMultiplier(int distanceTraveled) {
-        if (distanceTraveled < 8) {
-            return MathHelper.lerp(distanceTraveled / 8F, 0.25F, 1);
-        }
-        return Math.min(2, MathHelper.lerp((distanceTraveled - 8) / 200F, 1F, 2F));
+        return this.dataTracker.get(DAMAGE);
     }
 
     private boolean canEntityBeHit(Entity owner, Entity entity) {
-        if ((entity instanceof LivingEntity living && !living.isInCreativeMode() && !living.isSpectator()) || entity.getType().isIn(MalachiteTags.BEAM_HITTABLE)) {
-            return !hitEntities.contains(entity) && entity.isAlive() && EnergyBeamEntity.shouldHurt(owner, entity);
+        if ((entity instanceof LivingEntity living && !living.isInCreativeMode() && !living.isSpectator()) || entity.getType().isIn(MalachiteEntityTypeTags.BEAM_HITTABLE)) {
+            return !this.hitEntities.contains(entity) && entity.isAlive() && EnergyBeamEntity.shouldHurt(owner, entity);
         }
+
         return false;
     }
 

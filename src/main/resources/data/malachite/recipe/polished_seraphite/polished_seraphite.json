@@ -1,16 +1,16 @@
 {
-     "type": "minecraft:crafting_shaped",
-     "pattern": [
-          "SS",
-          "SS"
-     ],
-     "key": {
-          "S": {
-               "item": "malachite:seraphite"
-          }
-     },
-     "result": {
-          "id": "malachite:polished_seraphite",
-          "count": 4
-     }
+    "type": "minecraft:crafting_shaped",
+    "pattern": [
+        "SS",
+        "SS"
+    ],
+    "key": {
+        "S": {
+            "item": "malachite:seraphite"
+        }
+    },
+    "result": {
+        "id": "malachite:polished_seraphite",
+        "count": 4
+    }
 }

@@ -1,5 +1,6 @@
 package net.acoyt.malachite.impl.cca;
 
+import net.acoyt.malachite.impl.cca.entity.NearbyPylonComponent;
 import net.minecraft.entity.LivingEntity;
 import org.ladysnake.cca.api.v3.entity.EntityComponentFactoryRegistry;
 import org.ladysnake.cca.api.v3.entity.EntityComponentInitializer;

@@ -3,10 +3,7 @@ package net.acoyt.malachite.impl.index;
 import net.acoyt.acornlib.impl.item.TranslationBlockItem;
 import net.acoyt.malachite.data.provider.MalachiteBlockLootTableGen;
 import net.acoyt.malachite.impl.Malachite;
-import net.acoyt.malachite.impl.block.BuddingCopperBlock;
-import net.acoyt.malachite.impl.block.ChiseledSeraphiteBlock;
-import net.acoyt.malachite.impl.block.MalachiteClusterBlock;
-import net.acoyt.malachite.impl.block.MalachitePylonBlock;
+import net.acoyt.malachite.impl.block.*;
 import net.fabricmc.fabric.api.blockrenderlayer.v1.BlockRenderLayerMap;
 import net.minecraft.block.AbstractBlock.Settings;
 import net.minecraft.block.*;
@@ -22,6 +19,9 @@ import java.util.function.Function;
 @SuppressWarnings("deprecation")
 public interface MalachiteBlocks {
     Block MALACHITE_PYLON = createWithItem("malachite_pylon", MalachitePylonBlock::new, Settings.copy(Blocks.IRON_BLOCK).ticksRandomly(), true);
+
+    Block SERAPHITE_CHAIN = createWithItem("seraphite_chain", ChainBlock::new, Settings.copy(Blocks.CHAIN).sounds(BlockSoundGroup.TUFF), true);
+    Block SERAPHITE_LANTERN = createWithItem("seraphite_lantern", SeraphiteLanternBlock::new, Settings.copy(Blocks.LANTERN).sounds(BlockSoundGroup.TUFF), true);
 
     Block SERAPHITE = createWithItem("seraphite", Block::new, Settings.copy(Blocks.TUFF));
     Block SERAPHITE_SLAB = createWithItem("seraphite_slab", SlabBlock::new, Settings.copy(Blocks.TUFF_SLAB), true);
@@ -63,16 +63,16 @@ public interface MalachiteBlocks {
         return createWithItem(name, factory, settings, false);
     }
 
-    static void init() {
-        //
-    }
+    static void init() {}
 
     static void clientInit() {
         BlockRenderLayerMap.INSTANCE.putBlocks(RenderLayer.getCutout(),
                 MALACHITE_CLUSTER,
                 LARGE_MALACHITE_BUD,
                 MEDIUM_MALACHITE_BUD,
-                SMALL_MALACHITE_BUD
+                SMALL_MALACHITE_BUD,
+                SERAPHITE_CHAIN,
+                SERAPHITE_LANTERN
         );
     }
 }

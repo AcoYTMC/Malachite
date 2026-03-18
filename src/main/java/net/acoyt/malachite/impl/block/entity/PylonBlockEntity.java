@@ -1,11 +1,11 @@
 package net.acoyt.malachite.impl.block.entity;
 
-import net.acoyt.malachite.impl.Malachite;
 import net.acoyt.malachite.impl.block.MalachitePylonBlock;
-import net.acoyt.malachite.impl.cca.NearbyPylonComponent;
+import net.acoyt.malachite.impl.cca.entity.NearbyPylonComponent;
 import net.acoyt.malachite.impl.index.MalachiteBlockEntities;
-import net.acoyt.malachite.impl.index.MalachiteDamageTypes;
 import net.acoyt.malachite.impl.index.MalachiteEffects;
+import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
+import net.acoyt.malachite.impl.util.Util;
 import net.minecraft.block.Block;
 import net.minecraft.block.BlockState;
 import net.minecraft.block.entity.BlockEntity;
@@ -40,7 +40,7 @@ public class PylonBlockEntity extends BlockEntity {
                 component.setNearby(true); // If the component is not marked as nearby, set it to nearby, that simple :P
 
             if (!MalachitePylonBlock.isPowered(world, pos)) {
-                if (pylon.fallback == 0 && world.getTime() - living.lastDamageTime == 1L) { // If was recently attacked, and fallback time is 0, update block state to increment charge :D
+                if (pylon.fallback == 0 && world.getTime() - living.lastDamageTime == 1L) { // If was recently attacked, and fallback time is 0, update block animationState to increment charge :D
                     if (state.contains(MalachitePylonBlock.CHARGE)) {
                         int i = state.get(MalachitePylonBlock.CHARGE);
                         if (i < 4) {
@@ -49,7 +49,7 @@ public class PylonBlockEntity extends BlockEntity {
                     }
 
                     pylon.fallback = 15;
-                    //world.updateListeners(pos, state, state, Block.NOTIFY_LISTENERS);
+                    //world.updateListeners(pos, animationState, animationState, Block.NOTIFY_LISTENERS);
                     pylon.markDirty();
                 }
             } else if (state.contains(MalachitePylonBlock.CHARGE) && state.get(MalachitePylonBlock.CHARGE) == 4) {
@@ -62,17 +62,17 @@ public class PylonBlockEntity extends BlockEntity {
                     boolean bl = living.getPos().y < vec3d.y - 1; // if living is below the Pylon
                     living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
 
-                    Malachite.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
+                    Util.spawnShockwave(world, vec3d, 8.0f, new Vec3d(0, 0.5, 0));
                 } else if (direction == Direction.EAST || direction == Direction.WEST) {
                     boolean bl = living.getPos().x < vec3d.x + 1;
                     living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, -3, 0).add(bl ? -1.6 : 1.6, 0, 0));
 
-                    Malachite.spawnBlast(world, 0.0F, 0x53efac, 8.0F, vec3d);
+                    Util.spawnBlast(world, 0.0F, 0xFF53efac, 8.0F, vec3d);
                 } else if (direction == Direction.NORTH || direction == Direction.SOUTH) {
                     boolean bl = living.getPos().z < vec3d.z - 1;
                     living.setVelocity(vec3d.subtract(living.getPos()).multiply(0, -3, -3).add(0, 0, bl ? -1.6 : 1.6));
 
-                    Malachite.spawnBlast(world, 90.0F, 0x53efac, 8.0F, vec3d);
+                    Util.spawnBlast(world, 90.0F, 0xFF53efac, 8.0F, vec3d);
                 }
 
                 living.velocityModified = true;

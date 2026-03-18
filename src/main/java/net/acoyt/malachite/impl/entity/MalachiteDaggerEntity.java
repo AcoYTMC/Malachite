@@ -1,8 +1,9 @@
 package net.acoyt.malachite.impl.entity;
 
-import net.acoyt.malachite.impl.Malachite;
 import net.acoyt.malachite.impl.component.MalachiteComponent;
 import net.acoyt.malachite.impl.index.*;
+import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
+import net.acoyt.malachite.impl.util.Util;
 import net.fabricmc.api.EnvType;
 import net.fabricmc.api.Environment;
 import net.minecraft.block.BlockState;
@@ -28,32 +29,37 @@ import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.hit.BlockHitResult;
 import net.minecraft.util.hit.EntityHitResult;
 import net.minecraft.util.math.Vec3d;
+import net.minecraft.world.TeleportTarget;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 @SuppressWarnings("unused")
 public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     public static final TrackedData<ItemStack> THROWN_ITEM = DataTracker.registerData(MalachiteDaggerEntity.class, TrackedDataHandlerRegistry.ITEM_STACK);
-    private boolean dealtDamage = false;
-    private boolean charged = false;
-    private boolean creative = false;
-    public int returnTimer;
-    public int stackSlot = -1;
+    public static final TrackedData<Boolean> VOLTAGE = DataTracker.registerData(MalachiteDaggerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    public static final TrackedData<Boolean> MAGNETIC = DataTracker.registerData(MalachiteDaggerEntity.class, TrackedDataHandlerRegistry.BOOLEAN);
+    private boolean dealtDamage = false, charged = false, creative = false;
+    public int returnTimer, stackSlot = -1;
 
     public MalachiteDaggerEntity(EntityType<? extends MalachiteDaggerEntity> entityType, World world) {
         super(entityType, world);
+        this.ignoreCameraFrustum = true;
     }
 
     public MalachiteDaggerEntity(World world, LivingEntity owner, ItemStack stack) {
         super(MalachiteEntities.MALACHITE_DAGGER, owner, world, stack, null);
         this.dataTracker.set(THROWN_ITEM, stack);
+
         if (owner instanceof PlayerEntity playerEntity) {
             int slot = playerEntity.getInventory().getSlotWithStack(stack); // prioritizes main hand
             if (slot == -1 && ItemStack.areItemsAndComponentsEqual(playerEntity.getOffHandStack(), stack)) {
                 slot = PlayerInventory.OFF_HAND_SLOT;
             }
-            this.stackSlot = slot; // preserves the stack slot rahhh!!!
+
+            this.stackSlot = slot;
         }
+
+        this.ignoreCameraFrustum = true;
     }
 
     public MalachiteDaggerEntity(World world, double x, double y, double z, ItemStack stack) {
@@ -93,10 +99,28 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         this.creative = creative;
     }
 
+    public void setVoltage(boolean voltage) {
+        this.dataTracker.set(VOLTAGE, voltage);
+    }
+
+    public boolean isVoltage() {
+        return this.dataTracker.get(VOLTAGE);
+    }
+
+    public boolean isMagnetic() {
+        return this.dataTracker.get(MAGNETIC);
+    }
+
+    public void setMagnetic(boolean magnetic) {
+        this.dataTracker.set(MAGNETIC, magnetic);
+    }
+
     @Override
     public void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(THROWN_ITEM, this.getDefaultItemStack());
+        builder.add(VOLTAGE, false);
+        builder.add(MAGNETIC, false);
     }
 
     public void tick() {
@@ -143,23 +167,43 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
     @Override
     public void onBlockHit(BlockHitResult blockHitResult) {
-        BlockState blockState = this.getWorld().getBlockState(blockHitResult.getBlockPos());
-        blockState.onProjectileHit(this.getWorld(), blockState, blockHitResult, this);
-        Vec3d vec3d = blockHitResult.getPos().subtract(this.getX(), this.getY(), this.getZ());
-        this.setVelocity(vec3d);
+        World world = this.getWorld();
         ItemStack itemStack = this.getWeaponStack();
-        World var5 = this.getWorld();
-        if (var5 instanceof ServerWorld serverWorld) {
+        BlockState blockState = this.getWorld().getBlockState(blockHitResult.getBlockPos());
+        Vec3d vec3d = blockHitResult.getPos().subtract(this.getX(), this.getY(), this.getZ());
+        Vec3d vec3d2 = vec3d.normalize().multiply(0.05);
+
+        blockState.onProjectileHit(this.getWorld(), blockState, blockHitResult, this);
+        this.setVelocity(vec3d);
+
+        if (world instanceof ServerWorld serverWorld) {
             if (itemStack != null) {
                 this.onBlockHitEnchantmentEffects(serverWorld, blockHitResult, itemStack);
             }
         }
-        Vec3d vec3d2 = vec3d.normalize().multiply(0.05);
+
         this.setPos(this.getX() - vec3d2.x, this.getY() - vec3d2.y, this.getZ() - vec3d2.z);
         this.playSound(this.getSound(), 4.0F, 1.2F / (this.random.nextFloat() * 0.2F + 0.9F));
+
         this.inGround = true;
         this.shake = 7;
+
         this.setCritical(false);
+
+        if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
+            living.teleportTo(new TeleportTarget(
+                    serverWorld,
+                    this.getPos(),
+                    Vec3d.ZERO,
+                    living.getYaw(),
+                    living.getPitch(),
+                    TeleportTarget.NO_OP
+            ));
+
+            ItemStack stack = this.getItem();
+            stack.set(MalachiteDataComponents.MALACHITE, MalachiteComponent.getOrDefault(stack).withCharge(0));
+            this.setItemStack(stack);
+        }
     }
 
     public void onEntityHit(EntityHitResult entityHitResult) {
@@ -194,16 +238,18 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     }
 
     public boolean tryPickup(PlayerEntity player) {
-        if (this.isNoClip() && this.isOwner(player) && stackSlot != -1) { // if hammer is returning and owned by the player and stack slot is valid slot
-            if (player.getInventory().getStack(stackSlot).isEmpty()) { // checks main inventory first
+        if (this.isNoClip() && this.isOwner(player) && stackSlot != -1) {
+            if (player.getInventory().getStack(stackSlot).isEmpty()) {
                 player.getInventory().setStack(stackSlot, this.asItemStack());
                 return true;
             }
-            if (stackSlot == PlayerInventory.OFF_HAND_SLOT && player.getOffHandStack().isEmpty()) { // checks offhand if slot not found in main inventory
+
+            if (stackSlot == PlayerInventory.OFF_HAND_SLOT && player.getOffHandStack().isEmpty()) {
                 player.getInventory().setStack(PlayerInventory.OFF_HAND_SLOT, this.asItemStack());
                 return true;
             }
-        } // otherwise defaults to normal insertion behavior
+        }
+
         return super.tryPickup(player) || this.isNoClip() && this.isOwner(player) && player.getInventory().insertStack(this.asItemStack());
     }
 
@@ -231,13 +277,22 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
             if (component.charge() == component.maxCharge()) {
                 target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600));
-                Malachite.spawnBlast(this, 0x53efac, 3.0f, Vec3d.ZERO);
+                Util.spawnBlast(this, 0xFF53efac, 3.0f, Vec3d.ZERO);
                 if (!this.creative) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
                 this.setItemStack(stack);
             }
-        }
 
-        //target.addStatusEffect(new StatusEffectInstance(GildedEffects.WATCHED, 240, 0));
+            if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
+                living.teleportTo(new TeleportTarget(
+                        serverWorld,
+                        this.getPos(),
+                        Vec3d.ZERO,
+                        living.getYaw(),
+                        living.getPitch(),
+                        TeleportTarget.NO_OP
+                ));
+            }
+        }
     }
 
     public void knockback(LivingEntity target, DamageSource source) {
@@ -246,7 +301,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
             double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
             Vec3d vec3d = this.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
             if (vec3d.lengthSquared() > 0.0) {
-                target.addVelocity(vec3d.x, 0.1, vec3d.z);
+                target.addVelocity(vec3d.x * (this.isMagnetic() ? -1 : 1), 0.1, vec3d.z * (this.isMagnetic() ? -1 : 1));
             }
         } else {
             super.knockback(target, source);
@@ -259,6 +314,8 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         this.charged = nbt.getBoolean("Charged");
         this.creative = nbt.getBoolean("Creative");
         this.stackSlot = nbt.getInt("StackSlot");
+        this.setVoltage(nbt.getBoolean("Voltage"));
+        this.setMagnetic(nbt.getBoolean("Magnetic"));
     }
 
     public void writeCustomDataToNbt(NbtCompound nbt) {
@@ -267,17 +324,14 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         nbt.putBoolean("BreakBlocks", this.charged);
         nbt.putBoolean("Creative", this.creative);
         nbt.putInt("StackSlot", this.stackSlot);
+        nbt.putBoolean("Voltage", this.isVoltage());
+        nbt.putBoolean("Magnetic", this.isMagnetic());
     }
 
     public void age() {
         if (this.pickupType != PickupPermission.ALLOWED) {
             super.age();
         }
-
-    }
-
-    public boolean shouldRender(double cameraX, double cameraY, double cameraZ) {
-        return true;
     }
 
     @Environment(value= EnvType.CLIENT)
@@ -285,6 +339,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         if (!this.inGround) {
             return age;
         }
-        return 1.1f;
+
+        return 1.1F;
     }
 }

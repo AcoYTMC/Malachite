@@ -1,142 +1,142 @@
 {
-     "variants": {
-          "charge=0,facing=down": {
-               "model": "malachite:block/pylon/malachite_pylon_0",
-               "x": 180
-          },
-          "charge=0,facing=east": {
-               "model": "malachite:block/pylon/malachite_pylon_0",
-               "x": 90,
-               "y": 90
-          },
-          "charge=0,facing=north": {
-               "model": "malachite:block/pylon/malachite_pylon_0",
-               "x": 90
-          },
-          "charge=0,facing=south": {
-               "model": "malachite:block/pylon/malachite_pylon_0",
-               "x": 90,
-               "y": 180
-          },
-          "charge=0,facing=up": {
-               "model": "malachite:block/pylon/malachite_pylon_0"
-          },
-          "charge=0,facing=west": {
-               "model": "malachite:block/pylon/malachite_pylon_0",
-               "x": 90,
-               "y": 270
-          },
+    "variants": {
+        "charge=0,facing=down": {
+            "model": "malachite:block/pylon/malachite_pylon_0",
+            "x": 180
+        },
+        "charge=0,facing=east": {
+            "model": "malachite:block/pylon/malachite_pylon_0",
+            "x": 90,
+            "y": 90
+        },
+        "charge=0,facing=north": {
+            "model": "malachite:block/pylon/malachite_pylon_0",
+            "x": 90
+        },
+        "charge=0,facing=south": {
+            "model": "malachite:block/pylon/malachite_pylon_0",
+            "x": 90,
+            "y": 180
+        },
+        "charge=0,facing=up": {
+            "model": "malachite:block/pylon/malachite_pylon_0"
+        },
+        "charge=0,facing=west": {
+            "model": "malachite:block/pylon/malachite_pylon_0",
+            "x": 90,
+            "y": 270
+        },
 
 
-          "charge=1,facing=down": {
-               "model": "malachite:block/pylon/malachite_pylon_1",
-               "x": 180
-          },
-          "charge=1,facing=east": {
-               "model": "malachite:block/pylon/malachite_pylon_1",
-               "x": 90,
-               "y": 90
-          },
-          "charge=1,facing=north": {
-               "model": "malachite:block/pylon/malachite_pylon_1",
-               "x": 90
-          },
-          "charge=1,facing=south": {
-               "model": "malachite:block/pylon/malachite_pylon_1",
-               "x": 90,
-               "y": 180
-          },
-          "charge=1,facing=up": {
-               "model": "malachite:block/pylon/malachite_pylon_1"
-          },
-          "charge=1,facing=west": {
-               "model": "malachite:block/pylon/malachite_pylon_1",
-               "x": 90,
-               "y": 270
-          },
+        "charge=1,facing=down": {
+            "model": "malachite:block/pylon/malachite_pylon_1",
+            "x": 180
+        },
+        "charge=1,facing=east": {
+            "model": "malachite:block/pylon/malachite_pylon_1",
+            "x": 90,
+            "y": 90
+        },
+        "charge=1,facing=north": {
+            "model": "malachite:block/pylon/malachite_pylon_1",
+            "x": 90
+        },
+        "charge=1,facing=south": {
+            "model": "malachite:block/pylon/malachite_pylon_1",
+            "x": 90,
+            "y": 180
+        },
+        "charge=1,facing=up": {
+            "model": "malachite:block/pylon/malachite_pylon_1"
+        },
+        "charge=1,facing=west": {
+            "model": "malachite:block/pylon/malachite_pylon_1",
+            "x": 90,
+            "y": 270
+        },
 
 
-          "charge=2,facing=down": {
-               "model": "malachite:block/pylon/malachite_pylon_2",
-               "x": 180
-          },
-          "charge=2,facing=east": {
-               "model": "malachite:block/pylon/malachite_pylon_2",
-               "x": 90,
-               "y": 90
-          },
-          "charge=2,facing=north": {
-               "model": "malachite:block/pylon/malachite_pylon_2",
-               "x": 90
-          },
-          "charge=2,facing=south": {
-               "model": "malachite:block/pylon/malachite_pylon_2",
-               "x": 90,
-               "y": 180
-          },
-          "charge=2,facing=up": {
-               "model": "malachite:block/pylon/malachite_pylon_2"
-          },
-          "charge=2,facing=west": {
-               "model": "malachite:block/pylon/malachite_pylon_2",
-               "x": 90,
-               "y": 270
-          },
+        "charge=2,facing=down": {
+            "model": "malachite:block/pylon/malachite_pylon_2",
+            "x": 180
+        },
+        "charge=2,facing=east": {
+            "model": "malachite:block/pylon/malachite_pylon_2",
+            "x": 90,
+            "y": 90
+        },
+        "charge=2,facing=north": {
+            "model": "malachite:block/pylon/malachite_pylon_2",
+            "x": 90
+        },
+        "charge=2,facing=south": {
+            "model": "malachite:block/pylon/malachite_pylon_2",
+            "x": 90,
+            "y": 180
+        },
+        "charge=2,facing=up": {
+            "model": "malachite:block/pylon/malachite_pylon_2"
+        },
+        "charge=2,facing=west": {
+            "model": "malachite:block/pylon/malachite_pylon_2",
+            "x": 90,
+            "y": 270
+        },
 
 
-          "charge=3,facing=down": {
-               "model": "malachite:block/pylon/malachite_pylon_3",
-               "x": 180
-          },
-          "charge=3,facing=east": {
-               "model": "malachite:block/pylon/malachite_pylon_3",
-               "x": 90,
-               "y": 90
-          },
-          "charge=3,facing=north": {
-               "model": "malachite:block/pylon/malachite_pylon_3",
-               "x": 90
-          },
-          "charge=3,facing=south": {
-               "model": "malachite:block/pylon/malachite_pylon_3",
-               "x": 90,
-               "y": 180
-          },
-          "charge=3,facing=up": {
-               "model": "malachite:block/pylon/malachite_pylon_3"
-          },
-          "charge=3,facing=west": {
-               "model": "malachite:block/pylon/malachite_pylon_3",
-               "x": 90,
-               "y": 270
-          },
+        "charge=3,facing=down": {
+            "model": "malachite:block/pylon/malachite_pylon_3",
+            "x": 180
+        },
+        "charge=3,facing=east": {
+            "model": "malachite:block/pylon/malachite_pylon_3",
+            "x": 90,
+            "y": 90
+        },
+        "charge=3,facing=north": {
+            "model": "malachite:block/pylon/malachite_pylon_3",
+            "x": 90
+        },
+        "charge=3,facing=south": {
+            "model": "malachite:block/pylon/malachite_pylon_3",
+            "x": 90,
+            "y": 180
+        },
+        "charge=3,facing=up": {
+            "model": "malachite:block/pylon/malachite_pylon_3"
+        },
+        "charge=3,facing=west": {
+            "model": "malachite:block/pylon/malachite_pylon_3",
+            "x": 90,
+            "y": 270
+        },
 
 
-          "charge=4,facing=down": {
-               "model": "malachite:block/pylon/malachite_pylon_4",
-               "x": 180
-          },
-          "charge=4,facing=east": {
-               "model": "malachite:block/pylon/malachite_pylon_4",
-               "x": 90,
-               "y": 90
-          },
-          "charge=4,facing=north": {
-               "model": "malachite:block/pylon/malachite_pylon_4",
-               "x": 90
-          },
-          "charge=4,facing=south": {
-               "model": "malachite:block/pylon/malachite_pylon_4",
-               "x": 90,
-               "y": 180
-          },
-          "charge=4,facing=up": {
-               "model": "malachite:block/pylon/malachite_pylon_4"
-          },
-          "charge=4,facing=west": {
-               "model": "malachite:block/pylon/malachite_pylon_4",
-               "x": 90,
-               "y": 270
-          }
-     }
+        "charge=4,facing=down": {
+            "model": "malachite:block/pylon/malachite_pylon_4",
+            "x": 180
+        },
+        "charge=4,facing=east": {
+            "model": "malachite:block/pylon/malachite_pylon_4",
+            "x": 90,
+            "y": 90
+        },
+        "charge=4,facing=north": {
+            "model": "malachite:block/pylon/malachite_pylon_4",
+            "x": 90
+        },
+        "charge=4,facing=south": {
+            "model": "malachite:block/pylon/malachite_pylon_4",
+            "x": 90,
+            "y": 180
+        },
+        "charge=4,facing=up": {
+            "model": "malachite:block/pylon/malachite_pylon_4"
+        },
+        "charge=4,facing=west": {
+            "model": "malachite:block/pylon/malachite_pylon_4",
+            "x": 90,
+            "y": 270
+        }
+    }
 }

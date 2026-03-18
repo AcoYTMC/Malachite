@@ -18,10 +18,8 @@ public record ShockwaveParticleEffect(int color, float size) implements Particle
     ).apply(instance, ShockwaveParticleEffect::new));
 
     public static final PacketCodec<RegistryByteBuf, ShockwaveParticleEffect> PACKET_CODEC = PacketCodec.tuple(
-            PacketCodecs.INTEGER,
-            ShockwaveParticleEffect::color,
-            PacketCodecs.FLOAT,
-            ShockwaveParticleEffect::size,
+            PacketCodecs.INTEGER, ShockwaveParticleEffect::color,
+            PacketCodecs.FLOAT, ShockwaveParticleEffect::size,
             ShockwaveParticleEffect::new
     );
 

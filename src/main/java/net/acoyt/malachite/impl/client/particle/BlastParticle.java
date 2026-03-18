@@ -21,6 +21,7 @@ public class BlastParticle extends AnimatedParticle {
     private final SpriteProvider spriteWithAge;
     private final Quaternionf quaternion;
     private final Vector3f color;
+    private final boolean forceBillboard;
 
     public BlastParticle(ClientWorld world, double x, double y, double z, SpriteProvider spriteWithAge, BlastParticleEffect particleEffect) {
         super(world, x, y, z, spriteWithAge, 0.0F);
@@ -28,7 +29,7 @@ public class BlastParticle extends AnimatedParticle {
         this.gravityStrength = 0.0F;
 
         this.scale = particleEffect.size();
-        this.maxAge = MalachiteConfig.billboardBlast ? 72 : 24;
+        this.maxAge = MalachiteConfig.billboardBlast ? 576 : 24;
 
         this.velocityX = 0.0F;
         this.velocityY = 0.0F;
@@ -42,10 +43,12 @@ public class BlastParticle extends AnimatedParticle {
         this.setSpriteForAge(spriteWithAge);
 
         this.color = PortingUtils.toVector(particleEffect.color());
+
+        this.forceBillboard = particleEffect.forceBillboard();
     }
 
     public void method_60373(VertexConsumer buffer, Camera camera, Quaternionf quaternionf, float ticks) {
-        if (MalachiteConfig.billboardBlast) {
+        if (MalachiteConfig.billboardBlast || this.forceBillboard) {
             this.prevPosX = this.x;
             this.prevPosY = this.y;
             this.prevPosZ = this.z;

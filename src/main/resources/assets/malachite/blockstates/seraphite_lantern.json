@@ -1,0 +1,10 @@
+{
+    "variants": {
+        "hanging=false": {
+            "model": "malachite:block/seraphite_lantern"
+        },
+        "hanging=true": {
+            "model": "malachite:block/seraphite_lantern_hanging"
+        }
+    }
+}

@@ -5,13 +5,13 @@ import net.acoyt.malachite.impl.Malachite;
 import net.acoyt.malachite.impl.block.MalachitePylonBlock;
 import net.acoyt.malachite.impl.component.MalachiteComponent;
 import net.acoyt.malachite.impl.entity.MalachiteDaggerEntity;
-import net.acoyt.malachite.impl.index.MalachiteDataComponents;
-import net.acoyt.malachite.impl.index.MalachiteEffects;
-import net.acoyt.malachite.impl.index.MalachiteSounds;
-import net.acoyt.malachite.impl.index.MalachiteToolMaterials;
+import net.acoyt.malachite.impl.index.*;
+import net.acoyt.malachite.impl.util.Util;
 import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -25,6 +25,7 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
+import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -45,9 +46,18 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
         } else {
             target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
 
-            Malachite.spawnBlast(attacker, 0x53efac, 3.0f, attacker.getRotationVector().multiply(1.2, 0, 1.2).add(0, 1, 0));
+            Util.spawnBlast(attacker, 0xFF53efac, 1.0f, attacker.getRotationVector().multiply(1.2, 0, 1.2).add(0, 1, 0));
 
             if (!attacker.isInCreativeMode()) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
+        }
+
+        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC)) {
+            double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
+            Vec3d vec3d = attacker.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
+            if (vec3d.lengthSquared() > 0.0) {
+                target.setVelocity(attacker.getRotationVector().multiply(-3, 0, -3).add(0, 0.1, 0));
+                target.velocityModified = true;
+            }
         }
 
         return true;
@@ -58,6 +68,8 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
         if (!user.getItemCooldownManager().isCoolingDown(stack.getItem())) {
             MalachiteDaggerEntity daggerEntity = new MalachiteDaggerEntity(world, user, stack);
             daggerEntity.setCharged(MalachiteComponent.fullyCharged(stack));
+            daggerEntity.setMagnetic(EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC));
+            daggerEntity.setVoltage(EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.VOLTAGE));
             daggerEntity.setVelocity(user, user.getPitch(), user.getYaw(), 0.0F, 2.5F * 0.5F, 1.0F);
             daggerEntity.setCreative(user.isCreative());
             if (user.isCreative()) {
@@ -92,7 +104,7 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
 
     public void appendTooltip(ItemStack stack, TooltipContext context, List<Text> tooltip, TooltipType type) {
         if (MalachiteComponent.fullyCharged(stack)) {
-            tooltip.add(Text.translatable("item.malachite.tooltip.charged").withColor(0x53efac));
+            tooltip.add(Text.translatable("item.malachite.tooltip.charged").withColor(0xFF53efac));
         }
     }
 
@@ -101,7 +113,7 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
     }
 
     public int getItemBarColor(ItemStack stack) {
-        return 0x43bd86;
+        return 0xFF43bd86;
     }
 
     public int getItemBarStep(ItemStack stack) {

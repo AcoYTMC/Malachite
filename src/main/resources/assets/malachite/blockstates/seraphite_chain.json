@@ -1,0 +1,16 @@
+{
+    "variants": {
+        "axis=x": {
+            "model": "malachite:block/seraphite_chain",
+            "x": 90,
+            "y": 90
+        },
+        "axis=y": {
+            "model": "malachite:block/seraphite_chain"
+        },
+        "axis=z": {
+            "model": "malachite:block/seraphite_chain",
+            "x": 90
+        }
+    }
+}
