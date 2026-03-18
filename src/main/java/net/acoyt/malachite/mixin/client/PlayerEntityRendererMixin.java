@@ -1,6 +1,6 @@
 package net.acoyt.malachite.mixin.client;
 
-import net.acoyt.malachite.index.MalachiteItems;
+import net.acoyt.malachite.impl.index.MalachiteItems;
 import net.minecraft.client.network.AbstractClientPlayerEntity;
 import net.minecraft.client.render.entity.EntityRendererFactory;
 import net.minecraft.client.render.entity.LivingEntityRenderer;
@@ -20,25 +20,19 @@ public abstract class PlayerEntityRendererMixin extends LivingEntityRenderer<Abs
         super(ctx, model, shadowRadius);
     }
 
-    @Inject(
-            method = {"getArmPose"},
-            at = {@At("HEAD")},
-            cancellable = true
-    )
+    @Inject(method = "getArmPose", at = @At("HEAD"), cancellable = true)
     private static void malachite$twoHanding(AbstractClientPlayerEntity player, Hand hand, CallbackInfoReturnable<ArmPose> cir) {
         ItemStack stack = player.getStackInHand(hand);
 
         if (stack.isOf(MalachiteItems.MALACHITE_LONGSWORD)) {
             boolean blocking = player.getActiveItem() != null && player.getActiveItem().isOf(MalachiteItems.MALACHITE_LONGSWORD);
             if (blocking) {
+                player.bodyYaw = player.headYaw;
+                player.prevBodyYaw = player.prevHeadYaw;
+
                 cir.setReturnValue(ArmPose.CROSSBOW_HOLD);
             } else {
                 cir.setReturnValue(ArmPose.CROSSBOW_CHARGE);
-            }
-
-            if (blocking) {
-                player.bodyYaw = player.headYaw;
-                player.prevBodyYaw = player.prevHeadYaw;
             }
         }
     }

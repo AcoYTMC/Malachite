@@ -1,0 +1,29 @@
+{
+  "parent": "minecraft:adventure/root",
+  "criteria": {
+    "electroplating": {
+      "conditions": {
+        "recipe_id": "malachite:malachite_longsword"
+      },
+      "trigger": "minecraft:recipe_crafted"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.malachite.electroplating.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "malachite:malachite_longsword"
+    },
+    "title": {
+      "translate": "advancements.malachite.electroplating.title"
+    }
+  },
+  "requirements": [
+    [
+      "electroplating"
+    ]
+  ]
+}

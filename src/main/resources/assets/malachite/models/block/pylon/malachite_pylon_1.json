@@ -1,7 +1,7 @@
 {
-     "parent": "malachite:block/pylon/malachite_pylon",
-     "textures": {
-          "0": "malachite:block/pylon/malachite_pylon_1",
-          "particle": "malachite:block/chiseled_seraphite"
-     }
+    "parent": "malachite:block/pylon/malachite_pylon",
+    "textures": {
+        "0": "malachite:block/pylon/malachite_pylon_1",
+        "particle": "malachite:block/chiseled_seraphite"
+    }
 }

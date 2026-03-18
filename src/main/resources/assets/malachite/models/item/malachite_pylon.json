@@ -1,6 +1,6 @@
 {
-     "parent": "item/generated",
-     "textures": {
-          "layer0": "malachite:item/malachite_pylon"
-     }
+    "parent": "item/generated",
+    "textures": {
+        "layer0": "malachite:item/malachite_pylon"
+    }
 }

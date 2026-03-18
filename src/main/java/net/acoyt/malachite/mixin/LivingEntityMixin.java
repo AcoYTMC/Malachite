@@ -1,13 +1,15 @@
 package net.acoyt.malachite.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
-import net.acoyt.malachite.cca.NearbyPylonComponent;
-import net.acoyt.malachite.component.MalachiteComponent;
-import net.acoyt.malachite.entity.MalachiteDaggerEntity;
-import net.acoyt.malachite.index.MalachiteDamageTypes;
-import net.acoyt.malachite.index.MalachiteDataComponents;
-import net.acoyt.malachite.index.MalachiteEffects;
-import net.acoyt.malachite.index.MalachiteItems;
+import net.acoyt.malachite.impl.cca.entity.NearbyPylonComponent;
+import net.acoyt.malachite.impl.component.MalachiteComponent;
+import net.acoyt.malachite.impl.entity.MalachiteDaggerEntity;
+import net.acoyt.malachite.impl.index.MalachiteDataComponents;
+import net.acoyt.malachite.impl.index.MalachiteEffects;
+import net.acoyt.malachite.impl.index.MalachiteEnchantmentEffects;
+import net.acoyt.malachite.impl.index.MalachiteItems;
+import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
@@ -44,7 +46,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (stack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
             MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
             if (component.charge() >= component.maxCharge()) {
-                return f + 6.5f;
+                return (f + 6.5f) * (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC) ? -3 : 1);
             }
         }
 
@@ -53,7 +55,7 @@ public abstract class LivingEntityMixin extends Entity {
             if (itemStack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
                 MalachiteComponent component = itemStack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
                 if (component.charge() >= component.maxCharge()) {
-                    return f + 6.5f;
+                    return (f + 6.5f) * (malachiteDagger.isMagnetic() ? -3 : 1);
                 }
             }
         }

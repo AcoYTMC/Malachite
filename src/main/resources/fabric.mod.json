@@ -1,47 +1,47 @@
 {
-     "schemaVersion": 1,
-     "id": "malachite",
-     "version": "${version}",
-     "name": "Malachite",
-     "description": "",
-     "authors": [
-          "AcoYT - Dev",
-          "Eyalego - Texture Artist & Ideas"
-     ],
-     "license": "ARR",
-     "icon": "assets/malachite/icon3.png",
-     "environment": "*",
-     "entrypoints": {
-          "main": [
-               "net.acoyt.malachite.Malachite"
-          ],
-          "client": [
-               "net.acoyt.malachite.MalachiteClient"
-          ],
-          "fabric-datagen": [
-               "net.acoyt.malachite.MalachiteDatagen"
-          ],
-          "cardinal-components": [
-               "net.acoyt.malachite.cca.MalachiteComponents"
-          ],
-          "modmenu": [
-               "net.acoyt.malachite.compat.MalachiteModMenu"
-          ]
-     },
-     "accessWidener": "malachite.accesswidener",
-     "mixins": [
-          "malachite.mixins.json"
-     ],
-     "depends": {
-          "fabricloader": ">=0.15.11",
-          "minecraft": "~1.21.1",
-          "java": ">=21",
-          "fabric-api": "*",
-          "acornlib": "*"
-     },
-     "custom": {
-          "cardinal-components": [
-               "malachite:nearby_pylon"
-          ]
-     }
+    "schemaVersion": 1,
+    "id": "malachite",
+    "version": "${version}",
+    "name": "Malachite",
+    "description": "",
+    "authors": [
+        "AcoYT - Dev",
+        "Eyalego - Texture Artist & Ideas"
+    ],
+    "license": "ARR",
+    "icon": "assets/malachite/icon3.png",
+    "environment": "*",
+    "entrypoints": {
+        "main": [
+            "net.acoyt.malachite.impl.Malachite"
+        ],
+        "client": [
+            "net.acoyt.malachite.impl.MalachiteClient"
+        ],
+        "fabric-datagen": [
+            "net.acoyt.malachite.data.MalachiteDatagen"
+        ],
+        "cardinal-components": [
+            "net.acoyt.malachite.impl.cca.MalachiteComponents"
+        ],
+        "modmenu": [
+            "net.acoyt.malachite.compat.MalachiteModMenu"
+        ]
+    },
+    "accessWidener": "malachite.accesswidener",
+    "mixins": [
+        "malachite.mixins.json"
+    ],
+    "depends": {
+        "fabricloader": ">=0.15.11",
+        "minecraft": "~1.21.1",
+        "java": ">=21",
+        "fabric-api": "*",
+        "acornlib": "*"
+    },
+    "custom": {
+        "cardinal-components": [
+            "malachite:nearby_pylon"
+        ]
+    }
 }

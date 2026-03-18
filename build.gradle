@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.10-SNAPSHOT'
+    id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -63,21 +63,24 @@ dependencies {
 	// Fabric API. This is technically optional, but you probably want it anyway.
 	modImplementation "net.fabricmc.fabric-api:fabric-api:${project.fabric_version}"
 
-    // AcornLib
+    // MixinSquared
+    include(implementation(annotationProcessor("com.github.bawnorton.mixinsquared:mixinsquared-fabric:${project.mixinsquared_version}")))
+
+    // Libraries
+    modImplementation "maven.modrinth:backslot-mod:${project.backslot_version}"
     modImplementation "maven.modrinth:acornlib:${project.acornlib_version}"
+    modImplementation include("xyz.amymialee:mialib:${project.mialib_version}-1.21")
 
-	// Config
-	modApi ("com.terraformersmc:modmenu:${project.modmenu_version}")
-	modImplementation ("maven.modrinth:midnightlib:${project.midnightlib_version}")
+    // Trinkets
+    modImplementation "dev.emi:trinkets:${project.trinkets_version}"
 
-    // Cardinal Components API
+    // Config
+    modApi ("com.terraformersmc:modmenu:${project.modmenu_version}")
+    modImplementation ("maven.modrinth:midnightlib:${project.midnightlib_version}")
+
+    // CCA
     modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-base:${project.cca_version}")
     modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-entity:${project.cca_version}")
-    //modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-block:${project.cca_version}")
-    //modImplementation include("org.ladysnake.cardinal-components-api:cardinal-components-world:${project.cca_version}")
-
-    // Libs
-    modImplementation include("xyz.amymialee:mialib:${project.mialib_version}-1.21")
     modCompileOnly "maven.modrinth:iris:${project.iris_version}"
 }
 

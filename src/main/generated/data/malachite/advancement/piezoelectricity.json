@@ -1,0 +1,38 @@
+{
+  "parent": "malachite:electroplating",
+  "criteria": {
+    "piezoelectricity": {
+      "conditions": {
+        "location": [
+          {
+            "condition": "minecraft:location_check",
+            "predicate": {
+              "block": {
+                "blocks": "malachite:malachite_pylon"
+              }
+            }
+          }
+        ]
+      },
+      "trigger": "minecraft:placed_block"
+    }
+  },
+  "display": {
+    "description": {
+      "translate": "advancements.malachite.piezoelectricity.description"
+    },
+    "frame": "goal",
+    "icon": {
+      "count": 1,
+      "id": "malachite:malachite_pylon"
+    },
+    "title": {
+      "translate": "advancements.malachite.piezoelectricity.title"
+    }
+  },
+  "requirements": [
+    [
+      "piezoelectricity"
+    ]
+  ]
+}

@@ -1,4 +1,5 @@
-// 1.21.1	2025-10-28T16:13:40.5835069	Malachite/Block Loot Tables
+// 1.21.1	2026-03-16T22:02:01.018237	Malachite/Block Loot Tables
+b3fbd5bd1957e372ea3356aedfc32e110e7cd915 data\malachite\loot_table\blocks\seraphite_chain.json
 9e6958c120b51067fff7c5cc97dfc32bd8d72458 data\malachite\loot_table\blocks\medium_malachite_bud.json
 90efa9e9bcf0b2313ab40e36811bf173c482fc43 data\malachite\loot_table\blocks\polished_seraphite.json
 05971a9f8486c30e387e4f84a96e60a5879aa1a0 data\malachite\loot_table\blocks\malachite_pylon.json
@@ -8,6 +9,7 @@ ee258dd858d16db78344d036874ce9b73a68eb63 data\malachite\loot_table\blocks\small_
 ad575d6130d389b99e4f499fe5259b83d26b23a8 data\malachite\loot_table\blocks\seraphite_stairs.json
 ba13f34c9a00ae2a5257c2329120907e4d591d0f data\malachite\loot_table\blocks\polished_seraphite_stairs.json
 6d95cd4194fa158294bfbae0c3fdf5dc6f720efa data\malachite\loot_table\blocks\polished_seraphite_wall.json
+f86e0054e3044cdb1101db6f07fdfbca1a88fbf4 data\malachite\loot_table\blocks\seraphite_lantern.json
 a1a750d3ba4da419ae29958b7051889915acd16e data\malachite\loot_table\blocks\budding_copper.json
 79091f1a7b257790b975109039a140dad76a7692 data\malachite\loot_table\blocks\seraphite_brick_wall.json
 52d7a6eb43f86b582430af41469c70c293d37533 data\malachite\loot_table\blocks\polished_seraphite_slab.json

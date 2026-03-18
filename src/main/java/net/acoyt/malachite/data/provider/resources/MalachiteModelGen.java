@@ -1,0 +1,43 @@
+package net.acoyt.malachite.data.provider.resources;
+
+import net.acoyt.malachite.impl.index.MalachiteItems;
+import net.fabricmc.fabric.api.datagen.v1.FabricDataOutput;
+import net.fabricmc.fabric.api.datagen.v1.provider.FabricModelProvider;
+import net.minecraft.data.client.BlockStateModelGenerator;
+import net.minecraft.data.client.BlockStateModelGenerator.BlockTexturePool;
+import net.minecraft.data.client.ItemModelGenerator;
+import net.minecraft.data.client.Models;
+
+import static net.acoyt.malachite.impl.index.MalachiteBlocks.*;
+
+public class MalachiteModelGen extends FabricModelProvider {
+    public MalachiteModelGen(FabricDataOutput output) {
+        super(output);
+    }
+
+    public void generateBlockStateModels(BlockStateModelGenerator generator) {
+        BlockTexturePool seraphitePool = generator.registerCubeAllModelTexturePool(SERAPHITE)
+                .slab(SERAPHITE_SLAB)
+                .stairs(SERAPHITE_STAIRS)
+                .wall(SERAPHITE_WALL);
+
+        BlockTexturePool polishedSeraphitePool = generator.registerCubeAllModelTexturePool(POLISHED_SERAPHITE)
+                .slab(POLISHED_SERAPHITE_SLAB)
+                .stairs(POLISHED_SERAPHITE_STAIRS)
+                .wall(POLISHED_SERAPHITE_WALL);
+
+        BlockTexturePool seraphiteBricksPool = generator.registerCubeAllModelTexturePool(SERAPHITE_BRICKS)
+                .slab(SERAPHITE_BRICK_SLAB)
+                .stairs(SERAPHITE_BRICK_STAIRS)
+                .wall(SERAPHITE_BRICK_WALL);
+
+        generator.registerAmethyst(MALACHITE_CLUSTER);
+        generator.registerAmethyst(LARGE_MALACHITE_BUD);
+        generator.registerAmethyst(MEDIUM_MALACHITE_BUD);
+        generator.registerAmethyst(SMALL_MALACHITE_BUD);
+    }
+
+    public void generateItemModels(ItemModelGenerator generator) {
+        generator.register(MalachiteItems.MALACHITE, Models.GENERATED);
+    }
+}
