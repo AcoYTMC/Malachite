@@ -11,7 +11,6 @@ import net.minecraft.block.BlockState;
 import net.minecraft.client.render.model.json.ModelTransformationMode;
 import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.effect.StatusEffectInstance;
 import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
@@ -25,7 +24,6 @@ import net.minecraft.util.ActionResult;
 import net.minecraft.util.Hand;
 import net.minecraft.util.Identifier;
 import net.minecraft.util.TypedActionResult;
-import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
@@ -52,12 +50,8 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
         }
 
         if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC)) {
-            double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
-            Vec3d vec3d = attacker.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
-            if (vec3d.lengthSquared() > 0.0) {
-                target.setVelocity(attacker.getRotationVector().multiply(-3, 0, -3).add(0, 0.1, 0));
-                target.velocityModified = true;
-            }
+            target.setVelocity(attacker.getRotationVector().multiply(-1, 0, -1).add(0, 0.1, 0));
+            target.velocityModified = true;
         }
 
         return true;

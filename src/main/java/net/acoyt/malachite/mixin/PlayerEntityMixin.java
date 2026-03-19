@@ -1,66 +1,59 @@
 package net.acoyt.malachite.mixin;
 
+import com.llamalad7.mixinextras.injector.ModifyReturnValue;
 import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
 import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.acoyt.malachite.api.BlockingItem;
-import net.minecraft.entity.Entity;
+import net.acoyt.malachite.impl.cca.entity.ChargedComponent;
+import net.acoyt.malachite.impl.index.MalachiteEnchantmentEffects;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.damage.DamageSource;
-import net.minecraft.entity.damage.DamageTypes;
+import net.minecraft.entity.attribute.EntityAttributes;
 import net.minecraft.entity.player.PlayerEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.registry.tag.DamageTypeTags;
-import net.minecraft.sound.SoundCategory;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
-import org.jetbrains.annotations.NotNull;
 import org.spongepowered.asm.mixin.Mixin;
-import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 
-@Mixin(value = PlayerEntity.class)
+@Mixin(PlayerEntity.class)
 public abstract class PlayerEntityMixin extends LivingEntity {
     protected PlayerEntityMixin(EntityType<? extends LivingEntity> entityType, World world) {
         super(entityType, world);
     }
 
-    @WrapOperation(
-            method = {"applyDamage"},
-            at = {@At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/entity/player/PlayerEntity;modifyAppliedDamage(Lnet/minecraft/entity/damage/DamageSource;F)F"
-            )}
-    )
-    private float swordBlock(PlayerEntity player, DamageSource source, float amount, @NotNull Operation<Float> original) {
-        float base = original.call(player, source, amount);
-        ItemStack stack = player.getMainHandStack();
-        if (!this.getWorld().isClient() && (!source.isIn(DamageTypeTags.BYPASSES_SHIELD) || source.isOf(DamageTypes.FALL)) && stack.getItem() instanceof BlockingItem blockingItem && player.isUsingItem()) {
-            Vec3d damagePos = source.getPosition();
-            if (source.isOf(DamageTypes.FALL)) {
-                if (isLookingDown(player)) {
-                    this.getWorld().playSoundFromEntity(null, this, blockingItem.blockSound(), SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
-                    blockingItem.absorbDamage(player, source, stack, base / 3.0F);
-                    return base / 4.0F;
-                }
-            } else if (damagePos != null) {
-                Vec3d rotVec = this.getRotationVec(1.0F);
-
-                Vec3d difference = damagePos.relativize(this.getEyePos()).normalize();
-                double angle = difference.dotProduct(rotVec);
-                if (!(angle < -1.0F) && angle < -0.35) {
-                    this.getWorld().playSoundFromEntity(null, this, blockingItem.blockSound(), SoundCategory.HOSTILE, 1.0F, 1.0F + this.getWorld().getRandom().nextFloat() * 0.4F);
-                    blockingItem.absorbDamage(player, source, stack, base);
-                    return base / 2.0F;
-                }
-            }
+    @ModifyReturnValue(method = "getOffGroundSpeed", at = @At("RETURN"))
+    private float malachite$chargedAirborneSpeed(float original) {
+        if (ChargedComponent.KEY.get(this).getChargedTicks() > 0) {
+            return original * 3.0F;
         }
 
-        return base;
+        return original;
     }
 
-    @Unique
-    private static boolean isLookingDown(Entity entity) {
-        return entity.getPitch() > 60.2F;
+    @WrapOperation(
+            method = "attack",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/entity/LivingEntity;takeKnockback(DDD)V"
+            )
+    )
+    private void malachite$replaceKnockback(LivingEntity instance, double strength, double x, double z, Operation<Void> original) {
+        if (EnchantmentHelper.hasAnyEnchantmentsWith(this.getMainHandStack(), MalachiteEnchantmentEffects.MAGNETIC)) {
+            strength *= 1.0 - instance.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE);
+
+            instance.velocityDirty = true;
+            Vec3d vec3d = instance.getVelocity();
+
+            Vec3d vec3d2 = new Vec3d(x, 0.0, z).normalize().multiply(strength);
+            instance.setVelocity(
+                    (vec3d.x / 2.0 - vec3d2.x) * -30,
+                    instance.isOnGround() ? Math.min(0.4, vec3d.y / 2.0 + strength) : vec3d.y,
+                    (vec3d.z / 2.0 - vec3d2.z) * -30
+            );
+
+            return;
+        }
+
+        original.call(instance, strength, x, z);
     }
 }

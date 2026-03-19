@@ -1,5 +1,8 @@
 {
   "values": [
-    "malachite:shockwave"
+    "malachite:shockwave",
+    "malachite:voltage",
+    "malachite:magnetic",
+    "malachite:disrupt"
   ]
 }

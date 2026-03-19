@@ -115,8 +115,7 @@ public class MalachitePylonBlock extends BlockWithEntity implements Waterloggabl
         return switch (state.get(FACING)) {
             case NORTH, SOUTH -> zAxisShape;
             case EAST, WEST -> xAxisShape;
-            case DOWN, UP -> yAxisShape;
-            case null -> yAxisShape;
+            default -> yAxisShape;
         };
     }
 

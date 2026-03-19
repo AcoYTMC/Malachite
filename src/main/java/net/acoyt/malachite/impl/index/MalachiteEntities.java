@@ -20,7 +20,9 @@ public interface MalachiteEntities {
             EntityType.Builder.<MalachiteDaggerEntity>create(
                     MalachiteDaggerEntity::new,
                     SpawnGroup.MISC
-            ).dimensions(0.5f, 0.5f).maxTrackingRange(64).trackingTickInterval(20)
+            ).dimensions(0.5f, 0.5f)
+                    .maxTrackingRange(64)
+                    .trackingTickInterval(20)
     );
 
     EntityType<EnergyBeamEntity> ENERGY_BEAM = create(
@@ -28,7 +30,8 @@ public interface MalachiteEntities {
             EntityType.Builder.<EnergyBeamEntity>create(
                     EnergyBeamEntity::new,
                     SpawnGroup.MISC
-            ).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight()).maxTrackingRange(64)
+            ).dimensions(EntityType.ARROW.getWidth(), EntityType.ARROW.getHeight())
+                    .maxTrackingRange(64)
     );
 
     EntityType<EnergyOrbEntity> ENERGY_ORB = create(
@@ -36,7 +39,9 @@ public interface MalachiteEntities {
             EntityType.Builder.<EnergyOrbEntity>create(
                     EnergyOrbEntity::new,
                     SpawnGroup.MISC
-            ).dimensions(0.5F, 0.5F).maxTrackingRange(64)
+            ).dimensions(0.5F, 0.5F)
+                    .maxTrackingRange(64)
+                    .eyeHeight(0.25f)
     );
 
     private static <T extends Entity> EntityType<T> create(String name, EntityType.Builder<T> builder) {

@@ -1,9 +1,11 @@
 package net.acoyt.malachite.impl.entity;
 
+import net.acoyt.malachite.impl.cca.entity.ChargedComponent;
 import net.acoyt.malachite.impl.client.particle.BlastParticleEffect;
 import net.acoyt.malachite.impl.index.MalachiteEffects;
 import net.acoyt.malachite.impl.index.MalachiteEntities;
 import net.acoyt.malachite.impl.index.MalachiteItems;
+import net.acoyt.malachite.impl.index.MalachiteParticles;
 import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
 import net.acoyt.malachite.impl.util.EnergyExplosionBehavior;
 import net.minecraft.entity.AnimationState;
@@ -11,17 +13,21 @@ import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;
 import net.minecraft.entity.data.DataTracker;
 import net.minecraft.entity.effect.StatusEffectInstance;
+import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.PersistentProjectileEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
 import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
+
+import static net.acoyt.malachite.impl.util.Util.isOwnedBy;
 
 public class EnergyOrbEntity extends PersistentProjectileEntity {
     public final AnimationState animationState = new AnimationState();
@@ -30,11 +36,6 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
         super(entityType, world);
         this.ignoreCameraFrustum = true;
         this.animationState.start(0);
-    }
-
-    @Override
-    public boolean canHit() {
-        return false;
     }
 
     public EnergyOrbEntity(World world, LivingEntity owner, @Nullable ItemStack shotFrom) {
@@ -50,6 +51,18 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
         World world = this.getWorld();
         Vec3d pos = this.getPos();
 
+        if (world.getRandom().nextInt(3) == 0 && world instanceof ServerWorld serverWorld) {
+            serverWorld.spawnParticles(
+                    MalachiteParticles.SPARK,
+                    pos.x,
+                    pos.y,
+                    pos.z,
+                    6,
+                    0.3, 0.3, 0.3,
+                    0.1
+            );
+        }
+
         if (this.age > 120) { // 6s
             if (world instanceof ServerWorld serverWorld) {
                 serverWorld.spawnParticles(
@@ -62,13 +75,13 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
                 );
             }
 
-            Box box = this.getBoundingBox().expand(4); // 10 Block radius
+            Box box = this.getBoundingBox().expand(4); // 4 Block radius
 
             for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, LivingEntity::isAlive)) {
                 living.setVelocity(pos.subtract(living.getPos()).multiply(-0.8));
                 living.velocityModified = true;
 
-                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), 8);
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (float) (4 / (living.squaredDistanceTo(this.getPos()) / 8)));
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600));
             }
 
@@ -101,15 +114,19 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
                 );
             }
 
-            Box box = this.getBoundingBox().expand(4); // 10 Block radius
+            Box box = this.getBoundingBox().expand(6); // 6 Block radius
 
-            for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, LivingEntity::isAlive)) {
+            for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, living -> living.isAlive() && !isOwnedBy(living, this.getOwner()))) {
                 living.setVelocity(pos.subtract(living.getPos()).multiply(-1.2));
                 living.velocityModified = true;
                 living.fallDistance = 0.0f;
 
-                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (float) (20 / (living.squaredDistanceTo(box.getCenter()) /3)));
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (float) (5 / (living.squaredDistanceTo(this.getPos()) / 5)));
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
+
+                if (living instanceof PlayerEntity player) {
+                    ChargedComponent.KEY.get(player).setChargedTicks(120);
+                }
             }
 
             if (projectile instanceof PersistentProjectileEntity persistentProjectile && persistentProjectile.getItemStack().getMaxCount() > 1) {
@@ -120,6 +137,22 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
 
             break;
         }
+    }
+
+    public boolean canHit() {
+        return false;
+    }
+
+    public boolean isNoClip() {
+        return true;
+    }
+
+    public SoundEvent getHitSound() {
+        return SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN;
+    }
+
+    public boolean tryPickup(PlayerEntity player) {
+        return false;
     }
 
     public ItemStack getDefaultItemStack() {

@@ -1,15 +1,10 @@
 package net.acoyt.malachite.mixin.client;
 
-import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
-import com.llamalad7.mixinextras.injector.wrapoperation.WrapOperation;
-import net.acoyt.acornlib.api.util.ItemUtils;
-import net.acoyt.malachite.impl.index.MalachiteItems;
 import net.acoyt.malachite.impl.item.MalachiteLongswordItem;
 import net.minecraft.client.model.ModelPart;
 import net.minecraft.client.render.entity.model.AnimalModel;
 import net.minecraft.client.render.entity.model.BipedEntityModel;
 import net.minecraft.entity.LivingEntity;
-import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.util.Arm;
 import net.minecraft.util.math.MathHelper;
 import org.spongepowered.asm.mixin.Final;
@@ -26,38 +21,6 @@ public abstract class BipedEntityModelMixin<T extends LivingEntity> extends Anim
 
     @Shadow protected abstract Arm getPreferredArm(T entity);
     @Shadow protected abstract ModelPart getArm(Arm arm);
-
-    @WrapOperation(
-            method = "positionRightArm",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;ordinal()I"
-            )
-    )
-    private int rightArm(BipedEntityModel.ArmPose instance, Operation<Integer> original, T entity) {
-        int ordinal = original.call(instance);
-        if (entity instanceof PlayerEntity player && player.getMainArm() == Arm.LEFT && ItemUtils.getHeldStacks(player).stream().anyMatch(stack -> stack.isOf(MalachiteItems.MALACHITE_LONGSWORD))) {
-            return Math.min(ordinal, 1);
-        }
-
-        return ordinal;
-    }
-
-    @WrapOperation(
-            method = "positionLeftArm",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/client/render/entity/model/BipedEntityModel$ArmPose;ordinal()I"
-            )
-    )
-    private int leftArm(BipedEntityModel.ArmPose instance, Operation<Integer> original, T entity) {
-        int ordinal = original.call(instance);
-        if (entity instanceof PlayerEntity player && player.getMainArm() == Arm.RIGHT && ItemUtils.getHeldStacks(player).stream().anyMatch(stack -> stack.isOf(MalachiteItems.MALACHITE_LONGSWORD))) {
-            return Math.min(ordinal, 1);
-        }
-
-        return ordinal;
-    }
 
     @Inject(method = "animateArms", at = @At("TAIL"))
     private void malachite$twoHandedAttack(T entity, float animationProgress, CallbackInfo ci) {

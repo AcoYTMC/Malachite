@@ -43,7 +43,6 @@ public class MalachiteDaggerEntityRenderer extends EntityRenderer<MalachiteDagge
         super.render(entity, yaw, tickDelta, matrices, vertexConsumers, light);
     }
 
-    @SuppressWarnings("deprecation")
     public Identifier getTexture(MalachiteDaggerEntity entity) {
         return SpriteAtlasTexture.BLOCK_ATLAS_TEXTURE;
     }

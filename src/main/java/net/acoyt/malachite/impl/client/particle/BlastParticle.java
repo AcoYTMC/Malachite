@@ -29,7 +29,7 @@ public class BlastParticle extends AnimatedParticle {
         this.gravityStrength = 0.0F;
 
         this.scale = particleEffect.size();
-        this.maxAge = 24;
+        this.maxAge = MalachiteConfig.billboardBlast ? 216 : 24;
 
         this.velocityX = 0.0F;
         this.velocityY = 0.0F;

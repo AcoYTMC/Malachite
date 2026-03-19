@@ -2,7 +2,6 @@ package net.acoyt.malachite.impl;
 
 import com.mojang.logging.LogUtils;
 import net.acoyt.acornlib.api.ALib;
-import net.acoyt.acornlib.api.ALibRegistries;
 import net.acoyt.malachite.compat.MalachiteConfig;
 import net.acoyt.malachite.impl.event.MakeBuddingCopperEvent;
 import net.acoyt.malachite.impl.event.UpdateSeraphiteEvent;
@@ -23,7 +22,6 @@ public class Malachite implements ModInitializer {
 
     public void onInitialize() {
         /* AcornLib */
-        ALibRegistries.init(MOD_ID);
         ALib.registerModMenu(MOD_ID, 0xFF38624b);
         MalachiteConfig.init(MOD_ID, MalachiteConfig.class);
 

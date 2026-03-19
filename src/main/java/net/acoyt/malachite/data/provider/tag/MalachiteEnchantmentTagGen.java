@@ -7,7 +7,7 @@ import net.minecraft.registry.tag.EnchantmentTags;
 
 import java.util.concurrent.CompletableFuture;
 
-import static net.acoyt.malachite.impl.index.data.MalachiteEnchantments.SHOCKWAVE;
+import static net.acoyt.malachite.impl.index.data.MalachiteEnchantments.*;
 
 public class MalachiteEnchantmentTagGen extends FabricTagProvider.EnchantmentTagProvider {
     public MalachiteEnchantmentTagGen(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> completableFuture) {
@@ -17,7 +17,7 @@ public class MalachiteEnchantmentTagGen extends FabricTagProvider.EnchantmentTag
     @Override
     public void configure(RegistryWrapper.WrapperLookup registries) {
         this.getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE)
-                .add(SHOCKWAVE)
+                .add(SHOCKWAVE, VOLTAGE, MAGNETIC, DISRUPT)
                 .setReplace(false);
     }
 }

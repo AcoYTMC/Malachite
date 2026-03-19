@@ -49,7 +49,6 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     public MalachiteDaggerEntity(World world, LivingEntity owner, ItemStack stack) {
         super(MalachiteEntities.MALACHITE_DAGGER, owner, world, stack, null);
         this.dataTracker.set(THROWN_ITEM, stack);
-        this.dataTracker.set(THROWN_ITEM, stack);
 
         if (owner instanceof PlayerEntity playerEntity) {
             int slot = playerEntity.getInventory().getSlotWithStack(stack); // prioritizes main hand
@@ -191,18 +190,25 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
         this.setCritical(false);
 
-        if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
-            if (this.isCharged()) {
-                living.teleportTo(new TeleportTarget(
+        if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld && MalachiteComponent.fullyCharged(this.getItem())) {
+            living.teleportTo(new TeleportTarget(
+                    serverWorld,
+                    this.getPos(),
+                    Vec3d.ZERO,
+                    living.getYaw(),
+                    living.getPitch(),
+                    TeleportTarget.NO_OP
+            ));
 
-                        serverWorld,
-                        this.getPos(),
-                        Vec3d.ZERO,
-                        living.getYaw(),
-                        living.getPitch(),
-                        TeleportTarget.NO_OP
-                ));
-            }
+            serverWorld.spawnParticles(
+                    MalachiteParticles.SPARK,
+                    this.getPos().x,
+                    this.getPos().y,
+                    this.getPos().z,
+                    6,
+                    0.3, 0.3, 0.3,
+                    0.1
+            );
 
             ItemStack stack = this.getItem();
             stack.set(MalachiteDataComponents.MALACHITE, MalachiteComponent.getOrDefault(stack).withCharge(0));
@@ -279,15 +285,13 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
                 this.setItemStack(stack);
             }
 
-            if (component.charge() == component.maxCharge()) {
+            if (MalachiteComponent.fullyCharged(stack)) {
                 target.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600));
                 Util.spawnBlast(this, 0xFF53efac, 3.0f, Vec3d.ZERO);
                 if (!this.creative) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
                 this.setItemStack(stack);
-            }
 
-            if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
-                if (this.isCharged()) {
+                if (this.isVoltage() && this.getOwner() instanceof LivingEntity living && this.getWorld() instanceof ServerWorld serverWorld) {
                     living.teleportTo(new TeleportTarget(
                             serverWorld,
                             this.getPos(),
@@ -296,6 +300,16 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
                             living.getPitch(),
                             TeleportTarget.NO_OP
                     ));
+
+                    serverWorld.spawnParticles(
+                            MalachiteParticles.SPARK,
+                            this.getPos().x,
+                            this.getPos().y,
+                            this.getPos().z,
+                            6,
+                            0.3, 0.3, 0.3,
+                            0.1
+                    );
                 }
             }
         }
@@ -307,7 +321,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
             double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
             Vec3d vec3d = this.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);
             if (vec3d.lengthSquared() > 0.0) {
-                target.addVelocity(vec3d.x * (this.isMagnetic() ? -1 : 1), 0.1, vec3d.z * (this.isMagnetic() ? -1 : 1));
+                target.addVelocity(vec3d.x * (this.isMagnetic() ? -0.7 : 1), 0.1, vec3d.z * (this.isMagnetic() ? -0.7 : 1));
             }
         } else {
             super.knockback(target, source);

@@ -1,20 +1,21 @@
 {
-  "required": true,
-  "package": "net.acoyt.malachite.mixin",
-  "plugin": "net.acoyt.malachite.impl.util.MalachiteMixinPlugin",
-  "compatibilityLevel": "JAVA_21",
-  "mixins": [
-    "ItemStackMixin",
-    "LivingEntityMixin",
-    "PlayerEntityMixin"
-  ],
-  "client": [
-    "client.BipedEntityModelMixin",
-    "client.HeldItemRendererMixin",
-    "client.PlayerEntityRendererMixin",
-    "compat.backslot.BackslotFeatureRendererMixin"
-  ],
-  "injectors": {
-    "defaultRequire": 1
-  }
+    "required": true,
+    "package": "net.acoyt.malachite.mixin",
+    "plugin": "net.acoyt.malachite.impl.util.MalachiteMixinPlugin",
+    "compatibilityLevel": "JAVA_21",
+    "mixins": [
+        "ItemStackMixin",
+        "LivingEntityMixin",
+        "PersistentProjectileEntityMixin",
+        "PlayerEntityMixin"
+    ],
+    "client": [
+        "client.BipedEntityModelMixin",
+        "client.HeldItemRendererMixin",
+        "client.PlayerEntityRendererMixin",
+        "compat.backslot.BackslotFeatureRendererMixin"
+    ],
+    "injectors": {
+        "defaultRequire": 1
+    }
 }

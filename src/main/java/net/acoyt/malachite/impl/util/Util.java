@@ -5,6 +5,7 @@ import net.acoyt.malachite.impl.client.particle.BlastParticleEffect;
 import net.acoyt.malachite.impl.client.particle.ShockwaveParticleEffect;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.LivingEntity;
+import net.minecraft.entity.Ownable;
 import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 import net.minecraft.server.world.ServerWorld;
@@ -13,9 +14,15 @@ import net.minecraft.util.math.ColorHelper;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 import net.minecraft.world.World;
+import org.jetbrains.annotations.Nullable;
 
 public class Util {
     public static final PacketCodec<ByteBuf, Unit> UNIT_PACKET_CODEC = PacketCodecs.codec(Unit.CODEC);
+
+    public static boolean isOwnedBy(LivingEntity living, @Nullable Entity entity) {
+        if (entity == null || !(living instanceof Ownable ownable) || ownable.getOwner() == null) return false;
+        return ownable.getOwner() == entity;
+    }
 
     public static void spawnShockwave(LivingEntity living, float size) {
         spawnShockwave(living, ColorHelper.Argb.withAlpha(125, 0x53efac), size);

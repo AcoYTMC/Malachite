@@ -6,10 +6,7 @@ import net.acoyt.malachite.data.provider.MalachiteDynamicRegistryGen;
 import net.acoyt.malachite.data.provider.lang.MalachiteLangGen;
 import net.acoyt.malachite.data.provider.lang.MalachiteLolCatLangGen;
 import net.acoyt.malachite.data.provider.resources.MalachiteModelGen;
-import net.acoyt.malachite.data.provider.tag.MalachiteBlockTagGen;
-import net.acoyt.malachite.data.provider.tag.MalachiteDamageTypeTagGen;
-import net.acoyt.malachite.data.provider.tag.MalachiteEnchantmentTagGen;
-import net.acoyt.malachite.data.provider.tag.MalachiteItemTagGen;
+import net.acoyt.malachite.data.provider.tag.*;
 import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
 import net.acoyt.malachite.impl.index.data.MalachiteEnchantments;
 import net.fabricmc.fabric.api.datagen.v1.DataGeneratorEntrypoint;
@@ -29,6 +26,7 @@ public class MalachiteDatagen implements DataGeneratorEntrypoint {
         pack.addProvider(MalachiteBlockTagGen::new);
         pack.addProvider(MalachiteDamageTypeTagGen::new);
         pack.addProvider(MalachiteEnchantmentTagGen::new);
+        pack.addProvider(MalachiteEntityTypeTagGen::new);
         pack.addProvider(MalachiteItemTagGen::new);
 
         pack.addProvider(MalachiteAdvancementGen::new);

@@ -100,8 +100,8 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
                     player.getItemCooldownManager().set(stack.getItem(), 10);
                 } else if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.DISRUPT)) {
                     EnergyOrbEntity energyOrb = new EnergyOrbEntity(world, player, stack);
-                    energyOrb.setYaw(player.getYaw());
                     energyOrb.setPitch(player.getPitch());
+                    energyOrb.setYaw(player.getYaw());
                     world.spawnEntity(energyOrb);
 
                     energyOrb.setVelocity(player.getRotationVector().multiply(0.15));
@@ -115,9 +115,17 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
                     EnergyBeamEntity energyBeam = new EnergyBeamEntity(world, player, stack);
                     energyBeam.setVoltage(EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.VOLTAGE));
                     energyBeam.setDamage(damage);
+
+                    energyBeam.setPitch(player.getPitch());
+                    energyBeam.setYaw(player.getYaw());
+
                     energyBeam.getDataTracker().set(EnergyBeamEntity.FORCED_PITCH, player.getPitch());
                     energyBeam.getDataTracker().set(EnergyBeamEntity.FORCED_YAW, player.getYaw());
+
                     world.spawnEntity(energyBeam);
+
+                    energyBeam.setVelocity(player.getRotationVector().multiply(0.7));
+                    energyBeam.velocityModified = true;
 
                     player.getItemCooldownManager().set(stack.getItem(), 20);
                 }

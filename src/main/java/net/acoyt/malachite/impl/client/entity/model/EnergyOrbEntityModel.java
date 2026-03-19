@@ -20,9 +20,10 @@ public class EnergyOrbEntityModel extends SinglePartEntityModel<EnergyOrbEntity>
         ModelData modelData = new ModelData();
         ModelPartData modelPartData = modelData.getRoot();
         ModelPartData root = modelPartData.addChild("root", ModelPartBuilder.create(), ModelTransform.NONE);
+
         ModelPartData orb = root.addChild("orb", ModelPartBuilder.create()
                         .uv(0, 0).cuboid(-3.0F, -3.0F, -3.0F, 6.0F, 6.0F, 6.0F, new Dilation(0.0F)),
-                ModelTransform.pivot(0.0F, 21.0F, 0.0F));
+                ModelTransform.pivot(0.0F, 0.0F, 0.0F));
 
         return TexturedModelData.of(modelData, 32, 32);
     }

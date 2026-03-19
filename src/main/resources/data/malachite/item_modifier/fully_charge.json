@@ -1,0 +1,9 @@
+{
+    "function": "minecraft:set_components",
+    "components": {
+        "malachite:malachite": {
+            "charge": 4,
+            "maxCharge": 4
+        }
+    }
+}

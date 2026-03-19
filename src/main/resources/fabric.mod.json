@@ -41,7 +41,8 @@
     },
     "custom": {
         "cardinal-components": [
-            "malachite:nearby_pylon"
+            "malachite:nearby_pylon",
+            "malachite:charged"
         ]
     }
 }
