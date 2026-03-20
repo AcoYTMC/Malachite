@@ -95,7 +95,7 @@ public abstract class LivingEntityMixin extends Entity {
         float prevAmount = amount;
 
         if (component.isNearby()) {
-            amount = prevAmount * 0.75f;
+            amount = prevAmount * 0.25f;
         }
 
         args.set(1, amount);

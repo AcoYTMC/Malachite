@@ -124,7 +124,7 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
 
                     world.spawnEntity(energyBeam);
 
-                    energyBeam.setVelocity(player.getRotationVector().multiply(0.7));
+                    energyBeam.setVelocity(player.getRotationVector().multiply(1.2));
                     energyBeam.velocityModified = true;
 
                     player.getItemCooldownManager().set(stack.getItem(), 20);
@@ -265,5 +265,15 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
                 Malachite.id("malachite_longsword_charged_in_hand"),
                 Malachite.id("malachite_longsword_in_hand")
         );
+    }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (!MalachiteComponent.fullyCharged(stack)) {
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
+            stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
+        }
+        return super.postHit(stack, target, attacker);
+
     }
 }

@@ -59,8 +59,14 @@ public class MalachiteLolCatLangGen extends FabricLanguageProvider {
         builder.add(BUDDING_COPPER, "buddy coper");
 
         // Enchantments
-        builder.add("enchantment.malachite.shockwave", "blast");
-        builder.add("enchantment.malachite.shockwave.desc", "me when I push you :3");
+        builder.add("enchantment.malachite.disrupt", "Orb");
+        builder.add("enchantment.malachite.disrupt.desc", "Ponder the scary orb");
+        builder.add("enchantment.malachite.magnetic", "Attrac");
+        builder.add("enchantment.malachite.magnetic.desc", "Me when i pull] you");
+        builder.add("enchantment.malachite.shockwave", "Shockwave");
+        builder.add("enchantment.malachite.shockwave.desc", "Me when i push you");
+        builder.add("enchantment.malachite.voltage", "Voltage");
+        builder.add("enchantment.malachite.voltage.desc", "Now u see me now u dont");
 
         // Damage Types
         builder.add("death.attack.dagger", "%1$s was pierced");

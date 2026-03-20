@@ -66,7 +66,7 @@ public class MalachiteLangGen extends FabricLanguageProvider {
         builder.add("enchantment.malachite.shockwave", "Shockwave");
         builder.add("enchantment.malachite.shockwave.desc", "Allows the Malachite Longsword to create a shockwave, launching nearby entities back.");
         builder.add("enchantment.malachite.voltage", "Voltage");
-        builder.add("enchantment.malachite.voltage.desc", "");
+        builder.add("enchantment.malachite.voltage.desc", "Teleports the user forward on a longsword and where the dagger lands on a dagger");
 
         // Damage Types
         builder.add("death.attack.dagger", "%1$s was pierced");
