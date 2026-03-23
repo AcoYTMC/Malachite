@@ -78,7 +78,7 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
         Vec3d pos = this.getPos();
 
         if (!world.isClient && this.ticksExisted == 0 && world.getServer() != null) {
-            NetworkingUtils.sendForAllPlayers(world.getServer(), new PlayEnergyBeamTravelSoundPayload(this.getId()));
+            //NetworkingUtils.sendForAllPlayers(world.getServer(), new PlayEnergyBeamTravelSoundPayload(this.getId()));
         }
 
         world.getOtherEntities(owner, this.getBoundingBox().expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> this.canEntityBeHit(owner, entity))).forEach(entity -> {

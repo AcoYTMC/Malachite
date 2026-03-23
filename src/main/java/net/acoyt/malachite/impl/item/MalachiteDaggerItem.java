@@ -49,7 +49,7 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
             if (!attacker.isInCreativeMode()) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
         }
 
-        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC)) {
+        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC) && component.charge() == 4) {
             target.setVelocity(attacker.getRotationVector().multiply(-1, 0, -1).add(0, 0.1, 0));
             target.velocityModified = true;
         }

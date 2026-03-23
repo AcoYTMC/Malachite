@@ -43,8 +43,8 @@ public class Malachite implements ModInitializer {
         registerPack(id("old_seraphite"), Text.literal("Old Seraphite"));
 
         /* Networking */
-        MalachiteNetworking.registerTypes();
-        MalachiteNetworking.registerC2SPackets();
+        //MalachiteNetworking.registerTypes();
+        //MalachiteNetworking.registerS2CPackets();
 
         /* Events */
         UseBlockCallback.EVENT.register(new MakeBuddingCopperEvent());

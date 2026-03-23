@@ -18,6 +18,6 @@ public class MalachiteClient implements ClientModInitializer {
         MalachiteParticles.clientInit();
 
         /* Networking */
-        MalachiteNetworking.registerS2CPackets();
+        //MalachiteNetworking.registerC2SPackets();
     }
 }
