@@ -273,4 +273,14 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
                 Malachite.id("malachite_longsword_in_hand")
         );
     }
+
+    @Override
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (!MalachiteComponent.fullyCharged(stack)) {
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
+            stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
+        }
+        return super.postHit(stack, target, attacker);
+
+    }
 }
