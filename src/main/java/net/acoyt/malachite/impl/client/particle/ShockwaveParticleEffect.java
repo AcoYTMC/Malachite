@@ -23,7 +23,6 @@ public record ShockwaveParticleEffect(int color, float size) implements Particle
             ShockwaveParticleEffect::new
     );
 
-    @Override
     public ParticleType<?> getType() {
         return MalachiteParticles.SHOCKWAVE;
     }

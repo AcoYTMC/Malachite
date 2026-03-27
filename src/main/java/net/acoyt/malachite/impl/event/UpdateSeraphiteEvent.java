@@ -11,7 +11,6 @@ import net.minecraft.world.World;
 import org.jetbrains.annotations.Nullable;
 
 public class UpdateSeraphiteEvent implements PlayerBlockBreakEvents.After {
-    @Override
     public void afterBlockBreak(World world, PlayerEntity player, BlockPos pos, BlockState state, @Nullable BlockEntity blockEntity) {
         for (int x = -5; x < 5; x++) {
             for (int y = -5; y < 5; y++) {

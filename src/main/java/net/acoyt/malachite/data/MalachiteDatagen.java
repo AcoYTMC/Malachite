@@ -35,7 +35,6 @@ public class MalachiteDatagen implements DataGeneratorEntrypoint {
         pack.addProvider(MalachiteDynamicRegistryGen::new);
     }
 
-    @Override
     public void buildRegistry(RegistryBuilder builder) {
         builder.addRegistry(RegistryKeys.ENCHANTMENT, MalachiteEnchantments::bootstrap);
         builder.addRegistry(RegistryKeys.DAMAGE_TYPE, MalachiteDamageTypes::bootstrap);

@@ -8,12 +8,12 @@ import net.minecraft.entity.Entity;
 import net.minecraft.util.math.MathHelper;
 import net.minecraft.util.math.Vec3d;
 
-public class EnergyBeamTravelSoundInstance extends MovingSoundInstance {
+public class EnergyBeamSoundInstance extends MovingSoundInstance {
     private final EnergyBeamEntity entity;
     private Vec3d previousPos;
     private float pitchModifier = 0;
 
-    public EnergyBeamTravelSoundInstance(EnergyBeamEntity entity) {
+    public EnergyBeamSoundInstance(EnergyBeamEntity entity) {
         super(MalachiteSounds.ENERGY_BEAM_TRAVEL, entity.getSoundCategory(), entity.getRandom());
         this.entity = entity;
         x = entity.getX();
@@ -24,7 +24,6 @@ public class EnergyBeamTravelSoundInstance extends MovingSoundInstance {
         volume = 8;
     }
 
-    @Override
     public void tick() {
         if (entity == null || entity.isRemoved()) {
             if (volume > 1) {

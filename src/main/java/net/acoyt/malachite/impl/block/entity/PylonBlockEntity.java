@@ -32,11 +32,13 @@ public class PylonBlockEntity extends BlockEntity {
     }
 
     public static void tick(World world, BlockPos pos, BlockState state, @NotNull PylonBlockEntity pylon) {
+        if (!MalachiteBlockEntities.PYLON.supports(state)) return;
+
         Box box = new Box(pos).expand(19); // 20 Block radius
 
         for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, LivingEntity::isAlive)) {
             NearbyPylonComponent component = NearbyPylonComponent.KEY.get(living);
-            if (!component.isNearby() && world.getBlockState(pos).get(MalachitePylonBlock.CHARGE) != 4)
+            if (!component.isNearby() && state.getOrEmpty(MalachitePylonBlock.CHARGE).orElse(0) != 4)
                 component.setNearby(true); // If the component is not marked as nearby, set it to nearby, that simple :P
 
             if (!MalachitePylonBlock.isPowered(world, pos)) {
@@ -52,12 +54,12 @@ public class PylonBlockEntity extends BlockEntity {
                     //world.updateListeners(pos, animationState, animationState, Block.NOTIFY_LISTENERS);
                     pylon.markDirty();
                 }
-            } else if (state.contains(MalachitePylonBlock.CHARGE) && state.get(MalachitePylonBlock.CHARGE) == 4) {
+            } else if (state.getOrEmpty(MalachitePylonBlock.CHARGE).orElse(0) == 4) {
                 world.setBlockState(pos, state.with(MalachitePylonBlock.CHARGE, 0));
 
                 Vec3d vec3d = pos.toCenterPos();
 
-                Direction direction = state.get(MalachitePylonBlock.FACING);
+                Direction direction = state.getOrEmpty(MalachitePylonBlock.FACING).orElse(Direction.UP);
                 if (direction == Direction.UP || direction == Direction.DOWN) {
                     boolean bl = living.getPos().y < vec3d.y - 1; // if living is below the Pylon
                     living.setVelocity(vec3d.subtract(living.getPos()).multiply(-3, 0, -3).add(0, bl ? -1.6 : 1.6, 0));
@@ -91,24 +93,20 @@ public class PylonBlockEntity extends BlockEntity {
         }
     }
 
-    @Override
-    protected void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    public void writeNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.writeNbt(nbt, registryLookup);
         nbt.putInt("fallback", this.fallback);
     }
 
-    @Override
-    protected void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
+    public void readNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup registryLookup) {
         super.readNbt(nbt, registryLookup);
         this.fallback = nbt.getInt("fallback");
     }
 
-    @Override
     public @Nullable Packet<ClientPlayPacketListener> toUpdatePacket() {
         return BlockEntityUpdateS2CPacket.create(this);
     }
 
-    @Override
     public NbtCompound toInitialChunkDataNbt(RegistryWrapper.WrapperLookup registries) {
         return createNbt(registries);
     }

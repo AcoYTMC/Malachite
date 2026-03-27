@@ -55,13 +55,11 @@ public class NearbyPylonComponent implements AutoSyncedComponent, CommonTickingC
         this.sync();
     }
 
-    @Override
     public void writeToNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup wrapperLookup) {
         nbt.putInt("nearbyTicks", this.nearbyTicks);
         nbt.putBoolean("nearby", this.nearby);
     }
 
-    @Override
     public void readFromNbt(NbtCompound nbt, RegistryWrapper.WrapperLookup wrapperLookup) {
         this.nearbyTicks = nbt.getInt("nearbyTicks");
         this.nearby = nbt.getBoolean("nearby");

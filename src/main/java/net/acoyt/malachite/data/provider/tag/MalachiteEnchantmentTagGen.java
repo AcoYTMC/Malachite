@@ -14,7 +14,6 @@ public class MalachiteEnchantmentTagGen extends FabricTagProvider.EnchantmentTag
         super(output, completableFuture);
     }
 
-    @Override
     public void configure(RegistryWrapper.WrapperLookup registries) {
         this.getOrCreateTagBuilder(EnchantmentTags.NON_TREASURE)
                 .add(SHOCKWAVE, VOLTAGE, MAGNETIC, DISRUPT)

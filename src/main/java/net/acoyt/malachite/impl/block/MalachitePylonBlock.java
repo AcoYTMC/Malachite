@@ -94,19 +94,16 @@ public class MalachitePylonBlock extends BlockWithEntity implements Waterloggabl
         world.addParticle(MalachiteParticles.SPARK, pos.x - 0.5 + random.nextDouble(), pos.y - 0.25 + random.nextDouble(), pos.z - 0.5 + random.nextDouble(), 0.0, 0.0, 0.0);
     }
 
-    @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
-    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return validateTicker(type, MalachiteBlockEntities.PYLON, PylonBlockEntity::tick);
     }
 
     @Nullable
-    @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new PylonBlockEntity(pos, state);
     }

@@ -19,6 +19,7 @@ import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.nbt.NbtCompound;
 import net.minecraft.server.world.ServerWorld;
+import net.minecraft.sound.SoundCategory;
 import net.minecraft.sound.SoundEvent;
 import net.minecraft.sound.SoundEvents;
 import net.minecraft.util.math.Box;
@@ -81,7 +82,7 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
                 living.setVelocity(pos.subtract(living.getPos()).multiply(-0.8));
                 living.velocityModified = true;
 
-                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (float) (4 / (living.squaredDistanceTo(this.getPos()) / 8)));
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (16 - (living.distanceTo(this) * 3)));
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600));
             }
 
@@ -89,19 +90,21 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
         }
 
         for (ProjectileEntity projectile : world.getEntitiesByClass(ProjectileEntity.class, this.getBoundingBox().expand(1.4), p -> p != this)) {
-            world.createExplosion(
-                    this,
-                    MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED),
-                    new EnergyExplosionBehavior(),
-                    pos.x, pos.y, pos.z,
-                    2.0F,
-                    false,
-                    World.ExplosionSourceType.NONE,
-                    true,
-                    new BlastParticleEffect(ColorHelper.Argb.withAlpha(125, 0x53efac), 8.0F, 0.0F, true),
-                    new BlastParticleEffect(ColorHelper.Argb.withAlpha(125, 0x53efac), 8.0F, 0.0F, true),
-                    SoundEvents.BLOCK_RESPAWN_ANCHOR_DEPLETE
-            );
+            //world.createExplosion(
+            //        this,
+            //        MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED),
+            //        new EnergyExplosionBehavior(),
+            //        pos.x, pos.y, pos.z,
+            //        2.0F,
+            //        false,
+            //        World.ExplosionSourceType.NONE,
+            //        true,
+            //        new BlastParticleEffect(ColorHelper.Argb.withAlpha(125, 0x53efac), 8.0F, 0.0F, true),
+            //        new BlastParticleEffect(ColorHelper.Argb.withAlpha(125, 0x53efac), 8.0F, 0.0F, true),
+            //        SoundEvents.BLOCK_RESPAWN_ANCHOR_DEPLETE
+            //);
+
+            world.playSound(null, this.getBlockPos(), SoundEvents.BLOCK_RESPAWN_ANCHOR_SET_SPAWN, SoundCategory.HOSTILE);
 
             if (world instanceof ServerWorld serverWorld) {
                 serverWorld.spawnParticles(
@@ -114,14 +117,14 @@ public class EnergyOrbEntity extends PersistentProjectileEntity {
                 );
             }
 
-            Box box = this.getBoundingBox().expand(6); // 6 Block radius
+            Box box = this.getBoundingBox().expand(4); // 4 Block radius
 
             for (LivingEntity living : world.getEntitiesByClass(LivingEntity.class, box, living -> living.isAlive() && !isOwnedBy(living, this.getOwner()))) {
                 living.setVelocity(pos.subtract(living.getPos()).multiply(-1.2));
                 living.velocityModified = true;
                 living.fallDistance = 0.0f;
 
-                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (float) (5 / (living.squaredDistanceTo(this.getPos()) / 5)));
+                living.damage(MalachiteDamageTypes.create(world, MalachiteDamageTypes.OVERCHARGED), (16 - (living.distanceTo(this) * 3)));
                 living.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 600, 1));
 
                 if (living instanceof PlayerEntity player) {

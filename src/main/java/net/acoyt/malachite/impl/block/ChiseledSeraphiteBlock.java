@@ -25,24 +25,20 @@ public class ChiseledSeraphiteBlock extends BlockWithEntity {
         this.setDefaultState(this.getDefaultState().with(ACTIVE, false));
     }
 
-    @Override
     public MapCodec<? extends BlockWithEntity> getCodec() {
         return CODEC;
     }
 
-    @Override
     public BlockRenderType getRenderType(BlockState state) {
         return BlockRenderType.MODEL;
     }
 
     @Nullable
-    @Override
     public <T extends BlockEntity> BlockEntityTicker<T> getTicker(World world, BlockState state, BlockEntityType<T> type) {
         return validateTicker(type, MalachiteBlockEntities.SERAPHITE, SeraphiteBlockEntity::tick);
     }
 
     @Nullable
-    @Override
     public BlockEntity createBlockEntity(BlockPos pos, BlockState state) {
         return new SeraphiteBlockEntity(pos, state);
     }

@@ -49,7 +49,7 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
             if (!attacker.isInCreativeMode()) stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(0));
         }
 
-        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC)) {
+        if (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC) && MalachiteComponent.fullyCharged(stack)) {
             target.setVelocity(attacker.getRotationVector().multiply(-1, 0, -1).add(0, 0.1, 0));
             target.velocityModified = true;
         }
@@ -116,12 +116,10 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
     }
 
     // Gui Varying
-    @Override
     public Identifier getModel(ModelTransformationMode renderMode, ItemStack stack, @Nullable LivingEntity entity) {
         return MalachiteComponent.fullyCharged(stack) ? Malachite.id("malachite_dagger_charged") : Malachite.id("malachite_dagger");
     }
 
-    @Override
     public List<Identifier> getModelsToLoad() {
         return Arrays.asList(
                 Malachite.id("malachite_dagger"),

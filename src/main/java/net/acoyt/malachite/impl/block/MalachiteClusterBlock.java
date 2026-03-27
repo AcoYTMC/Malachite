@@ -44,7 +44,6 @@ public class MalachiteClusterBlock extends Block implements Waterloggable {
     public final VoxelShape upShape;
     public final VoxelShape downShape;
 
-    @Override
     public MapCodec<MalachiteClusterBlock> getCodec() {
         return CODEC;
     }
@@ -62,7 +61,6 @@ public class MalachiteClusterBlock extends Block implements Waterloggable {
         this.xzOffset = xzOffset;
     }
 
-    @Override
     public VoxelShape getOutlineShape(BlockState state, BlockView world, BlockPos pos, ShapeContext context) {
         Direction direction = state.get(FACING);
         return switch (direction) {
@@ -75,50 +73,43 @@ public class MalachiteClusterBlock extends Block implements Waterloggable {
         };
     }
 
-    @Override
     public boolean canPlaceAt(BlockState state, WorldView world, BlockPos pos) {
         Direction direction = state.get(FACING);
         BlockPos blockPos = pos.offset(direction.getOpposite());
         return world.getBlockState(blockPos).isSideSolidFullSquare(world, blockPos, direction);
     }
 
-    @Override
     public BlockState getStateForNeighborUpdate(
             BlockState state, Direction direction, BlockState neighborState, WorldAccess world, BlockPos pos, BlockPos neighborPos
     ) {
-        if ((Boolean)state.get(WATERLOGGED)) {
+        if (state.get(WATERLOGGED)) {
             world.scheduleFluidTick(pos, Fluids.WATER, Fluids.WATER.getTickRate(world));
         }
 
-        return direction == ((Direction)state.get(FACING)).getOpposite() && !state.canPlaceAt(world, pos)
+        return direction == state.get(FACING).getOpposite() && !state.canPlaceAt(world, pos)
                 ? Blocks.AIR.getDefaultState()
                 : super.getStateForNeighborUpdate(state, direction, neighborState, world, pos, neighborPos);
     }
 
     @Nullable
-    @Override
     public BlockState getPlacementState(ItemPlacementContext ctx) {
         WorldAccess worldAccess = ctx.getWorld();
         BlockPos blockPos = ctx.getBlockPos();
         return this.getDefaultState().with(WATERLOGGED, worldAccess.getFluidState(blockPos).getFluid() == Fluids.WATER).with(FACING, ctx.getSide());
     }
 
-    @Override
     public BlockState rotate(BlockState state, BlockRotation rotation) {
         return state.with(FACING, rotation.rotate(state.get(FACING)));
     }
 
-    @Override
     public BlockState mirror(BlockState state, BlockMirror mirror) {
         return state.rotate(mirror.getRotation(state.get(FACING)));
     }
 
-    @Override
     public FluidState getFluidState(BlockState state) {
         return state.get(WATERLOGGED) ? Fluids.WATER.getStill(false) : super.getFluidState(state);
     }
 
-    @Override
     public void appendProperties(StateManager.Builder<Block, BlockState> builder) {
         builder.add(WATERLOGGED, FACING);
     }

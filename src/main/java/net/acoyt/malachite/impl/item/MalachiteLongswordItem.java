@@ -124,13 +124,22 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
 
                     world.spawnEntity(energyBeam);
 
-                    energyBeam.setVelocity(player.getRotationVector().multiply(0.7));
+                    energyBeam.setVelocity(player.getRotationVector().multiply(1.2));
                     energyBeam.velocityModified = true;
 
                     player.getItemCooldownManager().set(stack.getItem(), 20);
                 }
             }
         }
+    }
+
+    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
+        if (!MalachiteComponent.fullyCharged(stack)) {
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
+            stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
+        }
+        return super.postHit(stack, target, attacker);
+
     }
 
     public float getShockwaveStrength(ItemStack stack) {
@@ -204,7 +213,7 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
         }
     }
 
-    public SoundEvent blockSound() {
+    public SoundEvent getBlockSound() {
         return MalachiteSounds.LONGSWORD_BLOCK;
     }
 
@@ -226,7 +235,6 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
     }
 
     // Gui Varying
-    @Override
     public Identifier getModel(ModelTransformationMode renderMode, ItemStack stack, @Nullable LivingEntity entity) {
         boolean gui = MiscUtils.isGui(renderMode);
         boolean charged = MalachiteComponent.fullyCharged(stack);
@@ -255,7 +263,6 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
         }
     }
 
-    @Override
     public List<Identifier> getModelsToLoad() {
         return Arrays.asList(
                 Malachite.id("malachite_longsword"),

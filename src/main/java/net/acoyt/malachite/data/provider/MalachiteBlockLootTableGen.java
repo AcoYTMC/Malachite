@@ -18,7 +18,6 @@ public class MalachiteBlockLootTableGen extends FabricBlockLootTableProvider {
         super(dataOutput, registryLookup);
     }
 
-    @Override
     public void generate() {
         for (Block block : BLOCKS) {
             this.addDrop(block);

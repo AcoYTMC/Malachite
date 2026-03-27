@@ -31,7 +31,6 @@ public record BlastParticleEffect(int color, float size, float rotation, boolean
         this(color, size, rotation, false);
     }
 
-    @Override
     public ParticleType<?> getType() {
         return MalachiteParticles.BLAST;
     }

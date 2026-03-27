@@ -15,7 +15,6 @@ public class MalachiteBlockTagGen extends FabricTagProvider.BlockTagProvider {
         super(output, completableFuture);
     }
 
-    @Override
     public void configure(RegistryWrapper.WrapperLookup registries) {
         this.getOrCreateTagBuilder(BlockTags.PICKAXE_MINEABLE)
                 .forceAddTag(MalachiteBlockTags.SERAPHITE)

@@ -20,7 +20,6 @@ import net.minecraft.util.math.random.Random;
 import net.minecraft.world.World;
 
 public class MakeBuddingCopperEvent implements UseBlockCallback {
-    @Override
     public ActionResult interact(PlayerEntity user, World world, Hand hand, BlockHitResult hitResult) {
         ItemStack stack = user.getStackInHand(hand);
         if (stack.isOf(Items.ECHO_SHARD) && user.isSneaking() && world.getBlockState(hitResult.getBlockPos()).isOf(Blocks.OXIDIZED_COPPER)) {

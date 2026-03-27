@@ -30,32 +30,26 @@ public enum MalachiteToolMaterials implements ToolMaterial {
         this.repairIngredient = new Lazy<>(repairIngredient);
     }
 
-    @Override
     public int getDurability() {
         return this.itemDurability;
     }
 
-    @Override
     public float getMiningSpeedMultiplier() {
         return this.miningSpeed;
     }
 
-    @Override
     public float getAttackDamage() {
         return this.attackDamage;
     }
 
-    @Override
     public int getEnchantability() {
         return this.enchantability;
     }
 
-    @Override
     public Ingredient getRepairIngredient() {
         return this.repairIngredient.get();
     }
 
-    @Override
     public TagKey<Block> getInverseTag() {
         return this.inverseTag;
     }

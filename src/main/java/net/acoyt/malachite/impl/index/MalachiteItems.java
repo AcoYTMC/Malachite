@@ -17,7 +17,7 @@ public interface MalachiteItems {
     Item MALACHITE = create("malachite", Item::new, new Item.Settings());
 
     Item MALACHITE_LONGSWORD = create("malachite_longsword", MalachiteLongswordItem::new, new Item.Settings()
-            .attributeModifiers(MalachiteLongswordItem.createAttributeModifiers(MalachiteToolMaterials.LONGSWORD, 4.0f, -2.7f, 0.5f)));
+            .attributeModifiers(MalachiteLongswordItem.createAttributeModifiers(MalachiteToolMaterials.LONGSWORD, 4.0f, -2.8f, 0.5f)));
 
     Item MALACHITE_DAGGER = create("malachite_dagger", MalachiteDaggerItem::new, new Item.Settings()
             .attributeModifiers(SwordItem.createAttributeModifiers(MalachiteToolMaterials.DAGGER, 1, -2.2f)));

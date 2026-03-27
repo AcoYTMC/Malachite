@@ -17,7 +17,6 @@ public class MalachiteDamageTypeTagGen extends FabricTagProvider<DamageType> {
         super(output, RegistryKeys.DAMAGE_TYPE, completableFuture);
     }
 
-    @Override
     public void configure(RegistryWrapper.WrapperLookup registries) {
         this.getOrCreateTagBuilder(DamageTypeTags.BYPASSES_ARMOR)
                 .add(OVERCHARGED)

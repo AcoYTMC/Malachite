@@ -115,7 +115,6 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         this.dataTracker.set(MAGNETIC, magnetic);
     }
 
-    @Override
     public void initDataTracker(DataTracker.Builder builder) {
         super.initDataTracker(builder);
         builder.add(THROWN_ITEM, this.getDefaultItemStack());
@@ -165,7 +164,6 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         return this.dealtDamage ? null : super.getEntityCollision(currentPosition, nextPosition);
     }
 
-    @Override
     public void onBlockHit(BlockHitResult blockHitResult) {
         World world = this.getWorld();
         ItemStack itemStack = this.getWeaponStack();
@@ -273,7 +271,6 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
         }
     }
 
-    @Override
     public void onHit(LivingEntity target) {
         super.onHit(target);
 

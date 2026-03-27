@@ -15,7 +15,6 @@ public class MalachiteItemTagGen extends FabricTagProvider.ItemTagProvider {
         super(output, completableFuture);
     }
 
-    @Override
     public void configure(RegistryWrapper.WrapperLookup registries) {
         this.getOrCreateTagBuilder(ItemTags.SWORD_ENCHANTABLE)
                 .add(MALACHITE_LONGSWORD, MALACHITE_DAGGER)

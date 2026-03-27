@@ -98,7 +98,6 @@ public class ShockwaveParticle extends AnimatedParticle {
         }
 
         @Nullable
-        @Override
         public Particle createParticle(ShockwaveParticleEffect parameters, ClientWorld world, double x, double y, double z, double velocityX, double velocityY, double velocityZ) {
             return new ShockwaveParticle(world, x, y, z, this.spriteProvider, parameters);
         }
