@@ -1,13 +1,11 @@
 package net.acoyt.malachite.impl.entity;
 
-import net.acoyt.acornlib.api.util.NetworkingUtils;
 import net.acoyt.malachite.impl.index.MalachiteEffects;
 import net.acoyt.malachite.impl.index.MalachiteEntities;
 import net.acoyt.malachite.impl.index.MalachiteItems;
 import net.acoyt.malachite.impl.index.MalachiteParticles;
 import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
 import net.acoyt.malachite.impl.index.tag.MalachiteEntityTypeTags;
-import net.acoyt.malachite.impl.networking.s2c.EnergyBeamSoundPayload;
 import net.minecraft.advancement.criterion.Criteria;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityType;
@@ -76,10 +74,6 @@ public class EnergyBeamEntity extends PersistentProjectileEntity {
         World world = this.getWorld();
         Entity owner = this.getOwner();
         Vec3d pos = this.getPos();
-
-        if (!world.isClient && this.ticksExisted == 0 && world.getServer() != null) {
-            //NetworkingUtils.sendForAllPlayers(world.getServer(), new EnergyBeamSoundPayload(this.getId()));
-        }
 
         world.getOtherEntities(owner, this.getBoundingBox().expand(0.5), EntityPredicates.EXCEPT_SPECTATOR.and(entity -> this.canEntityBeHit(owner, entity))).forEach(entity -> {
             if (!world.isClient) {

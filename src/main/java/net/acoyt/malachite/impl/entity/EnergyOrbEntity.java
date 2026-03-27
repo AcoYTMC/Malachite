@@ -7,7 +7,6 @@ import net.acoyt.malachite.impl.index.MalachiteEntities;
 import net.acoyt.malachite.impl.index.MalachiteItems;
 import net.acoyt.malachite.impl.index.MalachiteParticles;
 import net.acoyt.malachite.impl.index.data.MalachiteDamageTypes;
-import net.acoyt.malachite.impl.util.EnergyExplosionBehavior;
 import net.minecraft.entity.AnimationState;
 import net.minecraft.entity.EntityType;
 import net.minecraft.entity.LivingEntity;

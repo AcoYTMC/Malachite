@@ -138,8 +138,8 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
             MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
             stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
         }
-        return super.postHit(stack, target, attacker);
 
+        return super.postHit(stack, target, attacker);
     }
 
     public float getShockwaveStrength(ItemStack stack) {
@@ -272,15 +272,5 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
                 Malachite.id("malachite_longsword_charged_in_hand"),
                 Malachite.id("malachite_longsword_in_hand")
         );
-    }
-
-    @Override
-    public boolean postHit(ItemStack stack, LivingEntity target, LivingEntity attacker) {
-        if (!MalachiteComponent.fullyCharged(stack)) {
-            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
-            stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
-        }
-        return super.postHit(stack, target, attacker);
-
     }
 }
