@@ -36,7 +36,7 @@ public abstract class BackslotFeatureRendererMixin extends FeatureRenderer<Abstr
             )
     )
     private void customMode(ItemRenderer instance, ItemStack stack, ModelTransformationMode transformationType, int light, int overlay, MatrixStack matrices, VertexConsumerProvider vertexConsumers, World world, int seed, Operation<Void> original) {
-        ModelTransformationMode mode = stack.isOf(MalachiteItems.MALACHITE_LONGSWORD) ? ModelTransformationMode.HEAD : transformationType;
+        ModelTransformationMode mode = stack.isOf(MalachiteItems.MALACHITE_LONGSWORD) || stack.isOf(MalachiteItems.MALACHITE_GREATAXE) ? ModelTransformationMode.HEAD : transformationType;
         original.call(instance, stack, mode, light, overlay, matrices, vertexConsumers,  world, seed);
     }
 
@@ -51,7 +51,7 @@ public abstract class BackslotFeatureRendererMixin extends FeatureRenderer<Abstr
     )
     private void imTooLazyToRemakeTheTransformation(MatrixStack instance, double x, double y, double z, Operation<Void> original, @Local(argsOnly = true) AbstractClientPlayerEntity entity) {
         BackslotItemComponent component = BackslotItemComponent.get(entity);
-        if (component.getStack().isOf(MalachiteItems.MALACHITE_LONGSWORD)) {
+        if (component.getStack().isOf(MalachiteItems.MALACHITE_LONGSWORD) || component.getStack().isOf(MalachiteItems.MALACHITE_GREATAXE)) {
             original.call(instance, x, y, -z);
             return;
         }

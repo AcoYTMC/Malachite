@@ -32,8 +32,8 @@ import java.util.List;
 
 public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
     public MalachiteDaggerItem(Settings settings) {
-        super(MalachiteToolMaterials.DAGGER, settings
-                .component(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER)
+        super(MalachiteToolMaterials.MALACHITE, settings
+                .component(MalachiteDataComponents.MALACHITE, MalachiteComponent.DEFAULT)
         );
     }
 
@@ -87,7 +87,7 @@ public class MalachiteDaggerItem extends SwordItem implements ModelVaryingItem {
         PlayerEntity user = context.getPlayer();
         ItemStack stack = context.getStack();
         if (user != null && stack != null) {
-            MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
             if (state.getBlock() instanceof MalachitePylonBlock && component.charge() < component.maxCharge()) {
                 return ActionResult.FAIL;
             }

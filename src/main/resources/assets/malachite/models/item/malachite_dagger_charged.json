@@ -1,5 +1,5 @@
 {
-    "parent": "item/handheld",
+    "parent": "malachite:item/malachite_dagger",
     "textures": {
         "layer0": "malachite:item/malachite_dagger_charged"
     }

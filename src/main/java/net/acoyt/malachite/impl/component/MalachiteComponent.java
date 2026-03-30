@@ -9,8 +9,7 @@ import net.minecraft.network.codec.PacketCodec;
 import net.minecraft.network.codec.PacketCodecs;
 
 public record MalachiteComponent(int charge, int maxCharge) {
-    public static final MalachiteComponent LONGSWORD = new MalachiteComponent(0, 4);
-    public static final MalachiteComponent DAGGER = new MalachiteComponent(0, 4);
+    public static final MalachiteComponent DEFAULT = new MalachiteComponent(0, 4);
 
     public static final Codec<MalachiteComponent> CODEC = RecordCodecBuilder.create(instance -> instance.group(
             Codec.INT.optionalFieldOf("charge", 0).forGetter(MalachiteComponent::charge),
@@ -43,6 +42,6 @@ public record MalachiteComponent(int charge, int maxCharge) {
     }
 
     public static MalachiteComponent getOrDefault(ItemStack stack) {
-        return stack.getOrDefault(MalachiteDataComponents.MALACHITE, LONGSWORD);
+        return stack.getOrDefault(MalachiteDataComponents.MALACHITE, DEFAULT);
     }
 }

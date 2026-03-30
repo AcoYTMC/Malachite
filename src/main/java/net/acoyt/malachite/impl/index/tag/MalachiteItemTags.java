@@ -8,6 +8,7 @@ import net.minecraft.registry.tag.TagKey;
 public interface MalachiteItemTags {
     TagKey<Item> LONGSWORDS = create("longswords");
     TagKey<Item> DAGGERS = create("daggers");
+    TagKey<Item> MAGNETIC_ENCHANTABLE = create("magnetic_enchantable");
     TagKey<Item> MALACHITE_WEAPONRY = create("malachite_weaponry");
 
     private static TagKey<Item> create(String id) {

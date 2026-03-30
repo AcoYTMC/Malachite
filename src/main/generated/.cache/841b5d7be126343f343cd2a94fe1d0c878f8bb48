@@ -1,7 +1,7 @@
-// 1.21.1	2026-03-26T21:26:22.4067472	Malachite/malachite_dynamic
-1b99f2eb7e0713659c140b8a02239354df7c999c data\malachite\enchantment\voltage.json
-fdea173438ba3b074dd5dafa0baed8dabf7b4a10 data\malachite\damage_type\dagger.json
+// 1.21.1	2026-03-29T19:16:42.1278944	Malachite/malachite_dynamic
 5cfcb8344010a3c799011f5b951e455668eac3f5 data\malachite\damage_type\overcharged.json
-db7f82d8159a00570deeeaaa929404ff3916f351 data\malachite\enchantment\shockwave.json
+fdea173438ba3b074dd5dafa0baed8dabf7b4a10 data\malachite\damage_type\dagger.json
+cb0aa434f974b2895962aaaf2316196ee7de41a6 data\malachite\enchantment\magnetic.json
 b803eaf2729da61594555106305c28f254a2653c data\malachite\enchantment\disrupt.json
-15674a4ccb9cb34bef1ddd2817bba940643d8670 data\malachite\enchantment\magnetic.json
+1b99f2eb7e0713659c140b8a02239354df7c999c data\malachite\enchantment\voltage.json
+db7f82d8159a00570deeeaaa929404ff3916f351 data\malachite\enchantment\shockwave.json

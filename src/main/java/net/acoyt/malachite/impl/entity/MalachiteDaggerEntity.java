@@ -276,7 +276,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
 
         ItemStack stack = this.getItem();
         if (stack.contains(MalachiteDataComponents.MALACHITE)) {
-            MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
             if (component.charge() < component.maxCharge()) {
                 stack.set(MalachiteDataComponents.MALACHITE, component.addCharge(1));
                 this.setItemStack(stack);
@@ -313,7 +313,7 @@ public class MalachiteDaggerEntity extends PersistentProjectileEntity {
     }
 
     public void knockback(LivingEntity target, DamageSource source) {
-        MalachiteComponent component = this.getItem().getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+        MalachiteComponent component = MalachiteComponent.getOrDefault(this.getItem());
         if (component.charge() >= component.maxCharge()) {
             double e = Math.max(0.0, 1.0 - target.getAttributeValue(EntityAttributes.GENERIC_KNOCKBACK_RESISTANCE));
             Vec3d vec3d = this.getVelocity().multiply(1.5, 0.0, 1.5).normalize().multiply(0.6 * e).multiply(4.5, 1, 4.5);

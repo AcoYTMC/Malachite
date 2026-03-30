@@ -33,8 +33,6 @@ import static net.acoyt.malachite.impl.index.MalachiteItems.MALACHITE_LONGSWORD;
 
 @SuppressWarnings("removal")
 public class MalachiteAdvancementGen extends FabricAdvancementProvider {
-    public static final Map<Identifier, AdvancementEntry> entries = new HashMap<>();
-
     public MalachiteAdvancementGen(FabricDataOutput output, CompletableFuture<RegistryWrapper.WrapperLookup> registryLookup) {
         super(output, registryLookup);
     }
@@ -58,11 +56,10 @@ public class MalachiteAdvancementGen extends FabricAdvancementProvider {
                 .build(Malachite.id("electroplating"));
 
         consumer.accept(electroplating);
-        entries.put(Malachite.id("electroplating"), electroplating);
 
         // Doping
         AdvancementEntry doping = Advancement.Builder.createUntelemetered()
-                .parent(entries.get(Malachite.id("electroplating")))
+                .parent(Malachite.id("electroplating"))
                 .display(
                         MALACHITE_PYLON,
                         Text.translatable("advancements.malachite.doping.title"),
@@ -78,11 +75,10 @@ public class MalachiteAdvancementGen extends FabricAdvancementProvider {
                 .build(Malachite.id("doping"));
 
         consumer.accept(doping);
-        entries.put(Malachite.id("doping"), doping);
 
         // Piezoelectricity
         AdvancementEntry piezoelectricity = Advancement.Builder.createUntelemetered()
-                .parent(entries.get(Malachite.id("electroplating")))
+                .parent(Malachite.id("electroplating"))
                 .display(
                         MALACHITE_PYLON,
                         Text.translatable("advancements.malachite.piezoelectricity.title"),
@@ -111,6 +107,5 @@ public class MalachiteAdvancementGen extends FabricAdvancementProvider {
                 )).build(Malachite.id("piezoelectricity"));
 
         consumer.accept(piezoelectricity);
-        entries.put(Malachite.id("piezoelectricity"), piezoelectricity);
     }
 }

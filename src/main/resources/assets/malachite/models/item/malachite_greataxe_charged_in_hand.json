@@ -1,0 +1,6 @@
+{
+    "parent": "malachite:item/malachite_greataxe_in_hand",
+    "textures": {
+        "layer0": "malachite:item/malachite_greataxe_charged_in_hand"
+    }
+}

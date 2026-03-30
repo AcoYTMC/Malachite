@@ -11,8 +11,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("deprecation")
 public enum MalachiteToolMaterials implements ToolMaterial {
-    LONGSWORD(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 2031, 9.0F, 4.0F, 28, () -> Ingredient.ofItems(MalachiteItems.MALACHITE)),
-    DAGGER(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 2031, 9.0F, 4.0F, 28, () -> Ingredient.ofItems(MalachiteItems.MALACHITE));
+    MALACHITE(BlockTags.INCORRECT_FOR_NETHERITE_TOOL, 2031, 9.0F, 4.0F, 28, () -> Ingredient.ofItems(MalachiteItems.MALACHITE));
 
     private final TagKey<Block> inverseTag;
     private final int itemDurability;

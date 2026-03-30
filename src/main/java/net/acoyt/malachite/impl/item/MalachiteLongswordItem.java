@@ -47,8 +47,8 @@ import java.util.List;
 
 public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockingItem, SprintUsableItem, ModelVaryingItem {
     public MalachiteLongswordItem(Settings settings) {
-        super(MalachiteToolMaterials.LONGSWORD, settings
-                .component(MalachiteDataComponents.MALACHITE, MalachiteComponent.LONGSWORD)
+        super(MalachiteToolMaterials.MALACHITE, settings
+                .component(MalachiteDataComponents.MALACHITE, MalachiteComponent.DEFAULT)
                 .component(MalachiteDataComponents.BEAM_DAMAGE, 5.0f)
         );
     }
@@ -74,7 +74,7 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
     public void inventoryTick(ItemStack stack, World world, Entity entity, int slot, boolean selected) {
         if (entity instanceof PlayerEntity player && !player.getItemCooldownManager().isCoolingDown(stack.getItem()) && selected) {
             HoldingComponent holding = HoldingComponent.KEY.get(player);
-            MalachiteComponent malachite = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.LONGSWORD);
+            MalachiteComponent malachite = MalachiteComponent.getOrDefault(stack);
             if (!world.isClient && player.getActiveItem() == stack && malachite.charge() >= malachite.maxCharge() && holding.isAttacking()) {
                 if (!player.isCreative()) {
                     stack.set(MalachiteDataComponents.MALACHITE, malachite.withCharge(0));
@@ -174,7 +174,7 @@ public class MalachiteLongswordItem extends SwordItem implements AdvancedBlockin
         PlayerEntity user = context.getPlayer();
         ItemStack stack = context.getStack();
         if (user != null && stack != null) {
-            MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.LONGSWORD);
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
             if (state.getBlock() instanceof MalachitePylonBlock && component.charge() < component.maxCharge()) {
                 return ActionResult.FAIL;
             }

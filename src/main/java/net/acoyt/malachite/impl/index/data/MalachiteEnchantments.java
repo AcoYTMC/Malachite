@@ -51,7 +51,7 @@ public interface MalachiteEnchantments {
         );
 
         registerable.register(MAGNETIC, Enchantment.builder(Enchantment.definition(
-                                itemLookup.getOrThrow(MalachiteItemTags.DAGGERS),
+                        itemLookup.getOrThrow(MalachiteItemTags.MAGNETIC_ENCHANTABLE),
                                 2,
                                 1,
                                 Enchantment.leveledCost(5, 0),

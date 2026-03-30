@@ -1,4 +1,4 @@
-// 1.21.1	2026-03-26T21:26:22.4102962	Malachite/Tags for minecraft:damage_type
-afcd04e6e8c772f54030537c9fe03486bc0b4fff data\minecraft\tags\damage_type\no_knockback.json
+// 1.21.1	2026-03-29T19:16:42.1320169	Malachite/Tags for minecraft:damage_type
 2cbbd2c5ea199153bd66153a61e1de06b44b9cc6 data\minecraft\tags\damage_type\bypasses_shield.json
+afcd04e6e8c772f54030537c9fe03486bc0b4fff data\minecraft\tags\damage_type\no_knockback.json
 2cbbd2c5ea199153bd66153a61e1de06b44b9cc6 data\minecraft\tags\damage_type\bypasses_armor.json

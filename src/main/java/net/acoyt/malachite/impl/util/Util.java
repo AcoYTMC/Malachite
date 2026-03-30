@@ -18,6 +18,7 @@ import org.jetbrains.annotations.Nullable;
 
 public class Util {
     public static final PacketCodec<ByteBuf, Unit> UNIT_PACKET_CODEC = PacketCodecs.codec(Unit.CODEC);
+    public static final PacketCodec<ByteBuf, Vec3d> VEC3D_PACKET_CODEC = PacketCodecs.codec(Vec3d.CODEC);
 
     public static boolean isOwnedBy(LivingEntity living, @Nullable Entity entity) {
         if (entity == null || !(living instanceof Ownable ownable) || ownable.getOwner() == null) return false;

@@ -31,6 +31,7 @@ public class MalachiteLolCatLangGen extends FabricLanguageProvider {
         builder.add(MALACHITE, "gren rock");
         builder.add(MALACHITE_DAGGER, "gren rock shank");
         builder.add(MALACHITE_LONGSWORD, "gren rock big sord");
+        builder.add(MALACHITE_GREATAXE, "gren rock gret aecks");
         builder.add("item.malachite.tooltip.charged", "shocker");
 
         // Blocks

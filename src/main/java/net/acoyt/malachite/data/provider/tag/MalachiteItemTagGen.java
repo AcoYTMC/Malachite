@@ -20,6 +20,10 @@ public class MalachiteItemTagGen extends FabricTagProvider.ItemTagProvider {
                 .add(MALACHITE_LONGSWORD, MALACHITE_DAGGER)
                 .setReplace(false);
 
+        this.getOrCreateTagBuilder(ItemTags.AXES)
+                .add(MALACHITE_GREATAXE)
+                .setReplace(false);
+
         this.getOrCreateTagBuilder(ItemTags.TRIM_MATERIALS)
                 .add(MALACHITE)
                 .setReplace(false);
@@ -32,8 +36,13 @@ public class MalachiteItemTagGen extends FabricTagProvider.ItemTagProvider {
                 .add(MALACHITE_DAGGER)
                 .setReplace(false);
 
+        this.getOrCreateTagBuilder(MalachiteItemTags.MAGNETIC_ENCHANTABLE)
+                .addOptionalTag(MalachiteItemTags.DAGGERS)
+                .add(MALACHITE_GREATAXE)
+                .setReplace(false);
+
         this.getOrCreateTagBuilder(MalachiteItemTags.MALACHITE_WEAPONRY)
-                .add(MALACHITE_LONGSWORD, MALACHITE_DAGGER)
+                .add(MALACHITE_LONGSWORD, MALACHITE_DAGGER, MALACHITE_GREATAXE)
                 .setReplace(false);
     }
 }

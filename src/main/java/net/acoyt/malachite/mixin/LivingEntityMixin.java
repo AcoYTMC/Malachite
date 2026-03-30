@@ -1,10 +1,12 @@
 package net.acoyt.malachite.mixin;
 
 import com.llamalad7.mixinextras.injector.ModifyReturnValue;
+import com.llamalad7.mixinextras.injector.wrapmethod.WrapMethod;
+import com.llamalad7.mixinextras.injector.wrapoperation.Operation;
+import net.acoyt.malachite.impl.cca.entity.ChargedComponent;
 import net.acoyt.malachite.impl.cca.entity.NearbyPylonComponent;
 import net.acoyt.malachite.impl.component.MalachiteComponent;
 import net.acoyt.malachite.impl.entity.MalachiteDaggerEntity;
-import net.acoyt.malachite.impl.index.MalachiteDataComponents;
 import net.acoyt.malachite.impl.index.MalachiteEffects;
 import net.acoyt.malachite.impl.index.MalachiteEnchantmentEffects;
 import net.acoyt.malachite.impl.index.MalachiteItems;
@@ -33,9 +35,20 @@ import org.spongepowered.asm.mixin.injection.invoke.arg.Args;
 public abstract class LivingEntityMixin extends Entity {
     @Shadow protected abstract void applyDamage(DamageSource source, float amount);
     @Shadow @Nullable public abstract StatusEffectInstance getStatusEffect(RegistryEntry<StatusEffect> effect);
+    @Shadow public abstract boolean addStatusEffect(StatusEffectInstance effect);
 
     public LivingEntityMixin(EntityType<?> type, World world) {
         super(type, world);
+    }
+
+    @WrapMethod(method = "handleFallDamage")
+    private boolean malachite$magnetised(float fallDistance, float damageMultiplier, DamageSource damageSource, Operation<Boolean> original) {
+        if (ChargedComponent.KEY.get(this).getMagnetisedTicks() > 0) {
+            this.addStatusEffect(new StatusEffectInstance(MalachiteEffects.OVERCHARGED, 400, 0));
+            return original.call(fallDistance, damageMultiplier * 1.5F, damageSource);
+        }
+
+        return original.call(fallDistance, damageMultiplier, damageSource);
     }
 
     @ModifyReturnValue(method = "getKnockbackAgainst", at = @At(value = "RETURN", ordinal = 0))
@@ -44,7 +57,7 @@ public abstract class LivingEntityMixin extends Entity {
         ItemStack stack = living.getMainHandStack();
         float f = (float)living.getAttributeValue(EntityAttributes.GENERIC_ATTACK_KNOCKBACK);
         if (stack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
-            MalachiteComponent component = stack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+            MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
             if (component.charge() >= component.maxCharge()) {
                 return (f + 6.5f) * (EnchantmentHelper.hasAnyEnchantmentsWith(stack, MalachiteEnchantmentEffects.MAGNETIC) ? -3 : 1);
             }
@@ -53,7 +66,7 @@ public abstract class LivingEntityMixin extends Entity {
         if (source.getSource() instanceof MalachiteDaggerEntity malachiteDagger) {
             ItemStack itemStack = malachiteDagger.getItem();
             if (itemStack.isOf(MalachiteItems.MALACHITE_DAGGER)) {
-                MalachiteComponent component = itemStack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
+                MalachiteComponent component = MalachiteComponent.getOrDefault(itemStack);
                 if (component.charge() >= component.maxCharge()) {
                     return (f + 6.5f) * (malachiteDagger.isMagnetic() ? -3 : 1);
                 }

@@ -54,10 +54,10 @@ public class MalachitePylonBlock extends BlockWithEntity implements Waterloggabl
         return CODEC;
     }
 
-    public ItemActionResult onUseWithItem(ItemStack itemStack, BlockState state, World world, BlockPos pos, PlayerEntity user, Hand hand, BlockHitResult hit) {
-        MalachiteComponent component = itemStack.getOrDefault(MalachiteDataComponents.MALACHITE, MalachiteComponent.DAGGER);
-        if (itemStack.contains(MalachiteDataComponents.MALACHITE) && component.charge() < component.maxCharge() && state.contains(CHARGE) && state.get(CHARGE) == 4) {
-            itemStack.set(MalachiteDataComponents.MALACHITE, component.withCharge(component.maxCharge()));
+    public ItemActionResult onUseWithItem(ItemStack stack, BlockState state, World world, BlockPos pos, PlayerEntity user, Hand hand, BlockHitResult hit) {
+        MalachiteComponent component = MalachiteComponent.getOrDefault(stack);
+        if (stack.contains(MalachiteDataComponents.MALACHITE) && component.charge() < component.maxCharge() && state.contains(CHARGE) && state.get(CHARGE) == 4) {
+            stack.set(MalachiteDataComponents.MALACHITE, component.withCharge(component.maxCharge()));
 
             world.playSound(null, pos.getX(), pos.getY(), pos.getZ(), SoundEvents.BLOCK_BEACON_ACTIVATE, SoundCategory.BLOCKS, 1.0F, (float) (1.0F + user.getRandom().nextGaussian() / 10.0F));
 

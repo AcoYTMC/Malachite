@@ -31,7 +31,9 @@ public class MalachiteLangGen extends FabricLanguageProvider {
         builder.add(MALACHITE, "Malachite");
         builder.add(MALACHITE_DAGGER, "Malachite Dagger");
         builder.add(MALACHITE_LONGSWORD, "Malachite Longsword");
+        builder.add(MALACHITE_GREATAXE, "Malachite Greataxe");
         builder.add("item.malachite.tooltip.charged", "Charged");
+        builder.add("item.malachite.tooltip.position", "Linked to: %s");
 
         // Blocks
         builder.add(MALACHITE_PYLON, "Malachite Pylon");

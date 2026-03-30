@@ -31,6 +31,7 @@ public interface MalachiteItemGroup {
         itemGroup.add(MALACHITE);
         itemGroup.add(MALACHITE_LONGSWORD);
         itemGroup.add(MALACHITE_DAGGER);
+        itemGroup.add(MALACHITE_GREATAXE);
         itemGroup.add(MALACHITE_PYLON);
 
         itemGroup.add(CHISELED_SERAPHITE);
