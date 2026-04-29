@@ -7,9 +7,9 @@ import net.minecraft.registry.Registries;
 import net.minecraft.registry.Registry;
 
 public interface MalachiteCriterions {
-    TickCriterion DOPING = create("doping", new TickCriterion());
+    TickCriterion DOPING = register("doping", new TickCriterion());
 
-    static <T extends Criterion<?>> T create(String name, T criterion) {
+    static <T extends Criterion<?>> T register(String name, T criterion) {
         return Registry.register(Registries.CRITERION, Malachite.id(name), criterion);
     }
 

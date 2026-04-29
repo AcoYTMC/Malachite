@@ -1,12 +1,11 @@
 package net.acoyt.malachite.impl.index;
 
+import net.acoyt.acornlib.api.registrants.ItemGroupRegistrant;
 import net.acoyt.malachite.impl.Malachite;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroup;
 import net.fabricmc.fabric.api.itemgroup.v1.FabricItemGroupEntries;
 import net.fabricmc.fabric.api.itemgroup.v1.ItemGroupEvents;
 import net.minecraft.item.ItemGroup;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.registry.RegistryKey;
 import net.minecraft.registry.RegistryKeys;
 import net.minecraft.text.Text;
@@ -15,15 +14,15 @@ import static net.acoyt.malachite.impl.index.MalachiteBlocks.*;
 import static net.acoyt.malachite.impl.index.MalachiteItems.*;
 
 public interface MalachiteItemGroup {
+    ItemGroupRegistrant GROUPS = new ItemGroupRegistrant(Malachite.MOD_ID);
+
     RegistryKey<ItemGroup> GROUP_KEY = RegistryKey.of(RegistryKeys.ITEM_GROUP, Malachite.id(Malachite.MOD_ID));
-    ItemGroup ITEM_GROUP = FabricItemGroup.builder()
+    ItemGroup ITEM_GROUP = GROUPS.register(GROUP_KEY.getValue().getPath(), FabricItemGroup.builder()
             .icon(MALACHITE::getDefaultStack)
             .displayName(Text.translatable("itemGroup.malachite").withColor(0xFF38624b))
-            .build();
+            .build());
 
     static void init() {
-        Registry.register(Registries.ITEM_GROUP, GROUP_KEY, ITEM_GROUP);
-
         ItemGroupEvents.modifyEntriesEvent(GROUP_KEY).register(MalachiteItemGroup::addEntries);
     }
 

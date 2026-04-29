@@ -1,24 +1,19 @@
 package net.acoyt.malachite.impl.index;
 
+import net.acoyt.acornlib.api.registrants.SoundEventRegistrant;
 import net.acoyt.malachite.impl.Malachite;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.Registry;
 import net.minecraft.sound.SoundEvent;
-import net.minecraft.util.Identifier;
 
 public interface MalachiteSounds {
-    SoundEvent DAGGER_HIT = create("entity.dagger.hit");
-    SoundEvent DAGGER_THROW = create("entity.dagger.throw");
+    SoundEventRegistrant SOUNDS = new SoundEventRegistrant(Malachite.MOD_ID);
 
-    SoundEvent LONGSWORD_BLOCK = create("item.longsword.block");
+    SoundEvent DAGGER_HIT = SOUNDS.register("entity.dagger.hit");
+    SoundEvent DAGGER_THROW = SOUNDS.register("entity.dagger.throw");
 
-    SoundEvent ENERGY_BEAM_TRAVEL = create("entity.energy_beam.travel");
-    SoundEvent ENERGY_BEAM_SHOOT = create("entity.energy_beam.shoot");
+    SoundEvent LONGSWORD_BLOCK = SOUNDS.register("item.longsword.block");
 
-    private static SoundEvent create(String name) {
-        Identifier id = Malachite.id(name);
-        return Registry.register(Registries.SOUND_EVENT, id, SoundEvent.of(id));
-    }
+    SoundEvent ENERGY_BEAM_TRAVEL = SOUNDS.register("entity.energy_beam.travel");
+    SoundEvent ENERGY_BEAM_SHOOT = SOUNDS.register("entity.energy_beam.shoot");
 
     static void init() {}
 }
